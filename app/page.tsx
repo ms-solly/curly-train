@@ -8,30 +8,29 @@ export default function IndexPage() {
     <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
       <div className="flex max-w-[980px] flex-col items-start gap-2">
         <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl">
-          Beautifully designed components <br className="hidden sm:inline" />
-          built with Radix UI and Tailwind CSS.
+          <br className="hidden sm:inline" />
+          Stay up-to-date with the latest in Dota 2 esports. 
         </h1>
         <p className="max-w-[700px] text-lg text-muted-foreground">
-          Accessible and customizable components that you can copy and paste
-          into your apps. Free. Open Source. And Next.js 13 Ready.
+        Explore team stats, tournament schedules, live match updates, and in-depth analyses. Dive into a comprehensive and visually engaging experience that keeps you connected to the world of Dota 2.
         </p>
       </div>
       <div className="flex gap-4">
         <Link
-          href={siteConfig.links.docs}
+          href="#"
           target="_blank"
           rel="noreferrer"
           className={buttonVariants()}
         >
-          Documentation
+          Login
         </Link>
         <Link
           target="_blank"
           rel="noreferrer"
-          href={siteConfig.links.github}
+          href="#"
           className={buttonVariants({ variant: "outline" })}
         >
-          GitHub
+          Contact
         </Link>
       </div>
     </section>
