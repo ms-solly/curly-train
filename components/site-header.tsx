@@ -5,7 +5,7 @@ import { buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { MainNav } from "@/components/main-nav"
 import { ThemeToggle } from "@/components/theme-toggle"
-import { Button } from "@shadcn/ui";
+//import { Button } from "@shadcn/ui";
 
 export function SiteHeader() {
   return (
