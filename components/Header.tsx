@@ -1,16 +1,149 @@
-import Link from 'next/link';
+"use client"
 
-const Header = () => (
-  <div className="bg-gray-800 p-4 sticky">
-    <nav className="flex items-center">
-      <ul className="flex space-x-4 justify-between items-center">
-        <li><Link href="/live-matches" className="text-white hover:text-gray-200">Live Matches</Link></li>
-        <li><Link href="/upcoming-matches" className="text-white hover:text-gray-200">Upcoming Matches</Link></li>
-        <li><Link href="/tournaments" className="text-white hover:text-gray-200">Tournaments</Link></li>
+import * as React from "react"
+import Link from "next/link"
 
-      </ul>
-    </nav>
-  </div>
-);
+import { cn } from "@/lib/utils"
+import { Icons } from "@/components/icons"
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu"
 
-export default Header;
+const matches: { title: string; href: string; description: string }[] = [
+  {
+    title: "UpComing Matches",
+    href: "/match/upcoming",
+    description:
+      "Explore Upcoming matches of Dota 2",
+  },
+  {
+    title: "Live Matches",
+    href: "/match/live",
+    description:
+      "Explore live matches of Dota 2",
+  },
+  {
+    title: "Past Matches",
+    href: "/match/prev",
+    description:
+      "Explore Past matches of Dota 2",
+  }
+]
+const tournament: { title: string; href: string; description: string }[] = [
+  {
+    title: "UpComing Tournaments",
+    href: "/tournament/upcoming",
+    description:
+      "Explore Upcoming tournaments of Dota 2",
+  },
+  {
+    title: "Live Tournaments",
+    href: "/tournament/live",
+    description:
+      "Explore live tournaments of Dota 2",
+  },
+  {
+    title: "Past Tournaments",
+    href: "/tournament/prev",
+    description:
+      "Explore Past tournaments of Dota 2",
+  }
+]
+
+export default function NavigationMenuDemo() {
+  return (
+    <div className="w-full flex justify-center m-2">
+    <NavigationMenu>
+      <NavigationMenuList className="">
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Matches</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+              {matches.map((match) => (
+                <ListItem
+                  key={match.title}
+                  title={match.title}
+                  href={match.href}
+                >
+                  {match.description}
+                </ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Tournament</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+              {tournament.map((tournament) => (
+                <ListItem
+                  key={tournament.title}
+                  title={tournament.title}
+                  href={tournament.href}
+                >
+                  {tournament.description}
+                </ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Link href="/players" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Players
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+        
+        <NavigationMenuItem>
+          <Link href="/teams" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Teams
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <Link href="/news" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            News
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+    </div>
+  )
+}
+
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  )
+})
+ListItem.displayName = "ListItem"
