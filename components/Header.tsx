@@ -18,19 +18,19 @@ import {
 const matches: { title: string; href: string; description: string }[] = [
   {
     title: "UpComing Matches",
-    href: "/match/upcoming",
+    href: "/matches/upcoming",
     description:
       "Explore Upcoming matches of Dota 2",
   },
   {
     title: "Live Matches",
-    href: "/match/live",
+    href: "/matches/live",
     description:
       "Explore live matches of Dota 2",
   },
   {
     title: "Past Matches",
-    href: "/match/prev",
+    href: "/matches/prev",
     description:
       "Explore Past matches of Dota 2",
   }
@@ -110,8 +110,8 @@ export default function NavigationMenuDemo() {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <Link href="/news" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+          <Link href="https://dailyblog-esport1.vercel.app" target="_blank" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()} target="_blank">
             News
             </NavigationMenuLink>
           </Link>
