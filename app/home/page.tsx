@@ -108,9 +108,9 @@ const Home = () => {
                     <th className="py-3 px-6 text-left">Game Mode</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className=''>
                   {matches.map(match => (
-                    <tr key={match.match_id} className="border-b border-gray-700">
+                    <tr key={match.match_id} className="border-b border-gray-700 hover:bg-green-300 hover:text-gray-800">
                       <td className="py-3 px-6 text-left">
                         {match.start_time * 1000 < Date.now() ? (
                           <span className="text-green-500">Live</span>
