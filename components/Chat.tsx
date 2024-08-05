@@ -61,7 +61,7 @@ const Chat: React.FC<ChatProps> = ({ matchId }) => {
         messages.map((msg, index) => (
           <div
             key={index}
-            className="flex m-4 items-start py-2 px-2 border-b border-gray-800 relative rounded border-2 border-white"
+            className="flex m-4 items-start py-2 px-2 border-b border-gray-800 relative rounded border-2 "
             onMouseEnter={() => setHoveredProfile({
               player_slot: msg.player_slot,
               personaname: `Player ${msg.player_slot}`, // Placeholder, replace with actual data
