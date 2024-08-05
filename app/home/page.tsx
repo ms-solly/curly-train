@@ -1,4 +1,5 @@
 "use client"
+import Chat from '@/components/Chat';
 import Header from '@/components/Header';
 import { useEffect, useState } from 'react';
 
@@ -19,6 +20,7 @@ interface Match {
 const Home = () => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
+    const matchId = 3703866531; 
 
   useEffect(() => {
     const fetchMatchDetails = async (match_id: number) => {
@@ -138,8 +140,7 @@ const Home = () => {
             )}
           </div>
           <div className="w-1/4 p-4 bg-gray-800 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold mb-4">Chat</h2>
-            <p>Chat messages here</p>
+           <Chat matchId={matchId}/>
           </div>
         </div>
       </div>
