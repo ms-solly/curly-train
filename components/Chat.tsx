@@ -55,13 +55,13 @@ const Chat: React.FC<ChatProps> = ({ matchId }) => {
   };
 
   return (
-    <div className="p-1 bg-gray-900 text-white rounded-lg w-80">
+    <div className=" text-white rounded-lg ">
       <h1 className="w-full text-xl capitalize p-4 bg-gray-900 rounded-lg border-2 m-2 border-gray-300">Live Chats</h1>
       {messages.length > 0 ? (
         messages.map((msg, index) => (
           <div
             key={index}
-            className="flex m-4 items-start py-2 px-2 border-b border-gray-800 relative rounded border-2 "
+            className=" bg-gray-900 flex m-4 items-start py-2 px-2 border-b border-gray-800 relative rounded border-2 "
             onMouseEnter={() => setHoveredProfile({
               player_slot: msg.player_slot,
               personaname: `Player ${msg.player_slot}`, // Placeholder, replace with actual data
