@@ -1,4 +1,4 @@
-const { fontFamily } = require("tailwindcss/defaultTheme")
+const { fontFamily } = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -12,6 +12,7 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    
     extend: {
       colors: {
         border: "hsl(var(--border))",
@@ -55,6 +56,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
+        rubik: ['Rubik', 'sans-serif'], // Add Rubik font here
       },
       keyframes: {
         "accordion-down": {
