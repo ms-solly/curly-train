@@ -1,6 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.font-rubik {
+  font-family: 'Rubik', sans-serif;
+}
+
+
 
 @layer base {
   :root {
