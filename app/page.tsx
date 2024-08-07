@@ -1,38 +1,151 @@
-import Link from "next/link"
+"use client"
+import Header from '@/components/Header';
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
-import { siteConfig } from "@/config/site"
-import { buttonVariants } from "@/components/ui/button"
-
-export default function IndexPage() {
-  return (
-    <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
-      <div className="flex max-w-[980px] flex-col items-start gap-2">
-        <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl">
-          <br className="hidden sm:inline" />
-          Stay up-to-date with the latest in Dota 2 esports. 
-        </h1>
-        <p className="max-w-[700px] text-lg text-muted-foreground">
-        Explore team stats, tournament schedules, live match updates, and in-depth analyses. Dive into a comprehensive and visually engaging experience that keeps you connected to the world of Dota 2.
-        </p>
-      </div>
-      <div className="flex gap-4">
-        <Link
-          href="#"
-          target="_blank"
-          rel="noreferrer"
-          className={buttonVariants()}
-        >
-          Login
-        </Link>
-        <Link
-          target="_blank"
-          rel="noreferrer"
-          href="#"
-          className={buttonVariants({ variant: "outline" })}
-        >
-          Contact
-        </Link>
-      </div>
-    </section>
-  )
+interface Match {
+  match_id: number;
+  radiant_name: string;
+  dire_name: string;
+  radiant_logo: string;
+  dire_logo: string;
+  series_type: number;
+  radiant_win: boolean;
+  duration: number;
+  avg_mmr: number | null;
+  game_mode: number;
+  start_time: number;
 }
+
+const Home = () => {
+  const [matches, setMatches] = useState<Match[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMatchDetails = async (match_id: number) => {
+      try {
+        const response = await fetch(`https://api.opendota.com/api/matches/${match_id}`);
+        const data = await response.json();
+        return {
+          match_id: data.match_id,
+          radiant_name: data.radiant_team?.name || 'Radiant',
+          dire_name: data.dire_team?.name || 'Dire',
+          radiant_logo: data.radiant_team?.logo_url || 'https://raw.githubusercontent.com/ms-solly/curly-train/64db1b64ea20490e23a08a571ca8424cdb6fceeb/public/images/teamLogo.png',
+          dire_logo: data.dire_team?.logo_url || 'https://raw.githubusercontent.com/ms-solly/curly-train/64db1b64ea20490e23a08a571ca8424cdb6fceeb/public/images/teamLogo.png',
+          series_type: data.series_type,
+          radiant_win: data.radiant_win,
+          duration: data.duration,
+          avg_mmr: data.avg_mmr,
+          game_mode: data.game_mode,
+          start_time: data.start_time,
+        };
+      } catch (error) {
+        console.error('Error fetching match details:', error);
+        return null;
+      }
+    };
+
+    const fetchMatches = async () => {
+      try {
+        const response = await fetch('https://api.opendota.com/api/proMatches');
+        const data = await response.json();
+        const matchDetailsPromises = data.slice(0, 10).map((match: any) => fetchMatchDetails(match.match_id));
+        const detailedMatches = await Promise.all(matchDetailsPromises);
+        setMatches(detailedMatches.filter(Boolean));
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching matches:', error);
+      }
+    };
+
+    fetchMatches();
+  }, []);
+
+  const formatDuration = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  const seriesType = (type: number): string => {
+    switch (type) {
+      case 0:
+        return 'BO1';
+      case 1:
+        return 'BO3';
+      case 2:
+        return 'BO5';
+      default:
+        return 'Unknown';
+    }
+  };
+
+  const formatDate = (timestamp: number): string => {
+    const date = new Date(timestamp * 1000);
+    const options: Intl.DateTimeFormatOptions = { 
+      year: 'numeric', month: 'short', day: 'numeric', 
+      hour: '2-digit', minute: '2-digit' 
+    };
+    return date.toLocaleDateString(undefined, options);
+  };
+
+  return (
+    <>
+      <Header />
+      <div className="min-h-screen bg-gray-900 text-white">
+        <div className="container mx-auto flex p-4 ">
+          <div className="w-3/4 p-4">
+            <h1 className="mb-4 text-3xl font-bold">Current Matches</h1>
+            {loading ? (
+              <div>Loading...</div>
+            ) : (
+              <table className="min-w-full overflow-hidden rounded-lg bg-gray-800 text-white shadow-md">
+                <thead>
+                  <tr className="bg-gray-700">
+                    <th className="px-6 py-3 text-left">Status</th>
+                    <th className="px-6 py-3 text-left">Time</th>
+                    <th className="px-6 py-3 text-left">Teams</th>
+                    <th className="px-6 py-3 text-left">Series</th>
+                    <th className="px-6 py-3 text-left">Game Mode</th>
+                  </tr>
+                </thead>
+                <tbody className=''>
+                  {matches.map(match => (
+                    <tr key={match.match_id} className="border-b border-gray-700 hover:bg-green-300 hover:text-gray-800">
+                      <td className="px-6 py-3 text-left">
+                        {match.start_time * 1000 < Date.now() ? (
+                          <span className="text-green-500">Live</span>
+                        ) : (
+                          <span className="text-yellow-500">Upcoming</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-3 text-left">{formatDate(match.start_time)}</td>
+                      <td className="px-6 py-3 text-left">
+                        <div className="flex items-center">
+                          <Image src={match.radiant_logo} alt={match.radiant_name} className="mr-2 size-8" />
+                          <span className="font-bold">{match.radiant_name}</span>
+                          <span className="mx-2">vs</span>
+                          <Image src={match.dire_logo} alt={match.dire_name} className="mr-2 size-8" />
+                          <span className="font-bold">{match.dire_name}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-3 text-left">{seriesType(match.series_type)}</td>
+                      <td className="px-6 py-3 text-left">{match.game_mode}</td>
+                    </tr>
+                  ))}
+                </tbody>
+               
+              </table>
+            )}
+          </div>
+          <div className="w-1/4 rounded-lg bg-gray-800 p-4 shadow-md">
+            <h2 className="mb-4 text-xl font-bold">Chat</h2>
+            <p>Chat messages here</p>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Home;
