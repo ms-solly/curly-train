@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { buttonVariants } from "@/components/ui/button"
 import Image from "next/image"
-import bgImage from "/curly-train/public/bg.png"
+import bgImage from "public/bg.png"
 
 export default function IndexPage() {
   return (
