@@ -111,7 +111,7 @@ export default function NavigationMenuDemo() {
 
         <NavigationMenuItem>
           <Link href="/heroes" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()} target="_blank">
+            <NavigationMenuLink className={navigationMenuTriggerStyle()} >
             Heroes
             </NavigationMenuLink>
           </Link>
