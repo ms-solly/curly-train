@@ -110,13 +110,13 @@ export default function NavigationMenuDemo() {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <Link href="/heroes" target="_blank" legacyBehavior passHref>
+          <Link href="/heroes" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()} target="_blank">
             Heroes
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
-        
+
         <NavigationMenuItem>
           <Link href="https://dailyblog-esport1.vercel.app" target="_blank" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()} target="_blank">
