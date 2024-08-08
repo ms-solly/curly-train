@@ -49,6 +49,7 @@ const TeamsCard = () => {
                     </div>
                 </div>
             </div>
+            <hr />
 
 
 
@@ -98,6 +99,8 @@ const TeamsCard = () => {
                 </div>                
             </div>
 
+            <hr />
+
             <div className='w-full flex h-56  p-5 self-center '>
                 
                 <div className='w-1/4 bg-gray-800 border-2 rounded '>
@@ -143,9 +146,7 @@ const TeamsCard = () => {
                     </div>
                 </div>                
             </div>
-
-
-
+            <hr />
             
         </div>
     );
