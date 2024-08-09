@@ -3,20 +3,8 @@ import Chat from '@/components/Chat';
 import Header from '@/components/Header';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { Match } from '@/types/match';
 
-interface Match {
-  match_id: number;
-  radiant_name: string;
-  dire_name: string;
-  radiant_logo: string;
-  dire_logo: string;
-  series_type: number;
-  radiant_win: boolean;
-  duration: number;
-  avg_mmr: number | null;
-  game_mode: number;
-  start_time: number;
-}
 
 const Home = () => {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -110,9 +98,9 @@ const Home = () => {
                 <div>Loading...</div>
               ) : (
                 <div className="overflow-x-auto">
-                  <table className="min-w-full bg-gray-800 text-white rounded-lg overflow-hidden shadow-md backdrop-blur-md bg-white/5 p-4 border border-gray-200">
+                  <table className="min-w-full text-white rounded-lg overflow-hidden shadow-md backdrop-blur-md bg-white/5 p-4 border border-gray-200">
                     <thead>
-                      <tr className="bg-gray-700 font-rubik bg-white/10 backdrop-blur-md">
+                      <tr className=" font-rubik bg-white/10 backdrop-blur-md">
                         <th className="py-3 px-4 text-left text-xs md:text-sm">Status</th>
                         <th className="py-3 px-4 text-left text-xs md:text-sm">Time</th>
                         <th className="py-3 px-4 text-center text-xs md:text-sm">Teams</th>
