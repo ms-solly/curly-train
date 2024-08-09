@@ -1,3 +1,5 @@
+
+
 import Header from '@/components/Header';
 import TeamsCard from '@/components/teams/TeamsCard';
 import React from 'react';
@@ -7,6 +9,10 @@ const Teamspg = () => {
         <div>
             <Header/>
             <TeamsCard/>
+            <TeamsCard/>
+            <TeamsCard/>
+            <TeamsCard/>
+
         </div>
     );
 };
