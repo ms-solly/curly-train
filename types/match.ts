@@ -8,6 +8,13 @@ export interface Match {
     dire_score: number;
     radiant_win: boolean;
     players: PlayerStats[];
+    radiant_name: string;
+    dire_name: string;
+    radiant_logo: string;
+    dire_logo: string;
+    series_type: number;
+    avg_mmr: number | null;
+    game_mode: number;
   }
   
   export interface PlayerStats {
@@ -28,3 +35,4 @@ export interface Match {
     items: number[];
   }
   
+

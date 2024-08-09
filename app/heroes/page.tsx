@@ -3,7 +3,7 @@
 
 import Header from '@/components/Header';
 import HeroImgs from '@/components/heroes/HeroImgs';
-import SearchInp from '@/components/heroes/Search';
+import SearchInp from '@/components/heroes/SearchHeroes';
 import React from 'react';
 
 const HeroesPg = () => {

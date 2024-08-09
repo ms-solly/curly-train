@@ -4,7 +4,7 @@ import React from 'react';
 const heroesNames= ()=>{
 
 }
-const SearchInp = () => {
+const                  SearchHeroesInp = () => {
     return (
         <div className='flex justify-center m-5 mb-10 '>
             {/* <FaSearch className=' inline-block m-2 mt-3  justify-center'/> */}
@@ -19,4 +19,4 @@ const SearchInp = () => {
     );
 };
 
-export default SearchInp;
+export default SearchHeroesInp;

@@ -1,18 +1,19 @@
-
+"use client"
 
 import Header from '@/components/Header';
+import SearhTeamsInp from '@/components/teams/SearchTeams';
 import TeamsCard from '@/components/teams/TeamsCard';
 import React from 'react';
 
 const Teamspg = () => {
     return (
         <div>
-            <Header/>
+            <Header />
+            <SearhTeamsInp/>
             <TeamsCard/>
             <TeamsCard/>
             <TeamsCard/>
             <TeamsCard/>
-
         </div>
     );
 };

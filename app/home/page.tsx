@@ -2,20 +2,7 @@
 import Chat from '@/components/Chat';
 import Header from '@/components/Header';
 import { useEffect, useState } from 'react';
-
-interface Match {
-  match_id: number;
-  radiant_name: string;
-  dire_name: string;
-  radiant_logo: string;
-  dire_logo: string;
-  series_type: number;
-  radiant_win: boolean;
-  duration: number;
-  avg_mmr: number | null;
-  game_mode: number;
-  start_time: number;
-}
+import { Match } from '@/types/match';
 
 const Home = () => {
   const [matches, setMatches] = useState<Match[]>([]);
