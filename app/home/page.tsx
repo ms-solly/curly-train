@@ -2,12 +2,26 @@
 import Chat from '@/components/Chat';
 import Header from '@/components/Header';
 import { useEffect, useState } from 'react';
-import { Match } from '@/types/match';
+import Image from 'next/image';
+
+interface Match {
+  match_id: number;
+  radiant_name: string;
+  dire_name: string;
+  radiant_logo: string;
+  dire_logo: string;
+  series_type: number;
+  radiant_win: boolean;
+  duration: number;
+  avg_mmr: number | null;
+  game_mode: number;
+  start_time: number;
+}
 
 const Home = () => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
-    const matchId = 3703866531; 
+  const matchId = 3703866531;
 
   useEffect(() => {
     const fetchMatchDetails = async (match_id: number) => {
@@ -80,59 +94,72 @@ const Home = () => {
   return (
     <>
       <Header />
-      <div className="bg-gray-900 min-h-screen text-white">
-        <div className="container mx-auto p-4 flex ">
-          <div className="w-3/4 p-4">
-            <h1 className="text-3xl font-bold mb-4">Current Matches</h1>
-            {loading ? (
-              <div>Loading...</div>
-            ) : (
-              <table className="min-w-full bg-gray-800 text-white rounded-lg overflow-hidden shadow-md">
-                <thead>
-                  <tr className="bg-gray-700">
-                    <th className="py-3 px-6 text-left">Status</th>
-                    <th className="py-3 px-6 text-left">Time</th>
-                    <th className="py-3 px-6 text-left">Teams</th>
-                    <th className="py-3 px-6 text-left">Series</th>
-                    <th className="py-3 px-6 text-left">Game Mode</th>
-                  </tr>
-                </thead>
-                <tbody className=''>
-                  {matches.map(match => (
-                    <tr key={match.match_id} className="border-b border-gray-700 hover:bg-green-300 hover:text-gray-800">
-                      <td className="py-3 px-6 text-left">
-                        {match.start_time * 1000 < Date.now() ? (
-                          <span className="text-green-500">Live</span>
-                        ) : (
-                          <span className="text-yellow-500">Upcoming</span>
-                        )}
-                      </td>
-                      <td className="py-3 px-6 text-left">{formatDate(match.start_time)}</td>
-                      <td className="py-3 px-6 text-left">
-                        <div className="flex items-center">
-                          <img src={match.radiant_logo} alt={match.radiant_name} className="w-8 h-8 mr-2" />
-                          <span className="font-bold">{match.radiant_name}</span>
-                          <span className="mx-2">vs</span>
-                          <img src={match.dire_logo} alt={match.dire_name} className="w-8 h-8 mr-2" />
-                          <span className="font-bold">{match.dire_name}</span>
-                        </div>
-                      </td>
-                      <td className="py-3 px-6 text-left">{seriesType(match.series_type)}</td>
-                      <td className="py-3 px-6 text-left">{match.game_mode}</td>
-                    </tr>
-                  ))}
-                </tbody>
-               
-              </table>
-            )}
+      <div className="relative min-h-screen text-white">
+        <Image
+          src="/_next/static/media/bg.720ca035.png"
+          alt="Background Image"
+          layout="fill"
+          objectFit="cover"
+          className="z-0 opacity-50"
+        />
+        <div className="relative z-10 container mx-auto p-4 flex flex-wrap">
+          <div className="w-full lg:w-3/4 p-4">
+            <div>
+              <h1 className="text-4xl font-bold mb-4 font-rubik">Current Matches</h1>
+              {loading ? (
+                <div>Loading...</div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full bg-gray-800 text-white rounded-lg overflow-hidden shadow-md backdrop-blur-md bg-white/5 p-4 border border-gray-200">
+                    <thead>
+                      <tr className="bg-gray-700 font-rubik bg-white/10 backdrop-blur-md">
+                        <th className="py-3 px-4 text-left text-xs md:text-sm">Status</th>
+                        <th className="py-3 px-4 text-left text-xs md:text-sm">Time</th>
+                        <th className="py-3 px-4 text-center text-xs md:text-sm">Teams</th>
+                        <th className="py-3 px-4 text-left text-xs md:text-sm">Series</th>
+                        <th className="py-3 px-4 text-left text-xs md:text-sm">Game Mode</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {matches.map(match => (
+                        <tr key={match.match_id} className="border-b border-gray-700 hover:bg-green-300 hover:text-gray-800">
+                          <td className="py-3 px-4 text-left text-xs md:text-sm">
+                            {match.start_time * 1000 < Date.now() ? (
+                              <span className="text-green-500 font-rubik">Live</span>
+                            ) : (
+                              <span className="text-yellow-500 font-rubik">Upcoming</span>
+                            )}
+                          </td>
+                          <td className="py-3 px-4 text-left text-xs md:text-sm font-rubik">{formatDate(match.start_time)}</td>
+                          <td className="py-3 px-4 text-left text-xs md:text-sm font-rubik">
+                            <div className="flex items-center flex-wrap gap-2 font-rubik">
+                              <img src={match.radiant_logo} alt={match.radiant_name} className="w-6 h-6 md:w-8 md:h-8 rounded-full" />
+                              <span className="font-bold">{match.radiant_name}</span>
+                              <span className="mx-2 text-center">vs</span>
+                              <img src={match.dire_logo} alt={match.dire_name} className="w-6 h-6 md:w-8 md:h-8 rounded-full" />
+                              <span className="font-bold">{match.dire_name}</span>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4 text-left text-xs md:text-sm font-rubik">{seriesType(match.series_type)}</td>
+                          <td className="py-3 px-4 text-left text-xs md:text-sm font-rubik">{match.game_mode}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           </div>
-          <div className="w-1/4 p-4 bg-gray-800 rounded-lg shadow-md">
-           <Chat matchId={matchId}/>
+          <div className="w-full lg:w-1/4 p-4">
+            <div className="backdrop-blur-md bg-white/10 rounded-xl p-4 shadow-lg border border-gray-200">
+              <h2 className="text-xl font-bold mb-4 font-rubik">Chat</h2>
+              <Chat matchId={matchId}/>
+            </div>
           </div>
         </div>
       </div>
     </>
-  );
+  ); 
 };
 
 export default Home;
