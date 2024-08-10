@@ -3,5 +3,15 @@ const nextConfig = {
   reactStrictMode: true,
 
 }
-
+module.exports = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'avatars.steamstatic.com',
+        port: '',
+      },
+    ],
+  },
+}
 
