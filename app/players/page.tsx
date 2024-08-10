@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import Header from '@/components/Header';
 import { useEffect, useState } from 'react';
@@ -10,12 +10,11 @@ const PlayersPage = () => {
   const [players, setPlayers] = useState<Player[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-
+  const [error, setError] = useState<string | null>(null);
 
   const accountIds = [
-    19672354, 105248644, 113331514, 87278757, 70388657, 
-    86745912, 94054712, 311360822, 131380551, 94049589,
-
+    19672354, 105248644, 113331514, 70388657, 
+    86745912, 94054712, 311360822, 94049589,
   ];
 
   useEffect(() => {
@@ -39,6 +38,24 @@ const PlayersPage = () => {
     fetchPlayers();
   }, []);
 
+  const handleSearch = async (id: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await axios.get<Player>(`https://api.opendota.com/api/players/${id}`);
+      if (response.data.profile) {
+        setPlayers([response.data]); // Display only the searched player
+      } else {
+        setError('Player not found. Please check the account ID.');
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching player:', error);
+      setError('Error fetching player data. Please try again.');
+      setLoading(false);
+    }
+  };
+
   const filteredPlayers = players.filter(player =>
     player.profile?.personaname.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -51,11 +68,13 @@ const PlayersPage = () => {
           <h1 className="text-4xl font-bold mb-4 font-rubik">Players</h1>
           <input
             type="text"
-            placeholder="Search players..."
+            placeholder="Search players by ID..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchTerm)}
             className="mb-6 p-2 rounded-lg text-black outline-none"
           />
+          {error && <div className="mb-4 text-red-500">{error}</div>}
           {loading ? (
             <div>Loading...</div>
           ) : (
