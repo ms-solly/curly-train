@@ -118,7 +118,7 @@ const Home = () => {
               <div className="overflow-x-auto">
                 <table className="min-w-full text-white rounded-lg overflow-hidden shadow-md backdrop-blur-md bg-white/5 p-4 border border-gray-200">
                   <thead>
-                    <tr className="bg-gray-700 font-rubik bg-white/10 backdrop-blur-md">
+                    <tr className="font-rubik bg-white/10 backdrop-blur-md">
                       <th className="py-3 px-4 text-left text-xs md:text-sm">Status</th>
                       <th className="py-3 px-4 text-left text-xs md:text-sm">Time</th>
                       <th className="py-3 px-4 text-center text-xs md:text-sm">Teams</th>
