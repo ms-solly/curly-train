@@ -118,7 +118,7 @@ const Home = () => {
               <div className="overflow-x-auto">
                 <table className="min-w-full text-white rounded-lg overflow-hidden shadow-md backdrop-blur-md bg-white/5 p-4 border border-gray-200">
                   <thead>
-                    <tr className="font-rubik bg-white/10 backdrop-blur-md">
+                    <tr className=" font-rubik bg-white/10 backdrop-blur-md">
                       <th className="py-3 px-4 text-left text-xs md:text-sm">Status</th>
                       <th className="py-3 px-4 text-left text-xs md:text-sm">Time</th>
                       <th className="py-3 px-4 text-center text-xs md:text-sm">Teams</th>
@@ -156,7 +156,7 @@ const Home = () => {
             )}
           </div>
 
-          {/* ChatBox */}
+         
           <div className="w-full lg:w-1/4 p-3 mt-1 lg:mt-11">
             <div className="backdrop-blur-md bg-white/10 rounded-xl p-4 shadow-lg border border-gray-200 h-fit">
               <h2 className="text-2xl font-bold mb-4 font-rubik">Chat</h2>
