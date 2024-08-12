@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SiteHeader } from "@/components/site-header"
+import Image from "next/image"
+import Header from "@/components/Header"
 
 export const metadata: Metadata = {
   title: {
@@ -41,13 +43,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
             fontSans.variable
           )}
         >
+          <div className="relative min-h-screen text-white">
+            <Image src="/_next/static/media/bg.720ca035.png" alt="Background Image" layout="fill" objectFit="cover" className="z-0 opacity-50"/>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          
             <div className="relative flex min-h-screen flex-col">
               <SiteHeader />
-              <div className="flex-1">{children}</div>
+              <Header/>
+              <div className="z-1 flex-1">{children}</div>
             </div>
+      
             <TailwindIndicator />
           </ThemeProvider>
+          </div>
         </body>
       </html>
     </>

@@ -9,7 +9,6 @@ import React from 'react';
 const HeroesPg = () => {
     return (
         <>
-        <Header/>
         <SearchInp/>
         <HeroImgs/>
         </>

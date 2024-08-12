@@ -5,7 +5,6 @@ import React from 'react';
 const LiveMatches = () => {
     return (
         <div>
-            <Header/>
             <Live/>
         </div>
     );

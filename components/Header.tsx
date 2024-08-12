@@ -58,8 +58,8 @@ const tournament: { title: string; href: string; description: string }[] = [
 
 export default function NavigationMenuDemo() {
   return (
-    <div className="w-full flex justify-center m-2">
-    <NavigationMenu>
+    <div className="m-2 flex w-full justify-center z-50">
+    <NavigationMenu className="">
       <NavigationMenuList className="">
         <NavigationMenuItem>
           <NavigationMenuTrigger>Matches</NavigationMenuTrigger>
@@ -113,6 +113,14 @@ export default function NavigationMenuDemo() {
           <Link href="/heroes" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()} >
             Heroes
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <Link href="/chat" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()} >
+            Chat
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>

@@ -8,7 +8,6 @@ import React from 'react';
 const Teamspg = () => {
     return (
         <div>
-            <Header />
             <SearhTeamsInp/>
             <TeamsCard/>
             <TeamsCard/>

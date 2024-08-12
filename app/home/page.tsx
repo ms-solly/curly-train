@@ -81,7 +81,6 @@ const Home = () => {
 
   return (
     <>
-      <Header />
       <div className="relative min-h-screen text-white">
         <Image
           src="/_next/static/media/bg.720ca035.png"

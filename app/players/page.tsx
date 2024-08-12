@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Header from '@/components/Header';
 import { useEffect, useState } from 'react';
@@ -24,7 +24,12 @@ const PlayersPage = () => {
         
         for (const id of accountIds) {
           const response = await axios.get<Player>(`https://api.opendota.com/api/players/${id}`);
-          fetchedPlayers.push(response.data);
+          const playerData = response.data;
+          
+          // Ensure necessary fields are populated before adding
+          if (playerData.profile && playerData.account_id) {
+            fetchedPlayers.push(playerData);
+          }
         }
 
         setPlayers(fetchedPlayers);
@@ -38,16 +43,25 @@ const PlayersPage = () => {
     fetchPlayers();
   }, []);
 
-  const handleSearch = async (id: string) => {
+  const handleSearch = async () => {
+    if (!searchTerm) {
+      setError('Please enter an account ID.');
+      return;
+    }
+
     setLoading(true);
     setError(null);
+
     try {
-      const response = await axios.get<Player>(`https://api.opendota.com/api/players/${id}`);
-      if (response.data.profile) {
-        setPlayers([response.data]); // Display only the searched player
+      const response = await axios.get<Player>(`https://api.opendota.com/api/players/${searchTerm}`);
+      const playerData = response.data;
+      
+      if (playerData.profile) {
+        setPlayers([playerData]); // Display only the searched player
       } else {
         setError('Player not found. Please check the account ID.');
       }
+
       setLoading(false);
     } catch (error) {
       console.error('Error fetching player:', error);
@@ -56,13 +70,8 @@ const PlayersPage = () => {
     }
   };
 
-  const filteredPlayers = players.filter(player =>
-    player.profile?.personaname.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   return (
     <>
-      <Header />
       <div className="relative min-h-screen text-white">
         <div className="relative z-10 container mx-auto p-4 flex flex-col items-center">
           <h1 className="text-4xl font-bold mb-4 font-rubik">Players</h1>
@@ -71,15 +80,20 @@ const PlayersPage = () => {
             placeholder="Search players by ID..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchTerm)}
             className="mb-6 p-2 rounded-lg text-black outline-none"
           />
+          <button
+            onClick={handleSearch}
+            className="mb-6 px-4 py-2 bg-blue-600 text-white rounded-lg"
+          >
+            Search
+          </button>
           {error && <div className="mb-4 text-red-500">{error}</div>}
           {loading ? (
             <div>Loading...</div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {filteredPlayers.map(player => (
+              {players.map(player => (
                 <div key={player.profile.account_id} className="flex flex-col items-center bg-gray-800 p-4 rounded-lg">
                   <Image
                     src={player.profile?.avatarfull}
