@@ -137,12 +137,13 @@ const Home = () => {
               )}
             </div>
           </div>
-          <div className="w-full lg:w-1/4 p-4">
-            <div className="backdrop-blur-md bg-white/10 rounded-xl p-4 shadow-lg border border-gray-200">
-              <h2 className="text-xl font-bold mb-4 font-rubik">Chat</h2>
-              <Chat matchId={matchId}/>
-            </div>
-          </div>
+           <div className="w-full lg:w-1/4 p-4 mt-1 lg:mt-20">
+  <div className="backdrop-blur-md bg-white/10 rounded-xl p-4 shadow-lg border border-gray-200">
+    <h2 className="text-xl font-bold mb-4 font-rubik">Chat</h2>
+    <div className="chatBoxWrapper">
+      <Chat />
+    </div>
+  </div>
         </div>
       </div>
     </>
