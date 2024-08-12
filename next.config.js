@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
-const UnoCSS = require('@unocss/webpack').default
-
 const nextConfig = {
   reactStrictMode: true,
-  webpack: (config) => {
+  webpack: async (config) => {
+    const UnoCSS = (await import('@unocss/webpack')).default;
     config.plugins.push(UnoCSS());
     return config;
   },
