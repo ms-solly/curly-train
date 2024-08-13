@@ -6,8 +6,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import '@unocss/reset/tailwind.css';
-@import 'uno.css';
+
+
 
 .font-rubik {
   font-family: 'Rubik', sans-serif;
