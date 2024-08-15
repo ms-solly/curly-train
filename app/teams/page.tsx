@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import Image from 'next/image';
 
 const TeamDetails = ({ teamId }) => {
   const [match, setMatch] = useState(null);
@@ -40,7 +40,7 @@ const TeamDetails = ({ teamId }) => {
         <p>Start Time: {new Date(match.start_time * 1000).toLocaleString()}</p>
         <p>League: {match.league_name}</p>
         <p>Opposing Team: {match.opposing_team_name}</p>
-        <img src={match.opposing_team_logo} alt={match.opposing_team_name} style={{ width: '100px' }} />
+        <Image src={match.opposing_team_logo} alt={match.opposing_team_name} style={{ width: '100px' }} />
       </div>
 
       <h2>Players</h2>

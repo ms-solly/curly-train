@@ -140,10 +140,10 @@ const Home = () => {
                         <td className="px-4 py-3 text-left font-rubik text-xs md:text-sm">{formatDate(match.start_time)}</td>
                         <td className="px-4 py-3 text-left font-rubik text-xs md:text-sm">
                           <div className="flex flex-wrap items-center gap-2 font-rubik">
-                            <img src={match.radiant_logo} alt={match.radiant_name} className="size-6 rounded-full md:size-8" />
+                            <Image src={match.radiant_logo} alt={match.radiant_name} className="size-6 rounded-full md:size-8" />
                             <span className="font-bold">{match.radiant_name}</span>
                             <span className="mx-2 text-center">vs</span>
-                            <img src={match.dire_logo} alt={match.dire_name} className="size-6 rounded-full md:size-8" />
+                            <Image src={match.dire_logo} alt={match.dire_name} className="size-6 rounded-full md:size-8" />
                             <span className="font-bold">{match.dire_name}</span>
                           </div>
                         </td>

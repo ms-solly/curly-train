@@ -35,13 +35,13 @@ const MatchCard: React.FC<{ match: Match }> = ({ match }) => {
       <div className="flex justify-between items-center">
         <div className="flex items-center">
           {match.radiant_win && <FaTrophy className="text-yellow-500 mr-2" />}
-          <img src={match.radiant_logo} alt={match.radiant_name} className="w-8 h-8 mr-2" />
+          <Image src={match.radiant_logo} alt={match.radiant_name} className="w-8 h-8 mr-2" />
           <span className="font-bold">{match.radiant_name}</span>
         </div>
         <span className="text-gray-400">vs</span>
         <div className="flex items-center">
           {!match.radiant_win && <FaTrophy className="text-yellow-500 mr-2" />}
-          <img src={match.dire_logo} alt={match.dire_name} className="w-8 h-8 mr-2" />
+          <Image src={match.dire_logo} alt={match.dire_name} className="w-8 h-8 mr-2" />
           <span className="font-bold">{match.dire_name}</span>
         </div>
       </div>
