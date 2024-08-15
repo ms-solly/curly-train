@@ -2,7 +2,6 @@ import "@/styles/globals.css"
 import { Metadata } from "next"
 
 import { siteConfig } from "@/config/site"
-import { fontSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 
 import { TailwindIndicator } from "@/components/tailwind-indicator"
@@ -23,8 +22,8 @@ export const metadata: Metadata = {
   ],
   icons: {
     icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+    // shortcut: "/favicon-16x16.png",
+    // apple: "/apple-touch-icon.png",
   },
 }
 
@@ -40,11 +39,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
-            fontSans.variable
+            
           )}
         >
           <div className="relative min-h-screen text-white">
-            <Image src="/_next/static/media/bg.720ca035.png" alt="Background Image" layout="fill" objectFit="cover" className="z-0 opacity-50"/>
+            <Image src="/_next/static/media/bg.720ca035.png" alt="Background Image" fill style={{ objectFit: 'cover' }} className="z-0 opacity-50"/>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           
             <div className="relative flex min-h-screen flex-col">

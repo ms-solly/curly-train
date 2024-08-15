@@ -1,4 +1,4 @@
-// lib/fonts.ts
+"use client"
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalFonts = createGlobalStyle`
