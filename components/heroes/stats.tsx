@@ -5,7 +5,7 @@ import action from '@../../../src/actions/action';
 const getHeroStats = async (params: {} | undefined) => 
     action('heroStats', config.API_HOST, 'api/heroStats', params);
 
-const HeroStats: React.FC = () => {
+function HeroStats() {
     const [heroStats, setHeroStats] = useState<any[]>([]);
 
     useEffect(() => {
