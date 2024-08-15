@@ -41,7 +41,6 @@ const ProPlayersPage: React.FC = () => {
     }, []);
 
     return (
-        <div className="p-4 bg-cover bg-center min-h-screen" style={{ backgroundImage: 'url(/_next/static/media/bg.720ca035.png)', backgroundSize: 'cover', backgroundAttachment: 'fixed' }}>
             <div className="p-8 shadow-lg bg-opacity-50">
                 <h1 className="text-5xl font-bold mb-4 text-center text-white-800 font-rubik">Pro Players</h1>
                 {loading ? (
@@ -94,7 +93,6 @@ const ProPlayersPage: React.FC = () => {
                     <p>No pro players found.</p>
                 )}
             </div>
-        </div>
     );
 };
 
