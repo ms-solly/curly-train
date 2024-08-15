@@ -8,6 +8,16 @@ const nextConfig = {
         hostname: 'avatars.steamstatic.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'steamusercontent-a.akamaihd.net',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'steamcdn-a.akamaihd.net', // Add this entry
+        port: '',
+      },
     ],
   },
 };

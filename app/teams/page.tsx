@@ -1,70 +1,163 @@
-"use client"
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import Header from '@/components/Header';
+import SearchTeamsInp from '@/components/teams/SearchTeams';
+import TeamsCard from '@/components/teams/TeamsCard';
 import Image from 'next/image';
 
-const TeamDetails = ({ teamId }) => {
-  const [match, setMatch] = useState(null);
-  const [players, setPlayers] = useState([]);
-  const [heroes, setHeroes] = useState([]);
+// Define interfaces based on your API response
+interface Player {
+    id: number;
+    name: string;
+    role: string;
+}
 
-  useEffect(() => {
-    const fetchData = async () => {
-      // Fetch the most recent match
-      const recentMatch = await fetchRecentMatchForTeam(teamId);
-      setMatch(recentMatch);
+interface Team {
+    id: number;
+    name: string;
+    logo: string;
+    win_rate: number;
+    players: Player[];
+}
 
-      // Fetch players and heroes
-      const playerDetails = await fetchPlayersForTeam(teamId);
-      const heroDetails = await fetchHeroesForTeam(teamId);
+const fetchTeamsData = async (): Promise<Team[]> => {
+    try {
+        const response = await fetch('https://api.opendota.com/api/teams'); // Replace with actual API endpoint
+        const data = await response.json();
+        
+        // Adjust based on actual response structure
+        console.log("Fetched teams data:", data);
 
-      setPlayers(playerDetails);
-      setHeroes(heroDetails);
-    };
-
-    fetchData();
-  }, [teamId]);
-
-  if (!match || !players.length || !heroes.length) return <div>Loading...</div>;
-
-  return (
-    <div>
-      <h1>Most Recent Match</h1>
-      <div>
-        <h2>Match Details</h2>
-        <p>Match ID: {match.match_id}</p>
-        <p>Radiant Win: {match.radiant_win ? 'Yes' : 'No'}</p>
-        <p>Radiant Score: {match.radiant_score}</p>
-        <p>Dire Score: {match.dire_score}</p>
-        <p>Duration: {match.duration} seconds</p>
-        <p>Start Time: {new Date(match.start_time * 1000).toLocaleString()}</p>
-        <p>League: {match.league_name}</p>
-        <p>Opposing Team: {match.opposing_team_name}</p>
-        <Image src={match.opposing_team_logo} alt={match.opposing_team_name} style={{ width: '100px' }} />
-      </div>
-
-      <h2>Players</h2>
-      <div className="flex space-x-4">
-        {players.map(player => (
-          <div key={player.account_id} className="flex-shrink-0">
-            <p>{player.name}</p>
-            <p>Games Played: {player.games_played}</p>
-            <p>Wins: {player.wins}</p>
-          </div>
-        ))}
-      </div>
-
-      <h2>Heroes</h2>
-      <div className="flex space-x-4">
-        {heroes.map(hero => (
-          <div key={hero.hero_id} className="flex-shrink-0">
-            <p>{hero.name}</p>
-            {/* Add hero images if available */}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+        return data.map((team: any) => ({
+            id: team.team_id, // Replace with actual key
+            name: team.name, // Replace with actual key
+            logo: team.logo_url || '/default-logo.png', // Replace with actual key
+            win_rate: team.rating || 0, // Adjust if needed
+            players: (team.players || []).map((player: any) => ({
+                id: player.id, // Replace with actual key
+                name: player.name, // Replace with actual key
+                role: player.role || 'Unknown' // Replace with actual key
+            }))
+        }));
+    } catch (error) {
+        console.error("Error fetching teams data:", error);
+        return [];
+    }
 };
 
-export default TeamDetails;
+const Teamspg: React.FC = () => {
+    const [teams, setTeams] = useState<Team[]>([]);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+
+    useEffect(() => {
+        const loadTeamsData = async () => {
+            try {
+                const data = await fetchTeamsData();
+                setTeams(data);
+            } catch (error) {
+                console.error("Error fetching teams data:", error);
+            }
+        };
+
+        loadTeamsData();
+    }, []);
+
+    // Pagination logic
+    const indexOfLastTeam = currentPage * itemsPerPage;
+    const indexOfFirstTeam = indexOfLastTeam - itemsPerPage;
+    const currentTeams = teams.slice(indexOfFirstTeam, indexOfLastTeam);
+
+    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+    return (
+        <div>
+            <SearchTeamsInp />
+                <div className="p-4 bg-white/80 rounded-lg shadow-lg">
+                    <h1 className="text-4xl text-center font-bold mb-6">Teams</h1>
+                    <TeamsTable teams={currentTeams} />
+                    <Pagination
+                        itemsPerPage={itemsPerPage}
+                        totalItems={teams.length}
+                        paginate={paginate}
+                    />
+                </div>
+            </div>
+    );
+};
+
+interface TeamsTableProps {
+    teams: Team[];
+}
+
+
+const TeamsTable: React.FC<TeamsTableProps> = ({ teams }) => {
+    return (
+        <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
+            <thead className="bg-sky-700 text-white">
+                <tr>
+                    <th className="px-6 py-3 text-left">Logo</th>
+                    <th className="px-6 py-3 text-left">Name</th>
+                    <th className="px-6 py-3 text-left">Win Rate</th>
+                    <th className="px-6 py-3 text-left">Players</th>
+                </tr>
+            </thead>
+            <tbody className="bg-gray-100">
+                {teams.map(team => (
+                    <tr key={team.id} className="border-b border-gray-200">
+                        <td className="px-6 py-4">
+                            <Image src={team.logo} alt={`${team.name} logo`} width={30} height={30} className="w-16 h-16 object-cover" />
+                        </td>
+                        <td className="px-6 py-4 font-semibold">{team.name}</td>
+                        <td className="px-6 py-4">{team.win_rate || 'N/A'}%</td>
+                        <td className="px-6 py-4">
+                            {team.players.length > 0 ? (
+                                <ul className="list-disc pl-4">
+                                    {team.players.map(player => (
+                                        <li key={player.id} className="text-sm">{player.name} - {player.role}</li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p className="text-sm">No players available</p>
+                            )}
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
+};
+
+interface PaginationProps {
+    itemsPerPage: number;
+    totalItems: number;
+    paginate: (pageNumber: number) => void;
+}
+
+const Pagination: React.FC<PaginationProps> = ({ itemsPerPage, totalItems, paginate }) => {
+    const pageNumbers = [];
+
+    for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
+        pageNumbers.push(i);
+    }
+
+    return (
+        <nav className="flex justify-center mt-4">
+            <ul className="flex space-x-2">
+                {pageNumbers.map(number => (
+                    <li key={number}>
+                        <button
+                            onClick={() => paginate(number)}
+                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                        >
+                            {number}
+                        </button>
+                    </li>
+                ))}
+            </ul>
+        </nav>
+    );
+};
+
+export default Teamspg;
