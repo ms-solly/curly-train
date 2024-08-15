@@ -106,48 +106,48 @@ const Home = () => {
           objectFit="cover"
           className="z-0 opacity-70"
         />
-        <div className="relative z-10 container mx-auto p-4 flex flex-col lg:flex-row gap-4">
+        <div className="container relative z-10 mx-auto flex flex-col gap-4 p-4 lg:flex-row">
           {/* Matches Table */}
-          <div className="flex-1 min-w-0">
-            <h1 className="text-4xl font-bold mb-4 font-rubik">Current Matches</h1>
+          <div className="min-w-0 flex-1">
+            <h1 className="mb-4 font-rubik text-4xl font-bold">Current Matches</h1>
             {loading ? (
               <div>Loading...</div>
             ) : error ? (
               <div>{error}</div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="min-w-full text-white rounded-lg overflow-hidden shadow-md backdrop-blur-md bg-white/5 p-4 border border-gray-200">
+                <table className="min-w-full overflow-hidden rounded-lg border border-gray-200 bg-white/5 p-4 text-white shadow-md backdrop-blur-md">
                   <thead>
-                    <tr className=" font-rubik bg-white/10 backdrop-blur-md">
-                      <th className="py-3 px-4 text-left text-xs md:text-sm">Status</th>
-                      <th className="py-3 px-4 text-left text-xs md:text-sm">Time</th>
-                      <th className="py-3 px-4 text-center text-xs md:text-sm">Teams</th>
-                      <th className="py-3 px-4 text-left text-xs md:text-sm">Series</th>
-                      <th className="py-3 px-4 text-left text-xs md:text-sm">Game Mode</th>
+                    <tr className=" bg-white/10 font-rubik backdrop-blur-md">
+                      <th className="px-4 py-3 text-left text-xs md:text-sm">Status</th>
+                      <th className="px-4 py-3 text-left text-xs md:text-sm">Time</th>
+                      <th className="px-4 py-3 text-center text-xs md:text-sm">Teams</th>
+                      <th className="px-4 py-3 text-left text-xs md:text-sm">Series</th>
+                      <th className="px-4 py-3 text-left text-xs md:text-sm">Game Mode</th>
                     </tr>
                   </thead>
                   <tbody>
                     {matches.map(match => (
                       <tr key={match.match_id} className="border-b border-gray-700 hover:bg-green-300 hover:text-gray-800">
-                        <td className="py-3 px-4 text-left text-xs md:text-sm">
+                        <td className="px-4 py-3 text-left text-xs md:text-sm">
                           {match.start_time * 1000 < Date.now() ? (
-                            <span className="text-green-500 font-rubik">Live</span>
+                            <span className="font-rubik text-green-500">Live</span>
                           ) : (
-                            <span className="text-yellow-500 font-rubik">Upcoming</span>
+                            <span className="font-rubik text-yellow-500">Upcoming</span>
                           )}
                         </td>
-                        <td className="py-3 px-4 text-left text-xs md:text-sm font-rubik">{formatDate(match.start_time)}</td>
-                        <td className="py-3 px-4 text-left text-xs md:text-sm font-rubik">
-                          <div className="flex items-center flex-wrap gap-2 font-rubik">
-                            <img src={match.radiant_logo} alt={match.radiant_name} className="w-6 h-6 md:w-8 md:h-8 rounded-full" />
+                        <td className="px-4 py-3 text-left font-rubik text-xs md:text-sm">{formatDate(match.start_time)}</td>
+                        <td className="px-4 py-3 text-left font-rubik text-xs md:text-sm">
+                          <div className="flex flex-wrap items-center gap-2 font-rubik">
+                            <img src={match.radiant_logo} alt={match.radiant_name} className="size-6 rounded-full md:size-8" />
                             <span className="font-bold">{match.radiant_name}</span>
                             <span className="mx-2 text-center">vs</span>
-                            <img src={match.dire_logo} alt={match.dire_name} className="w-6 h-6 md:w-8 md:h-8 rounded-full" />
+                            <img src={match.dire_logo} alt={match.dire_name} className="size-6 rounded-full md:size-8" />
                             <span className="font-bold">{match.dire_name}</span>
                           </div>
                         </td>
-                        <td className="py-3 px-4 text-left text-xs md:text-sm font-rubik">{seriesType(match.series_type)}</td>
-                        <td className="py-3 px-4 text-left text-xs md:text-sm font-rubik">{match.game_mode}</td>
+                        <td className="px-4 py-3 text-left font-rubik text-xs md:text-sm">{seriesType(match.series_type)}</td>
+                        <td className="px-4 py-3 text-left font-rubik text-xs md:text-sm">{match.game_mode}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -157,9 +157,9 @@ const Home = () => {
           </div>
 
          
-          <div className="w-full lg:w-1/4 p-3 mt-1 lg:mt-11">
-            <div className="backdrop-blur-md bg-white/10 rounded-xl p-4 shadow-lg border border-gray-200 h-fit">
-              <h2 className="text-2xl font-bold mb-4 font-rubik">Chat</h2>
+          <div className="mt-1 w-full p-3 lg:mt-11 lg:w-1/4">
+            <div className="h-fit rounded-xl border border-gray-200 bg-white/10 p-4 shadow-lg backdrop-blur-md">
+              <h2 className="mb-4 font-rubik text-2xl font-bold">Chat</h2>
               <Chat />
             </div>
           </div>

@@ -41,7 +41,7 @@ const PlayersPage = () => {
     };
   
     fetchPlayers();
-  }, []);
+  }, [accountIds]);
   
   const handleSearch = async () => {
     if (!searchTerm) {
@@ -74,18 +74,18 @@ const PlayersPage = () => {
   return (
     <div className="relative min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('/_next/static/media/bg.720ca035.png')" }}>
       <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-      <div className="relative z-10 container mx-auto p-4 flex flex-col items-center">
+      <div className="container relative z-10 mx-auto flex flex-col items-center p-4">
         <h1 className="text-4xl font-bold mb-4 font-rubik">Players</h1>
         <input
           type="text"
           placeholder="Search players by ID..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="mb-6 p-2 bg-white/5 bg-opacity-20 border-2  rounded-lg text-white outline-none font-rubik"
+          className="mb-6 rounded-lg border-2 bg-white/5 bg-opacity-20  p-2 font-rubik text-white outline-none"
         />
         <button
           onClick={handleSearch}
-          className="mb-6 px-4 py-2 bg-sky-600 text-white rounded-lg font-rubik"
+          className="mb-6 rounded-lg bg-sky-600 px-4 py-2 font-rubik text-white"
         >
           Search
         </button>
@@ -93,24 +93,24 @@ const PlayersPage = () => {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {players.map(player => (
-              <div key={player.profile.account_id} className="flex flex-col items-center bg-white/5 bg-opacity-20 backdrop-blur-md p-4 rounded-lg shadow-lg">
+              <div key={player.profile.account_id} className="flex flex-col items-center rounded-lg bg-white/5 bg-opacity-20 p-4 shadow-lg backdrop-blur-md">
                 <Image
                   src={player.profile?.avatarfull}
                   alt={player.profile?.personaname}
-                  className="rounded-full w-24 h-24 mb-4"
+                  className="mb-4 size-24 rounded-full"
                   width={96}
                   height={96}
                 />
-                <h2 className="text-xl font-bold font-rubik text-sky-600">{player.profile?.personaname}</h2>
-                <p className="text-sm font-rubik">Rank: {player.competitive_rank || 'N/A'}</p>
-                <p className="text-sm font-rubik">MMR Estimate: {player.mmr_estimate?.estimate || 'N/A'}</p>
+                <h2 className="font-rubik text-xl font-bold text-sky-600">{player.profile?.personaname}</h2>
+                <p className="font-rubik text-sm">Rank: {player.competitive_rank || 'N/A'}</p>
+                <p className="font-rubik text-sm">MMR Estimate: {player.mmr_estimate?.estimate || 'N/A'}</p>
                 <a
                   href={player.profile?.profileurl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 inline-block px-3 py-2 bg-white bg-opacity-20 rounded-md text-white font-rubik transition-transform transform hover:scale-105 hover:bg-sky-600 hover:text-white"
+                  className="mt-2 inline-block rounded-md bg-white bg-opacity-20 px-3 py-2 font-rubik text-white transition-transform hover:scale-105 hover:bg-sky-600 hover:text-white"
                 >
                   View Profile
                 </a>
