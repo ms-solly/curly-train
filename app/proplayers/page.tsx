@@ -50,7 +50,7 @@ const ProPlayersPage: React.FC = () => {
                     <p className="text-red-500">{error}</p>
                 ) : proPlayers.length > 0 ? (
                     <div className="overflow-x-auto">
-                        <div className="max-h-96 overflow-y-auto">
+                        <div className=" max-h-400px overflow-y-auto">
                             <table className="min-w-full text-white rounded-lg overflow-hidden shadow-md backdrop-blur-md bg-white/5 p-4 border border-gray-200">
                                 <thead>
                                     <tr className="font-rubik bg-white/10 backdrop-blur-md text-sky-300">
