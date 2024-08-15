@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import config from '@/src/config';
 import action from '@/src/actions/action';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const getProPlayers = async () => 
     action('proPlayers', config.API_HOST, 'api/proPlayers');
@@ -43,16 +45,16 @@ const ProPlayersPage: React.FC = () => {
                                     {proPlayers.map((player: any) => (
                                         <tr key={player.steamid} className="border-b border-gray-700 hover:bg-sky-200 hover:text-gray-800">
                                             <td className="px-4 py-2 flex items-center hover:text-white">
-                                                <a href={player.profileurl} target="_blank" rel="noopener noreferrer" className="flex items-center text-sky-400 font-bold font-rubik hover:text-white">
-                                                    <img src={player.avatarfull} alt={player.personaname} className="w-12 h-12 object-cover rounded-full mr-2 " />
+                                                <Link href={player.profileurl} target="_blank" rel="noopener noreferrer" className="flex items-center text-sky-400 font-bold font-rubik hover:text-white">
+                                                    <Image src={player.avatarfull} alt={player.personaname} className="w-12 h-12 object-cover rounded-full mr-2 " />
                                                     {player.personaname}
-                                                </a>
+                                                </Link>
                                             </td>
                                             <td className="px-4 py-2 font-rubik">{player.team_name}</td>
                                             <td className="px-4 py-2 font-rubik">{player.loccountrycode || 'N/A'}</td>
                                             <td className="px-4 py-2 font-rubik">{new Date(player.last_login).toLocaleDateString()}</td>
                                             <td className="px-4 py-2 font-rubik">
-                                                <button className="bg-sky-500 hover:bg-sky-700 rounded-md px-3 h-8 hover:text-white"><a href={player.profileurl} target="_blank">View Profile</a></button>
+                                                <button className="bg-sky-500 hover:bg-sky-700 rounded-md px-3 h-8 hover:text-white"><Link href={player.profileurl} target="_blank">View Profile</Link></button>
                                             </td>
                                         </tr>
                                     ))}
