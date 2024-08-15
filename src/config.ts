@@ -1,5 +1,5 @@
 const config = {
-    GITHUB_REPO: 'odota/web',
+    GITHUB_REPO: 'curly-train',
     DISCORD_LINK: 'opendota',
     API_HOST: process.env.NEXT_PUBLIC_API_HOST,
     IMAGE_CDN: process.env.NEXT_PUBLIC_IMAGE_CDN,
