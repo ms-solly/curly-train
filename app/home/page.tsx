@@ -97,6 +97,7 @@ const Home = () => {
 
   return (
     <>
+      
      
       <div className="relative min-h-screen text-white">
         <Image

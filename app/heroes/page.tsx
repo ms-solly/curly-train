@@ -74,4 +74,3 @@ const HeroesPage: React.FC = () => {
 };
 
 export default HeroesPage;
-

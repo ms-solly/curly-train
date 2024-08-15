@@ -17,7 +17,7 @@ const MatchesPage = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch('https://api.opendota.com/api/publicMatches')
+    fetch('https://api.opendota.com/api/live')
       .then(response => response.json())
       .then(data => {
         const fetchedMatches = data.slice(0, 50).map((match: any) => ({
@@ -43,12 +43,12 @@ const MatchesPage = () => {
   };
 
   const SkeletonCard = () => (
-    <div className="bg-gray-800 rounded-lg shadow-md p-4 w-full animate-pulse">
-      <div className="flex justify-between items-center">
-        <div className="h-6 bg-gray-700 rounded w-1/4"></div>
-        <div className="h-6 bg-gray-700 rounded w-1/4"></div>
+    <div className="w-full animate-pulse rounded-lg bg-gray-800 p-4 shadow-md">
+      <div className="flex items-center justify-between">
+        <div className="h-6 w-1/4 rounded bg-gray-700"></div>
+        <div className="h-6 w-1/4 rounded bg-gray-700"></div>
       </div>
-      <div className="mt-2 h-4 bg-gray-700 rounded w-1/2"></div>
+      <div className="mt-2 h-4 w-1/2 rounded bg-gray-700"></div>
     </div>
   );
 

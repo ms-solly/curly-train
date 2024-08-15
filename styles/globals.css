@@ -14,6 +14,28 @@
 }
 
 
+::-webkit-scrollbar {
+  width:15px;
+}
+
+::-webkit-scrollbar-track {
+  background: whitesmoke;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(98, 97, 97);
+    
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(0, 170, 255);
+}
+
+
+body{
+  overflow:hidden;
+}
+
 
 @layer base {
   :root {

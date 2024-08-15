@@ -94,7 +94,7 @@ export default function NavigationMenuDemo() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href="/players" legacyBehavior passHref>
+          <Link href="/proPlayer" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Players
             </NavigationMenuLink>
