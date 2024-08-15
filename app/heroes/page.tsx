@@ -55,7 +55,6 @@ const HeroesPage: React.FC = () => {
     }, []);
 
     return (
-        <div className="p-4 bg-cover bg-center min-h-screen" style={{ backgroundImage: 'url(/_next/static/media/bg.720ca035.png)', backgroundSize: 'cover', backgroundAttachment: 'fixed' }}>
             <div className="p-4">
                 <h1 className="text-4xl text-center font-bold mb-4 font-rubik">Hero Stats</h1>
                 {loading ? (
@@ -101,7 +100,6 @@ const HeroesPage: React.FC = () => {
                     </div>
                 )}
             </div>
-        </div>
     );
 };
 
