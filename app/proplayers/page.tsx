@@ -1,12 +1,23 @@
 "use client";
+
 import React, { useState, useEffect } from 'react';
 import config from '@/src/config';
 import action from '@/src/actions/action';
 import Link from 'next/link';
 import Image from 'next/image';
 
-const getProPlayers = async () => {
-    return action('proPlayers', config.API_HOST, 'api/proplayers');
+const fetchProPlayers = async () => {
+    try {
+        const response = await action('proPlayers', config.API_HOST, 'api/proplayers');
+        if ('payload' in response) {
+            return response.payload;
+        } else {
+            throw new Error('Failed to fetch pro players.');
+        }
+    } catch (error) {
+        console.error('Error fetching pro players:', error);
+        return [];
+    }
 };
 
 const ProPlayersPage: React.FC = () => {
@@ -17,16 +28,10 @@ const ProPlayersPage: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await getProPlayers();
-
-                if ('payload' in result) {
-                    setProPlayers(result.payload);
-                } else {
-                    setError("Failed to fetch pro players.");
-                }
+                const players = await fetchProPlayers();
+                setProPlayers(players);
             } catch (error) {
-                console.error("Error fetching data:", error);
-                setError("An error occurred while fetching data.");
+                setError('Failed to load pro players.');
             } finally {
                 setLoading(false);
             }
@@ -38,7 +43,7 @@ const ProPlayersPage: React.FC = () => {
     return (
         <div className="p-4 bg-cover bg-center min-h-screen" style={{ backgroundImage: 'url(/_next/static/media/bg.720ca035.png)', backgroundSize: 'cover', backgroundAttachment: 'fixed' }}>
             <div className="p-8 shadow-lg bg-opacity-50">
-                <h1 className="text-5xl font-bold mb-4 text-center text-white-800 font-rubik scrollbar-track-slate-800">Pro Players</h1>
+                <h1 className="text-5xl font-bold mb-4 text-center text-white-800 font-rubik">Pro Players</h1>
                 {loading ? (
                     <p>Loading pro players...</p>
                 ) : error ? (
@@ -55,46 +60,29 @@ const ProPlayersPage: React.FC = () => {
                                         <th className="px-3 py-2 text-left">Last Login</th>
                                         <th className="px-3 py-2 text-left">Profile</th>
                                     </tr>
-                                </thead>    
+                                </thead>
                                 <tbody>
                                     {proPlayers.map((player: any) => (
                                         <tr key={player.steamid} className="border-b border-gray-700 hover:bg-sky-200 hover:text-gray-800">
                                             <td className="px-4 py-2 flex items-center hover:text-white">
-                                                {player.profileurl ? (
-                                                    <Link href={player.profileurl} target="_blank" rel="noopener noreferrer" className="flex items-center text-sky-400 font-bold font-rubik hover:text-white">
-                                                        <Image
-                                                            src={player.avatarfull || '/default-avatar.png'} // Fallback image
-                                                            alt={player.personaname || 'Unknown Player'}
-                                                            width={48} // Adjust width as needed
-                                                            height={48} // Adjust height as needed
-                                                            className="w-12 h-12 object-cover rounded-full mr-2"
-                                                        />
-                                                        {player.personaname}
-                                                    </Link>
-                                                ) : (
-                                                    <span className="flex items-center text-sky-400 font-bold font-rubik hover:text-white">
-                                                        <Image
-                                                            src={player.avatarfull || '/default-avatar.png'} // Fallback image
-                                                            alt={player.personaname || 'Unknown Player'}
-                                                            width={48} // Adjust width as needed
-                                                            height={48} // Adjust height as needed
-                                                            className="w-12 h-12 object-cover rounded-full mr-2"
-                                                        />
-                                                        {player.personaname}
-                                                    </span>
-                                                )}
+                                                <Link href={`/proplayers/${player.account_id}`} className="flex items-center text-sky-400 font-bold font-rubik hover:text-white">
+                                                    <Image
+                                                        src={player.avatarfull || '/default-avatar.png'}
+                                                        alt={player.personaname || 'Unknown Player'}
+                                                        width={48}
+                                                        height={48}
+                                                        className="w-12 h-12 object-cover rounded-full mr-2"
+                                                    />
+                                                    {player.personaname}
+                                                </Link>
                                             </td>
-                                            <td className="px-4 py-2 font-rubik">{player.team_name}</td>
+                                            <td className="px-4 py-2 font-rubik">{player.team_name || 'No Team'}</td>
                                             <td className="px-4 py-2 font-rubik">{player.loccountrycode || 'N/A'}</td>
                                             <td className="px-4 py-2 font-rubik">{new Date(player.last_login).toLocaleDateString()}</td>
                                             <td className="px-4 py-2 font-rubik">
-                                                {player.profileurl ? (
-                                                    <button className="bg-sky-500 hover:bg-sky-700 rounded-md px-3 h-8 hover:text-white">
-                                                        <Link href={player.profileurl} target="_blank">View Profile</Link>
-                                                    </button>
-                                                ) : (
-                                                    <span className="text-gray-500">No Profile</span>
-                                                )}
+                                                <Link href={`/proplayers/${player.account_id}`} className="bg-sky-500 hover:bg-sky-700 rounded-md px-3 h-8 text-white">
+                                                    View Profile
+                                                </Link>
                                             </td>
                                         </tr>
                                     ))}
