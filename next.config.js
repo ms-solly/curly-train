@@ -18,6 +18,16 @@ const nextConfig = {
         hostname: 'steamcdn-a.akamaihd.net', // Add this entry
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'api.opendota.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+        port: '',
+      },
     ],
   },
 };

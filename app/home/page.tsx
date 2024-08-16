@@ -100,13 +100,6 @@ const Home = () => {
       
      
       <div className="relative min-h-screen text-white">
-        <Image
-          src="/_next/static/media/bg.720ca035.png"
-          alt="Background Image"
-          layout="fill"
-          objectFit="cover"
-          className="z-0 opacity-70"
-        />
         <div className="container relative z-10 mx-auto flex flex-col gap-4 p-4 lg:flex-row">
           {/* Matches Table */}
           <div className="min-w-0 flex-1">
@@ -140,10 +133,10 @@ const Home = () => {
                         <td className="px-4 py-3 text-left font-rubik text-xs md:text-sm">{formatDate(match.start_time)}</td>
                         <td className="px-4 py-3 text-left font-rubik text-xs md:text-sm">
                           <div className="flex flex-wrap items-center gap-2 font-rubik">
-                            <Image src={match.radiant_logo} alt={match.radiant_name} className="size-6 rounded-full md:size-8" />
+                            <Image src={match.radiant_logo} alt={match.radiant_name} width={26} height={26} className="size-6 rounded-full md:size-8" />
                             <span className="font-bold">{match.radiant_name}</span>
                             <span className="mx-2 text-center">vs</span>
-                            <Image src={match.dire_logo} alt={match.dire_name} className="size-6 rounded-full md:size-8" />
+                            <Image src={match.dire_logo} alt={match.dire_name}  width={26} height={26} className="size-6 rounded-full md:size-8" />
                             <span className="font-bold">{match.dire_name}</span>
                           </div>
                         </td>

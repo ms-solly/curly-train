@@ -1,106 +1,72 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import config from '@/src/config';
-import action from '@/src/actions/action';
+import axios from 'axios';
+import Link from 'next/link';
+import Image from 'next/image';
 
-interface HeroStats {
+interface Hero {
   id: number;
   localized_name: string;
-  primary_attr: string;
-  attack_type: string;
-  roles: string[];
-  base_health: number;
-  base_mana: number;
-  base_armor: number;
-  base_attack_min: number;
-  base_attack_max: number;
-  base_str: number;
-  base_agi: number;
-  base_int: number;
+  img: string;
 }
 
-interface ActionResponse {
-  type: string;
-  payload?: HeroStats[];
-  error?: any;
-}
+const Heroes: React.FC = () => {
+  const [heroes, setHeroes] = useState<Hero[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredHeroes, setFilteredHeroes] = useState<Hero[]>([]);
 
-const getHeroStats = async (params: {} | undefined): Promise<ActionResponse> =>
-    action('heroStats', config.API_HOST, 'api/heroStats', params);
+  useEffect(() => {
+    axios.get('https://api.opendota.com/api/heroStats')
+      .then(response => {
+        setHeroes(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching hero stats:', error);
+      });
+  }, []);
 
-const HeroesPage: React.FC = () => {
-    const [heroStats, setHeroStats] = useState<HeroStats[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const heroStatsData = await getHeroStats({});
-                
-                if (heroStatsData.payload) {
-                    setHeroStats(heroStatsData.payload);
-                } else {
-                    setError("Failed to load hero stats.");
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-                setError("Failed to load hero stats. Please try again later.");
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    return (
-            <div className="p-4">
-                <h1 className="text-4xl text-center font-bold mb-4 font-rubik">Hero Stats</h1>
-                {loading ? (
-                    <p>Loading hero stats...</p>
-                ) : error ? (
-                    <p className="text-red-500">{error}</p>
-                ) : (
-                    <div className="max-h-96 overflow-y-auto">
-                        <table className="min-w-full text-white rounded-lg overflow-hidden shadow-md backdrop-blur-sm bg-white/10 p-4 border border-gray-200">
-                            <thead>
-                                <tr className="bg-sky-700 border-b border-gray-200 font-bold hover:border-x-cyan-500">
-                                    <th className="px-4 py-2 text-left">Name</th>
-                                    <th className="px-4 py-2 text-left">Primary Attribute</th>
-                                    <th className="px-4 py-2 text-left">Attack Type</th>
-                                    <th className="px-4 py-2 text-left">Roles</th>
-                                    <th className="px-4 py-2 text-left">Base Health</th>
-                                    <th className="px-4 py-2 text-left">Base Mana</th>
-                                    <th className="px-4 py-2 text-left">Base Armor</th>
-                                    <th className="px-4 py-2 text-left">Base Attack</th>
-                                    <th className="px-4 py-2 text-left">Base Strength</th>
-                                    <th className="px-4 py-2 text-left">Base Agility</th>
-                                    <th className="px-4 py-2 text-left">Base Intelligence</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {heroStats.map((hero) => (
-                                    <tr key={hero.id} className="border-b border-gray-200">
-                                        <td className="px-4 py-2 font-rubik text-sky-200 text-md font-bold bg-gradient-to-b bg-white/15">{hero.localized_name}</td>
-                                        <td className="px-4 py-2 text-white font-rubik">{hero.primary_attr}</td>
-                                        <td className="px-4 py-2 text-white font-rubik bg-white/15">{hero.attack_type}</td>
-                                        <td className="px-4 py-2 text-white font-rubik">{hero.roles.join(', ')}</td>
-                                        <td className="px-4 py-2 text-white font-rubik bg-white/15">{hero.base_health}</td>
-                                        <td className="px-4 py-2 text-white font-rubik">{hero.base_mana}</td>
-                                        <td className="px-4 py-2 text-white font-rubik bg-white/15">{hero.base_armor}</td>
-                                        <td className="px-4 py-2 text-white font-rubik">{hero.base_attack_min} - {hero.base_attack_max}</td>
-                                        <td className="px-4 py-2 text-white font-rubik bg-white/15">{hero.base_str}</td>
-                                        <td className="px-4 py-2 text-white font-rubik">{hero.base_agi}</td>
-                                        <td className="px-4 py-2 text-white font-rubik bg-white/15">{hero.base_int}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
-            </div>
+  useEffect(() => {
+    setFilteredHeroes(
+      heroes.filter(hero =>
+        hero.localized_name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
     );
+  }, [searchTerm, heroes]);
+
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-4xl font-bold text-center mb-8">Dota 2 Heroes</h1>
+      
+      <div className="mb-8">
+        <input 
+          type="text" 
+          placeholder="Search heroes..." 
+          className="w-full p-2 rounded-lg border border-gray-300"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {filteredHeroes.map(hero => (
+          <Link key={hero.id} href={`/heroes/${hero.id}`}>
+            <div className="relative group cursor-pointer rounded">
+              <Image 
+                src={`https://api.opendota.com${hero.img}`} 
+                alt={hero.localized_name}  
+                width={40} 
+                height={40}
+                className="rounded-lg w-full h-auto"
+              />
+              <div className="absolute inset-0 flex items-end justify-center bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition-opacity pb-10 rounded">
+                <span className="text-white text-xl font-semibold">{hero.localized_name}</span>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
 };
 
-export default HeroesPage;
+export default Heroes;
