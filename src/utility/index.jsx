@@ -12,6 +12,7 @@ import querystring from 'querystring';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
+import Image from "next/image"
 
 import constants from '../components/constants';
 import { TableLink } from '../components/Table';
@@ -642,7 +643,7 @@ export function displayHeroId(row, col, field, showGuide = false, guideUrl, guid
           {row && <span style={{ float: 'left' }}><FromNowTooltip timestamp={row.start_time + row.duration} /></span>}
           {lane ?
             <span data-hint={tooltip} data-hint-position="top" style={{ float: 'right' }}>
-              <img
+              <Image
                 src={`/assets/images/dota2/lane_${lane}.svg`}
                 alt=""
                 style={roleIconStyle}
