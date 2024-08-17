@@ -1,4 +1,3 @@
-"use client"
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -25,7 +24,6 @@ interface MatchData {
   duration: number;
 }
 
-// Page component
 const PlayerProfilePage = async ({ params }: { params: { id: string } }) => {
   const accountId = params.id;
 
@@ -75,7 +73,7 @@ const PlayerProfilePage = async ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto   shadow-md rounded-lg overflow-hidden">
+    <div className="p-6 max-w-4xl mx-auto shadow-md rounded-lg overflow-hidden">
       <div className="flex items-start space-x-6 mb-6">
         <Image
           src={playerData.avatarfull}
