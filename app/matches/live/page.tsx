@@ -32,9 +32,9 @@ const LiveDataPage: React.FC = () => {
         <div className="p-4">
             <h1 className="text-3xl font-bold mb-4">Live Matches Data</h1>
             {data.length > 0 ? (
-                <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                <table className="min-w-full border border-gray-200 rounded-lg shadow-md">
                     <thead>
-                        <tr className="bg-gray-100 border-b border-gray-200">
+                        <tr className="bg-gray-800 border-b border-gray-200">
                             <th className="px-4 py-2 text-left">Match ID</th>
                             <th className="px-4 py-2 text-left">Game Time</th>
                             <th className="px-4 py-2 text-left">Spectators</th>

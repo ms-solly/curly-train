@@ -30,7 +30,7 @@ const matches: { title: string; href: string; description: string }[] = [
   },
   {
     title: "Past Matches",
-    href: "/matches/prev",
+    href: "/matches/past",
     description:
       "Explore Past matches of Dota 2",
   }
