@@ -1,17 +1,18 @@
 "use client"
 import axios from 'axios';
+import { FaTrophy } from 'react-icons/fa';
 
 // Fetch match data
 const fetcher = (url: string) => axios.get(url).then(res => res.data);
 
 const MatchProfile = async ({ params: { id } }: { params: { id: string } }) => {
-    const data = await fetcher(`https://api.opendota.com/api/matches/${id}`);
+    const data = await fetcher('https://api.opendota.com/api/matches/${id}');
 
     if (!data) {
         return <div>Loading...</div>;
     }
 
-    const steamUrl = `https://www.opendota.com/matches/${id}`;
+    const steamUrl = 'https://www.opendota.com/matches/${id}';
 
     // Ensure radiant_team and dire_team are arrays
     const radiantTeam = data.radiant_team || [];
@@ -19,22 +20,40 @@ const MatchProfile = async ({ params: { id } }: { params: { id: string } }) => {
     
     return (
         <div className="p-6 min-h-screen">
-            <div className="max-w-6xl mx-auto  rounded-lg shadow-lg p-6">
+            <div className="max-w-6xl mx-auto rounded-lg shadow-lg p-6">
                 <h1 className="text-4xl font-bold mb-4">Match ID: {data.match_id}</h1>
 
                 {/* Match Summary */}
-                <div className="grid grid-cols-2 gap-6 mb-6">
-                    <div>
-                        <h2 className="text-2xl font-semibold mb-2">Match Summary</h2>
-                        <p><strong>Game Mode:</strong> {data.game_mode}</p>
-                        <p><strong>Duration:</strong> {data.duration} seconds</p>
-                        <p><strong>Start Time:</strong> {new Date(data.start_time * 1000).toLocaleString()}</p>
-                        <p><strong>Radiant Win:</strong> {data.radiant_win ? 'Yes' : 'No'}</p>
+                <div className="mb-6 flex items-center">
+                    {/* Display win icon based on the result */}
+                    <div className="flex items-center mr-4">
+                        {data.radiant_win ? (
+                            <div className="flex items-center text-green-600">
+                                <FaTrophy className="text-3xl mr-2" />
+                                <span className="text-2xl font-semibold">Radiant Win</span>
+                            </div>
+                        ) : (
+                            <div className="flex items-center text-red-600">
+                                <FaTrophy className="text-3xl mr-2" />
+                                <span className="text-2xl font-semibold">Dire Win</span>
+                            </div>
+                        )}
                     </div>
-                    <div>
-                        <h2 className="text-2xl font-semibold mb-2">Scores</h2>
-                        <p><strong>Radiant Score:</strong> {data.radiant_score}</p>
-                        <p><strong>Dire Score:</strong> {data.dire_score}</p>
+                    <div className="flex-grow">
+                        <div className="grid grid-cols-2 gap-6">
+                            <div>
+                                <h2 className="text-2xl font-semibold mb-2">Match Summary</h2>
+                                <p><strong>Game Mode:</strong> {data.game_mode}</p>
+                                <p><strong>Duration:</strong> {data.duration} seconds</p>
+                                <p><strong>Start Time:</strong> {new Date(data.start_time * 1000).toLocaleString()}</p>
+                                <p><strong>Radiant Win:</strong> {data.radiant_win ? 'Yes' : 'No'}</p>
+                            </div>
+                            <div>
+                                <h2 className="text-2xl font-semibold mb-2">Scores</h2>
+                                <p><strong>Radiant Score:</strong> {data.radiant_score}</p>
+                                <p><strong>Dire Score:</strong> {data.dire_score}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
