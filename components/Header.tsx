@@ -50,7 +50,7 @@ const tournament: { title: string; href: string; description: string }[] = [
   },
   {
     title: "Past Tournaments",
-    href: "/tournament/prev",
+    href: "/tournament/past",
     description:
       "Explore Past tournaments of Dota 2",
   }

@@ -31,6 +31,7 @@
     "react-redux": "^9.1.2",
     "sharp": "^0.31.3",
     "styled-components": "^6.1.12",
+    "swr": "^2.2.5",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7"
   },
