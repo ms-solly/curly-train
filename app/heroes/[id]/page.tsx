@@ -48,6 +48,12 @@ const HeroProfilePage = async ({ params }: { params: { id: string } }) => {
     return <div>Error loading hero data</div>;
   }
 
+  // Function to create the dynamic image URL
+  const createImageUrl = (heroName: string) => {
+    const formattedName = heroName.toLowerCase().replace(/ /g, '_');
+    return `https://raw.githubusercontent.com/Ayub-Khan/Dota-2-Hero-Suggester/b268f093bdb53151fb0f7658694fdf7eac35b723/Icons/${formattedName}_vert.jpg`;
+  };
+
   return (
     <div className="p-6 max-w-4xl mx-auto shadow-md rounded-lg overflow-hidden">
       <div className="flex items-start space-x-6 mb-6">
@@ -65,7 +71,7 @@ const HeroProfilePage = async ({ params }: { params: { id: string } }) => {
         {/* Hero Image */}
         <div className="col-span-1">
           <Image
-            src={`https://api.opendota.com${hero.img}`}
+            src={createImageUrl(hero.localized_name)}
             alt={hero.localized_name}
             width={400}
             height={225}
