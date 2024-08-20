@@ -10,6 +10,7 @@ import { SiteHeader } from "@/components/site-header"
 import Image from "next/image"
 import Header from "@/components/Header"
 import Head from "next/head"
+import bgImg from '../public/bg.png'
 
 export const metadata: Metadata = {
   title: {
@@ -40,7 +41,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       </Head>
       <body className={cn("min-h-screen bg-background font-sans antialiased")}>
         <div className="relative min-h-screen text-white">
-          <Image src="/_next/static/media/bg.720ca035.png" alt="Background Image" fill style={{ objectFit: 'cover' }} className="z-0 opacity-50" />
+          <Image src={bgImg} alt="Background Image" fill style={{ objectFit: 'cover' }} className="z-0 opacity-50" />
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="relative flex min-h-screen flex-col">
               <SiteHeader />
