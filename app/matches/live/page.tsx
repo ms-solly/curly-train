@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
-import Pagination from '@/components/Pagination'; 
+import Pagination from '@/components/Pagination';
 
-const fetchData = async (url: string, p0: number) => {
+const fetchData = async () => {
     try {
         const response = await axios.get('https://api.opendota.com/api/live');
         return response.data;
@@ -17,11 +17,11 @@ const fetchData = async (url: string, p0: number) => {
 const LiveDataPage: React.FC = () => {
     const [data, setData] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10; 
+    const itemsPerPage = 10;
 
     useEffect(() => {
         const loadData = async () => {
-            const liveData = await fetchData('https://api.opendota.com/api/live', 40);
+            const liveData = await fetchData();
             if (liveData) setData(liveData);
         };
 
@@ -65,28 +65,27 @@ const LiveDataPage: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-    {currentItems.map((match: any) => (
-        <tr 
-            key={match.match_id} // Ensure this key is unique
-            className="border-b border-gray-200 hover:bg-green-300 hover:text-gray-800 cursor-pointer"
-            onClick={() => handleRowClick(match.match_id)}
-        >
-            <td className="px-4 py-2">
-                <Link href={`/matches/${match.match_id}`}>
-                    <p className="text-blue-500 hover:underline">{match.match_id}</p>
-                </Link>
-            </td>
-            <td className="px-4 py-2">{match.game_time} seconds</td>
-            <td className="px-4 py-2">{match.spectators}</td>
-            <td className="px-4 py-2">{match.radiant_score}</td>
-            <td className="px-4 py-2">{match.dire_score}</td>
-            <td className="px-4 py-2">{match.average_mmr}</td>
-            <td className="px-4 py-2">{match.radiant_lead}</td>
-            <td className="px-4 py-2">{match.game_mode}</td>
-        </tr>
-    ))}
-</tbody>
-
+                            {currentItems.map((match: any) => (
+                                <tr
+                                    key={match.match_id}
+                                    className="border-b border-gray-200 hover:bg-green-300 hover:text-gray-800 cursor-pointer"
+                                    onClick={() => handleRowClick(match.match_id)}
+                                >
+                                    <td className="px-4 py-2">
+                                        <Link href={`/matches/${match.match_id}`}>
+                                            <p className="text-blue-500 hover:underline">{match.match_id}</p>
+                                        </Link>
+                                    </td>
+                                    <td className="px-4 py-2">{match.game_time} seconds</td>
+                                    <td className="px-4 py-2">{match.spectators}</td>
+                                    <td className="px-4 py-2">{match.radiant_score}</td>
+                                    <td className="px-4 py-2">{match.dire_score}</td>
+                                    <td className="px-4 py-2">{match.average_mmr}</td>
+                                    <td className="px-4 py-2">{match.radiant_lead}</td>
+                                    <td className="px-4 py-2">{match.game_mode}</td>
+                                </tr>
+                            ))}
+                        </tbody>
                     </table>
                     <Pagination
                         itemsPerPage={itemsPerPage}

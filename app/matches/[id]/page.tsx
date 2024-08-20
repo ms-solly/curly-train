@@ -1,4 +1,3 @@
-"use client"
 import axios from 'axios';
 import { FaTrophy } from 'react-icons/fa';
 
@@ -6,13 +5,13 @@ import { FaTrophy } from 'react-icons/fa';
 const fetcher = (url: string) => axios.get(url).then(res => res.data);
 
 const MatchProfile = async ({ params: { id } }: { params: { id: string } }) => {
-    const data = await fetcher('https://api.opendota.com/api/matches/${id}');
+    const data = await fetcher(`https://api.opendota.com/api/matches/${id}`);
 
     if (!data) {
         return <div>Loading...</div>;
     }
 
-    const steamUrl = 'https://www.opendota.com/matches/${id}';
+    const steamUrl = `https://www.opendota.com/matches/${id}`;
 
     // Ensure radiant_team and dire_team are arrays
     const radiantTeam = data.radiant_team || [];
