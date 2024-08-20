@@ -27,7 +27,7 @@ const matches: { title: string; href: string; description: string }[] = [
   },
   {
     title: "Past Matches",
-    href: "/matches/prev",
+    href: "/matches/past",
     description: "Explore past matches of Dota 2",
   },
 ]
@@ -45,7 +45,7 @@ const tournament: { title: string; href: string; description: string }[] = [
   },
   {
     title: "Past Tournaments",
-    href: "/tournament/prev",
+    href: "/tournament/past",
     description: "Explore past tournaments of Dota 2",
   },
 ]
@@ -90,7 +90,7 @@ export default function NavigationMenuDemo() {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/players" legacyBehavior passHref>
+            <Link href="/proplayers" legacyBehavior passHref>
               <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "px-4 py-2 text-base sm:px-2 sm:py-1 sm:text-sm")}>
                 Players
               </NavigationMenuLink>
@@ -112,7 +112,7 @@ export default function NavigationMenuDemo() {
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
-          
+
 
           <NavigationMenuItem>
             <Link href="/chat" legacyBehavior passHref>
