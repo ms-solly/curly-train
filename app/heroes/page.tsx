@@ -44,16 +44,16 @@ const Heroes: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-4xl font-bold text-center mb-8">Dota 2 Heroes</h1>
+      <h1 className="text-4xl font-bold text-center mb-8">Heroes</h1>
 
       {/* Loading State */}
       {loading ? (
-        <div className="flex justify-center items-center h-96">
-          <div className="text-center flex-col justify-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500 mb-4"></div>
-            <p className="text-2xl font-semibold">Loading heroes...</p>
-          </div>
+        <div className="flex flex-col items-center justify-center h-96">
+        <div className="flex justify-center items-center mb-4">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-opacity-50"></div>
         </div>
+        <p className="text-2xl font-semibold">Loading heroes...</p>
+      </div>
       ) : (
         <>
           <div className="mb-8">
