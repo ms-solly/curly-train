@@ -55,7 +55,7 @@ export default function NavigationMenuDemo() {
     <div className="m-2 flex w-full justify-center z-50">
       <NavigationMenu className="w-full max-w-7xl">
         <NavigationMenuList className="flex flex-wrap justify-center gap-2">
-          <NavigationMenuItem>
+          {/* <NavigationMenuItem>
             <NavigationMenuTrigger className="px-4 py-2 text-base sm:px-2 sm:py-1 sm:text-sm">Matches</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid gap-2 p-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -87,6 +87,22 @@ export default function NavigationMenuDemo() {
                 ))}
               </ul>
             </NavigationMenuContent>
+          </NavigationMenuItem> */}
+
+          <NavigationMenuItem>
+            <Link href="/matches/live" legacyBehavior passHref>
+              <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "px-4 py-2 text-base sm:px-2 sm:py-1 sm:text-sm")}>
+                Matches
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <Link href="/tournaments/live" legacyBehavior passHref>
+              <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "px-4 py-2 text-base sm:px-2 sm:py-1 sm:text-sm")}>
+                Tournaments
+              </NavigationMenuLink>
+            </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
