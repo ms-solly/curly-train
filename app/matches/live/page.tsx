@@ -22,10 +22,10 @@ const LiveDataPage: React.FC = () => {
 
     useEffect(() => {
         const loadData = async () => {
-            setLoading(true);  // Set loading to true before fetching data
+            setLoading(true);
             const liveData = await fetchData();
             if (liveData) setData(liveData);
-            setLoading(false);  // Set loading to false after data is fetched
+            setLoading(false);
         };
 
         loadData();
@@ -35,7 +35,6 @@ const LiveDataPage: React.FC = () => {
         return <p>Error fetching live matches data</p>;
     }
 
-    // Pagination logic
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
@@ -54,73 +53,77 @@ const LiveDataPage: React.FC = () => {
             <h1 className="text-3xl font-bold mb-4">Live Matches Data</h1>
             {loading ? (
                 <>
-                    <table className="min-w-full border border-gray-200 rounded-lg shadow-md">
-                        <thead>
-                            <tr className="bg-gray-800 border-b border-gray-200">
-                                <th className="px-4 py-2 text-left">Match ID</th>
-                                <th className="px-4 py-2 text-left">Game Time</th>
-                                <th className="px-4 py-2 text-left">Spectators</th>
-                                <th className="px-4 py-2 text-left">Radiant Score</th>
-                                <th className="px-4 py-2 text-left">Dire Score</th>
-                                <th className="px-4 py-2 text-left">Average MMR</th>
-                                <th className="px-4 py-2 text-left">Radiant Lead</th>
-                                <th className="px-4 py-2 text-left">Game Mode</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {Array.from({ length: itemsPerPage }).map((_, index) => (
-                                <tr key={index} className="border-b border-gray-200 animate-pulse">
-                                    <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-24"></div></td>
-                                    <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-20"></div></td>
-                                    <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-12"></div></td>
-                                    <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-10"></div></td>
-                                    <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-10"></div></td>
-                                    <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-14"></div></td>
-                                    <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-14"></div></td>
-                                    <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-16"></div></td>
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full border border-gray-200 rounded-lg shadow-md">
+                            <thead>
+                                <tr className="bg-gray-800 border-b border-gray-200">
+                                    <th className="px-4 py-2 text-left">Match ID</th>
+                                    <th className="px-4 py-2 text-left">Game Time</th>
+                                    <th className="px-4 py-2 text-left">Spectators</th>
+                                    <th className="px-4 py-2 text-left">Radiant Score</th>
+                                    <th className="px-4 py-2 text-left">Dire Score</th>
+                                    <th className="px-4 py-2 text-left">Average MMR</th>
+                                    <th className="px-4 py-2 text-left">Radiant Lead</th>
+                                    <th className="px-4 py-2 text-left">Game Mode</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {Array.from({ length: itemsPerPage }).map((_, index) => (
+                                    <tr key={index} className="border-b border-gray-200 animate-pulse">
+                                        <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-24"></div></td>
+                                        <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-20"></div></td>
+                                        <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-12"></div></td>
+                                        <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-10"></div></td>
+                                        <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-10"></div></td>
+                                        <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-14"></div></td>
+                                        <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-14"></div></td>
+                                        <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-16"></div></td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </>
             ) : currentItems.length > 0 ? (
                 <>
-                    <table className="min-w-full border border-gray-200 rounded-lg shadow-md">
-                        <thead>
-                            <tr className="bg-gray-800 border-b border-gray-200">
-                                <th className="px-4 py-2 text-left">Match ID</th>
-                                <th className="px-4 py-2 text-left">Game Time</th>
-                                <th className="px-4 py-2 text-left">Spectators</th>
-                                <th className="px-4 py-2 text-left">Radiant Score</th>
-                                <th className="px-4 py-2 text-left">Dire Score</th>
-                                <th className="px-4 py-2 text-left">Average MMR</th>
-                                <th className="px-4 py-2 text-left">Radiant Lead</th>
-                                <th className="px-4 py-2 text-left">Game Mode</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {currentItems.map((match: any) => (
-                                <tr
-                                    key={match.match_id}
-                                    className="border-b border-gray-200 hover:bg-green-300 hover:text-gray-800 cursor-pointer"
-                                    onClick={() => handleRowClick(match.match_id)}
-                                >
-                                    <td className="px-4 py-2">
-                                        <Link href={`/matches/${match.match_id}`}>
-                                            <p className="text-blue-500 hover:underline">{match.match_id}</p>
-                                        </Link>
-                                    </td>
-                                    <td className="px-4 py-2">{match.game_time} seconds</td>
-                                    <td className="px-4 py-2">{match.spectators}</td>
-                                    <td className="px-4 py-2">{match.radiant_score}</td>
-                                    <td className="px-4 py-2">{match.dire_score}</td>
-                                    <td className="px-4 py-2">{match.average_mmr}</td>
-                                    <td className="px-4 py-2">{match.radiant_lead}</td>
-                                    <td className="px-4 py-2">{match.game_mode}</td>
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full border border-gray-200 rounded-lg shadow-md">
+                            <thead>
+                                <tr className="bg-gray-800 border-b border-gray-200">
+                                    <th className="px-4 py-2 text-left">Match ID</th>
+                                    <th className="px-4 py-2 text-left">Game Time</th>
+                                    <th className="px-4 py-2 text-left">Spectators</th>
+                                    <th className="px-4 py-2 text-left">Radiant Score</th>
+                                    <th className="px-4 py-2 text-left">Dire Score</th>
+                                    <th className="px-4 py-2 text-left">Average MMR</th>
+                                    <th className="px-4 py-2 text-left">Radiant Lead</th>
+                                    <th className="px-4 py-2 text-left">Game Mode</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {currentItems.map((match: any) => (
+                                    <tr
+                                        key={match.match_id}
+                                        className="border-b border-gray-200 hover:bg-green-300 hover:text-gray-800 cursor-pointer"
+                                        onClick={() => handleRowClick(match.match_id)}
+                                    >
+                                        <td className="px-4 py-2">
+                                            <Link href={`/matches/${match.match_id}`}>
+                                                <p className="text-blue-500 hover:underline">{match.match_id}</p>
+                                            </Link>
+                                        </td>
+                                        <td className="px-4 py-2">{match.game_time} seconds</td>
+                                        <td className="px-4 py-2">{match.spectators}</td>
+                                        <td className="px-4 py-2">{match.radiant_score}</td>
+                                        <td className="px-4 py-2">{match.dire_score}</td>
+                                        <td className="px-4 py-2">{match.average_mmr}</td>
+                                        <td className="px-4 py-2">{match.radiant_lead}</td>
+                                        <td className="px-4 py-2">{match.game_mode}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                     <Pagination
                         itemsPerPage={itemsPerPage}
                         totalItems={totalItems}

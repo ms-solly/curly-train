@@ -3,6 +3,7 @@ import Chat from '@/components/Chat';
 import Header from '@/components/Header';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface Match {
   match_id: number;
@@ -97,22 +98,28 @@ const Home = () => {
 
   return (
     <>
-      
-     
       <div className="relative min-h-screen text-white">
         <div className="container relative z-10 mx-auto flex flex-col gap-4 p-4 lg:flex-row">
           {/* Matches Table */}
           <div className="min-w-0 flex-1">
             <h1 className="mb-4 font-rubik text-4xl font-bold">Current Matches</h1>
+            
+            {/* Loading State */}
             {loading ? (
-              <div>Loading...</div>
+              <div className="space-y-4">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className="h-12 rounded-md bg-gray-700"></div>
+                  </div>
+                ))}
+              </div>
             ) : error ? (
-              <div>{error}</div>
+              <div className="text-center text-red-500">{error}</div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="min-w-full overflow-hidden rounded-lg border border-gray-200 bg-white/5 p-4 text-white shadow-md backdrop-blur-md">
                   <thead>
-                    <tr className=" bg-white/10 font-rubik backdrop-blur-md">
+                    <tr className="bg-white/10 font-rubik backdrop-blur-md">
                       <th className="px-4 py-3 text-left text-xs md:text-sm">Status</th>
                       <th className="px-4 py-3 text-left text-xs md:text-sm">Time</th>
                       <th className="px-4 py-3 text-center text-xs md:text-sm">Teams</th>
@@ -132,13 +139,15 @@ const Home = () => {
                         </td>
                         <td className="px-4 py-3 text-left font-rubik text-xs md:text-sm">{formatDate(match.start_time)}</td>
                         <td className="px-4 py-3 text-left font-rubik text-xs md:text-sm">
-                          <div className="flex flex-wrap items-center gap-2 font-rubik">
-                            <Image src={match.radiant_logo} alt={match.radiant_name} width={26} height={26} className="size-6 rounded-full md:size-8" />
-                            <span className="font-bold">{match.radiant_name}</span>
-                            <span className="mx-2 text-center">vs</span>
-                            <Image src={match.dire_logo} alt={match.dire_name}  width={26} height={26} className="size-6 rounded-full md:size-8" />
-                            <span className="font-bold">{match.dire_name}</span>
-                          </div>
+                          <Link href={`/matches/${match.match_id}`}>
+                            <div className="flex flex-wrap items-center gap-2 font-rubik">
+                              <Image src={match.radiant_logo} alt={match.radiant_name} width={26} height={26} className="size-6 rounded-full md:size-8" />
+                              <span className="font-bold">{match.radiant_name}</span>
+                              <span className="mx-2 text-center">vs</span>
+                              <Image src={match.dire_logo} alt={match.dire_name} width={26} height={26} className="size-6 rounded-full md:size-8" />
+                              <span className="font-bold">{match.dire_name}</span>
+                            </div>
+                          </Link>
                         </td>
                         <td className="px-4 py-3 text-left font-rubik text-xs md:text-sm">{seriesType(match.series_type)}</td>
                         <td className="px-4 py-3 text-left font-rubik text-xs md:text-sm">{match.game_mode}</td>
@@ -150,7 +159,7 @@ const Home = () => {
             )}
           </div>
 
-         
+          {/* Chat Component */}
           <div className="mt-1 w-full p-3 lg:mt-11 lg:w-1/4">
             <div className="h-fit rounded-xl border border-gray-200 bg-white/10 p-4 shadow-lg backdrop-blur-md">
               <h2 className="mb-4 font-rubik text-2xl font-bold">Chat</h2>
@@ -160,7 +169,7 @@ const Home = () => {
         </div>
       </div>
     </>
-  ); 
+  );
 };
 
 export default Home;

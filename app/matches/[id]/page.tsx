@@ -23,9 +23,9 @@ const MatchProfile = async ({ params: { id } }: { params: { id: string } }) => {
                 <h1 className="text-4xl font-bold mb-4">Match ID: {data.match_id}</h1>
 
                 {/* Match Summary */}
-                <div className="mb-6 flex items-center">
+                <div className="mb-6 flex flex-col lg:flex-row items-center">
                     {/* Display win icon based on the result */}
-                    <div className="flex items-center mr-4">
+                    <div className="flex items-center mr-4 mb-4 lg:mb-0">
                         {data.radiant_win ? (
                             <div className="flex items-center text-green-600">
                                 <FaTrophy className="text-3xl mr-2" />
@@ -39,7 +39,7 @@ const MatchProfile = async ({ params: { id } }: { params: { id: string } }) => {
                         )}
                     </div>
                     <div className="flex-grow">
-                        <div className="grid grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <h2 className="text-2xl font-semibold mb-2">Match Summary</h2>
                                 <p><strong>Game Mode:</strong> {data.game_mode}</p>
@@ -59,7 +59,7 @@ const MatchProfile = async ({ params: { id } }: { params: { id: string } }) => {
                 {/* Teams */}
                 <div className="mb-6">
                     <h2 className="text-2xl font-semibold mb-2">Teams</h2>
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <h3 className="text-xl font-semibold mb-2">Radiant Team</h3>
                             <ul className="list-disc pl-5">
@@ -84,7 +84,7 @@ const MatchProfile = async ({ params: { id } }: { params: { id: string } }) => {
                 </div>
 
                 {/* Player Statistics */}
-                <div>
+                <div className="overflow-x-auto">
                     <h2 className="text-2xl font-semibold mb-2">Player Statistics</h2>
                     <table className="min-w-full border border-gray-300 rounded-lg shadow-md">
                         <thead>
