@@ -1,4 +1,7 @@
 export interface Player {
+  id:number;
+  name:string;
+  role:string;
   tracked_until: string | null;
   solo_competitive_rank: string | null;
   competitive_rank: string | null;
