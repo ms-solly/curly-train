@@ -1,6 +1,6 @@
 import { Player } from "./player";
 export interface Team {
-    id: number;
+    team_id: number;
     rating: number;
     wins: number;
     losses: number;

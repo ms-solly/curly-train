@@ -4,9 +4,8 @@ import React, { useState, useEffect } from "react";
 import SearchTeamsInp from "@/components/teams/SearchTeams";
 import Pagination from "@/components/Pagination";
 import Image from "next/image";
-import { Player } from "@/types/player";
+import { Player, PlayerProfile, MmrEstimate } from "@/types/player";
 import { Team } from "@/types/team";
-
 
 // Fetch team players based on team ID
 const fetchPlayers = async (team_id: number): Promise<Player[]> => {
@@ -20,10 +19,34 @@ const fetchPlayers = async (team_id: number): Promise<Player[]> => {
         // Ensure the response is an array
         if (!Array.isArray(playersData)) return [];
 
-        return playersData.map((player: any) => ({
+        return playersData.map((player: any): Player => ({
             id: player.account_id,
             name: player.name || "Unknown Player",
             role: player.role || "Unknown Role",
+            tracked_until: player.tracked_until || null,
+            solo_competitive_rank: player.solo_competitive_rank || null,
+            competitive_rank: player.competitive_rank || null,
+            rank_tier: player.rank_tier || null,
+            leaderboard_rank: player.leaderboard_rank || null,
+            mmr_estimate: {
+                estimate: player.mmr_estimate?.estimate || 0,
+            },
+            profile: {
+                account_id: player.account_id,
+                personaname: player.personaname || "Unknown",
+                name: player.name || null,
+                plus: player.plus || false,
+                cheese: player.cheese || 0,
+                steamid: player.steamid || "Unknown",
+                avatar: player.avatar || "/default-avatar.png",
+                avatarmedium: player.avatarmedium || "/default-avatar.png",
+                avatarfull: player.avatarfull || "/default-avatar.png",
+                profileurl: player.profileurl || "",
+                last_login: player.last_login || null,
+                loccountrycode: player.loccountrycode || null,
+                is_contributor: player.is_contributor || false,
+                is_subscriber: player.is_subscriber || false,
+            }
         }));
     } catch (error) {
         console.error("Error fetching players data:", error);
@@ -51,11 +74,16 @@ const fetchTeamsData = async (): Promise<Team[]> => {
         if (!Array.isArray(data)) return [];
 
         const teams = await Promise.all(
-            data.map(async (team: any) => {
+            data.map(async (team: any): Promise<Team> => {
                 const players = await fetchPlayers(team.team_id);
                 return {
-                    id: team.team_id,
+                    team_id: team.team_id,
+                    rating: team.rating || 0,
+                    wins: team.wins || 0,
+                    losses: team.losses || 0,
+                    last_match_time: team.last_match_time || 0,
                     name: team.name || "Unknown Team",
+                    tag: team.tag || "N/A",
                     logo: team.logo_url || "/download.png",
                     win_rate: team.rating || 0,
                     players: players.slice(0, 5), // Limit to 5 players
@@ -97,7 +125,7 @@ const Teamspg: React.FC = () => {
         const filtered = teams.filter(
             (team) =>
                 team.name.toLowerCase().includes(searchInput.toLowerCase()) ||
-                team.id.toString().includes(searchInput)
+                team.team_id.toString().includes(searchInput)
         );
         setFilteredTeams(filtered);
         setCurrentPage(1); // Reset to the first page whenever search changes
@@ -146,7 +174,7 @@ const TeamsTable: React.FC<TeamsTableProps> = ({ teams }) => {
             </thead>
             <tbody className="text-white">
                 {teams.map((team) => (
-                    <tr key={team.id} className="border-b border-gray-200">
+                    <tr key={team.team_id} className="border-b border-gray-200">
                         <td className="px-6 py-4 flex items-center space-x-4">
                             <Image
                                 src={team.logo}
@@ -165,7 +193,7 @@ const TeamsTable: React.FC<TeamsTableProps> = ({ teams }) => {
                                     {team.players.map((player) => (
                                         <div key={player.id} className="text-sm flex items-center space-x-2">
                                             <Image
-                                                src="/download.png"
+                                                src={player.profile.avatar || "/download.png"}
                                                 alt={`${player.name} avatar`}
                                                 width={30}
                                                 height={30}
