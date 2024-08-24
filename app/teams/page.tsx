@@ -199,7 +199,6 @@ const TeamsTable: React.FC<TeamsTableProps> = ({ teams }) => {
                                                 height={30}
                                                 className="w-10 h-10 object-cover rounded-full"
                                             />
-                                            <span>{player.name} - {player.role}</span>
                                         </div>
                                     ))}
                                 </div>
