@@ -44,6 +44,7 @@ export function SiteHeader() {
                 <span className="sr-only">Twitter</span>
               </div>
             </Link>
+            
             <ThemeToggle />
           </nav>
         </div>
