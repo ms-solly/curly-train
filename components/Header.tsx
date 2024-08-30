@@ -98,7 +98,7 @@ export default function NavigationMenuDemo() {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/tournaments/live" legacyBehavior passHref>
+            <Link href="/tournaments" legacyBehavior passHref>
               <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "px-4 py-2 text-base sm:px-2 sm:py-1 sm:text-sm")}>
                 Tournaments
               </NavigationMenuLink>

@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import Switchbtn from "@/components/ui/switch";
+import Switchbtn from "@/components/ui/switch"; // Ensure this is the correct path
+import Link from "next/link";
 
 interface Tournament {
   leagueid: number;
@@ -21,7 +21,7 @@ const TournamentPage: React.FC = () => {
   const [filteredTournaments, setFilteredTournaments] = useState<Tournament[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [showCurrent, setShowCurrent] = useState(true);
+  const [showCurrent, setShowCurrent] = useState(false); // This is initialized as false
 
   useEffect(() => {
     const fetchTournaments = async () => {
@@ -33,10 +33,10 @@ const TournamentPage: React.FC = () => {
           leagueid: league.leagueid,
           name: league.name,
           tier: league.tier,
-          location: "N/A", // Placeholder
-          start_date: "Not available", // Placeholder
-          end_date: "Not available", // Placeholder
-          prize: "Not available" // Placeholder
+          location: league.location || "N/A",
+          start_date: league.start_date || "Not available",
+          end_date: league.end_date || "Not available",
+          prize: league.prize || "Not available"
         }));
 
         setTournaments(tournamentsData);
@@ -57,12 +57,12 @@ const TournamentPage: React.FC = () => {
       );
 
       if (showCurrent) {
-        // Remove date filter for debugging
-        // Uncomment the line below if date filtering is needed and you have date fields
-        // filtered = filtered.filter(tournament => tournament.end_date !== "Not available" && new Date(tournament.end_date) >= new Date());
+        filtered = filtered.filter(tournament =>
+          tournament.end_date !== "Not available" && new Date(tournament.end_date) >= new Date()
+        );
       }
 
-      setFilteredTournaments(filtered.slice(0, 10)); // Limit to 10 tournaments
+      setFilteredTournaments(filtered);
     };
 
     filterTournaments();
@@ -71,28 +71,28 @@ const TournamentPage: React.FC = () => {
   return (
     <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-16">
       <div className="space-y-2 md:space-y-3 mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold">
+        <h2 className="text-2xl md:text-3xl font-bold text-white">
           Tournaments
         </h2>
-        <p className="text-sm md:text-base">
+        <p className="text-sm md:text-base text-white">
           Browse current and past tournaments.
         </p>
       </div>
 
       <div className="flex flex-col md:flex-row md:justify-between items-center mb-8 gap-4">
-        <Input
+        <input
           type="text"
           placeholder="Search by tournament name"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full md:w-64"
+          className="w-full p-2 border rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500"
         />
         <div className="flex items-center space-x-2">
           <Switchbtn
-            checked={showCurrent}
-            onChange={(e) => setShowCurrent(e.target.checked)}
+            checked={showCurrent} // This reflects the current state
+            onChange={(e) => setShowCurrent(e.target.checked)} // Updates state on toggle
           />
-          <label htmlFor="show-current" className="text-sm">
+          <label htmlFor="show-current" className="text-sm text-gray-700">
             Show current tournaments
           </label>
         </div>
@@ -101,7 +101,7 @@ const TournamentPage: React.FC = () => {
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
-            <TableRow  className='hover:bg-transparent'>
+            <TableRow>
               <TableHead>Dates</TableHead>
               <TableHead>Tournament Name</TableHead>
               <TableHead>Location</TableHead>
@@ -122,9 +122,13 @@ const TournamentPage: React.FC = () => {
                   <TableCell>
                     {tournament.start_date || "N/A"} - {tournament.end_date || "N/A"}
                   </TableCell>
-                  <TableCell>{tournament.name}</TableCell>
-                  <TableCell>{tournament.location || "N/A"}</TableCell>
-                  <TableCell>{tournament.prize || "Not available"}</TableCell>
+                  <TableCell>
+                    <Link href={`/tournaments/${tournament.leagueid}`}>
+                      {tournament.name}
+                    </Link>
+                  </TableCell>
+                  <TableCell>{tournament.location}</TableCell>
+                  <TableCell>{tournament.prize}</TableCell>
                   <TableCell>{tournament.tier}</TableCell>
                 </TableRow>
               ))
