@@ -1,5 +1,7 @@
+"use client"
 import axios from 'axios';
 import { FaTrophy } from 'react-icons/fa';
+import PerformanceGraph from '@/components/PerformanceGraph ';
 
 // Fetch match data
 const fetcher = (url: string) => axios.get(url).then(res => res.data);
@@ -109,7 +111,9 @@ const MatchProfile = async ({ params: { id } }: { params: { id: string } }) => {
                         </tbody>
                     </table>
                 </div>
-
+                <div className='my-10'>
+                <PerformanceGraph goldAdv={data.radiant_gold_adv} xpAdv={data.radiant_xp_adv} matchId={data.match_id} />
+                </div>
                 {/* See on Steam Button */}
                 <div className="mt-6">
                     <a href={steamUrl} target="_blank" rel="noopener noreferrer">
