@@ -57,9 +57,10 @@ const TournamentPage: React.FC = () => {
       );
 
       if (showCurrent) {
-        filtered = filtered.filter(tournament =>
-          tournament.end_date !== "Not available" && new Date(tournament.end_date) >= new Date()
-        );
+        filtered = filtered.filter(tournament => {
+          const endDate = tournament.end_date ? new Date(tournament.end_date) : null;
+          return endDate && endDate >= new Date();
+        });
       }
 
       setFilteredTournaments(filtered);
