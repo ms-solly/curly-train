@@ -1,11 +1,11 @@
-"use client"
-import { useEffect, useState } from 'react';
+"use client";
+import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import Chat from "@/components/Chat";
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 
 interface Match {
   match_id: number;
@@ -52,9 +52,9 @@ interface Team {
 const fetchAndSortTeams = async (): Promise<Team[]> => {
   try {
     const response = await fetch("https://api.opendota.com/api/teams");
-    if (!response.ok) throw new Error('Network response was not ok');
+    if (!response.ok) throw new Error("Network response was not ok");
     const data = await response.json();
-    
+
     if (!Array.isArray(data)) return [];
 
     // Process teams data without fetching player details
@@ -93,9 +93,9 @@ export function Home() {
   const [errorTopTeams, setErrorTopTeams] = useState<string | null>(null);
 
   const demoTournaments: Tournament[] = [
-    { id: 1, name: 'The International 2024', start_date: '2024-08-01', end_date: '2024-08-15', prize_pool: '$40,000,000' },
-    { id: 2, name: 'ESL One Berlin 2024', start_date: '2024-09-10', end_date: '2024-09-20', prize_pool: '$1,000,000' },
-    { id: 3, name: 'Dota 2 Major Championships 2024', start_date: '2024-10-05', end_date: '2024-10-15', prize_pool: '$500,000' },
+    { id: 1, name: "The International 2024", start_date: "2024-08-01", end_date: "2024-08-15", prize_pool: "$40,000,000" },
+    { id: 2, name: "ESL One Berlin 2024", start_date: "2024-09-10", end_date: "2024-09-20", prize_pool: "$1,000,000" },
+    { id: 3, name: "Dota 2 Major Championships 2024", start_date: "2024-10-05", end_date: "2024-10-15", prize_pool: "$500,000" },
   ];
 
   // Fetching top matches
@@ -106,10 +106,10 @@ export function Home() {
         const data = await response.json();
         return {
           match_id: data.match_id,
-          radiant_name: data.radiant_team?.name || 'Radiant',
-          dire_name: data.dire_team?.name || 'Dire',
-          radiant_logo: data.radiant_team?.logo_url || 'https://raw.githubusercontent.com/ms-solly/curly-train/64db1b64ea20490e23a08a571ca8424cdb6fceeb/public/images/teamLogo.png',
-          dire_logo: data.dire_team?.logo_url || 'https://raw.githubusercontent.com/ms-solly/curly-train/64db1b64ea20490e23a08a571ca8424cdb6fceeb/public/images/teamLogo.png',
+          radiant_name: data.radiant_team?.name || "Radiant",
+          dire_name: data.dire_team?.name || "Dire",
+          radiant_logo: data.radiant_team?.logo_url || "/default_logo.png",
+          dire_logo: data.dire_team?.logo_url || "/default_logo.png",
           series_type: data.series_type,
           radiant_win: data.radiant_win,
           duration: data.duration,
@@ -118,22 +118,22 @@ export function Home() {
           start_time: data.start_time,
         };
       } catch (error) {
-        console.error('Error fetching match details:', error);
+        console.error("Error fetching match details:", error);
         return null;
       }
     };
 
     const fetchMatches = async () => {
       try {
-        const response = await fetch('https://api.opendota.com/api/proMatches');
-        if (!response.ok) throw new Error('Network response was not ok');
+        const response = await fetch("https://api.opendota.com/api/proMatches");
+        if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         const matchDetailsPromises = data.slice(0, 7).map((match: any) => fetchMatchDetails(match.match_id));
         const detailedMatches = await Promise.all(matchDetailsPromises);
         setMatches(detailedMatches.filter(Boolean));
       } catch (error) {
-        console.error('Error fetching matches:', error);
-        setErrorMatches('Failed to fetch matches. Please try again later.');
+        console.error("Error fetching matches:", error);
+        setErrorMatches("Failed to fetch matches. Please try again later.");
       } finally {
         setLoadingMatches(false);
       }
@@ -149,8 +149,8 @@ export function Home() {
         const teams = await fetchAndSortTeams();
         setTopTeams(teams);
       } catch (error) {
-        console.error('Error fetching top teams:', error);
-        setErrorTopTeams('Failed to fetch top teams. Please try again later.');
+        console.error("Error fetching top teams:", error);
+        setErrorTopTeams("Failed to fetch top teams. Please try again later.");
       } finally {
         setLoadingTopTeams(false);
       }
@@ -163,19 +163,19 @@ export function Home() {
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
-        const response = await fetch('https://api.opendota.com/api/proPlayers');
-        if (!response.ok) throw new Error('Network response was not ok');
+        const response = await fetch("https://api.opendota.com/api/proPlayers");
+        if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         const topPlayers = data.slice(0, 5).map((player: any) => ({
           account_id: player.account_id,
           name: player.name,
           team_name: player.team_name,
-          avatar: player.avatarfull || 'https://raw.githubusercontent.com/ms-solly/curly-train/64db1b64ea20490e23a08a571ca8424cdb6fceeb/public/images/teamLogo.png',
+          avatar: player.avatarfull || "/default_avatar.png",
         }));
         setPlayers(topPlayers);
       } catch (error) {
-        console.error('Error fetching players:', error);
-        setErrorPlayers('Failed to fetch players. Please try again later.');
+        console.error("Error fetching players:", error);
+        setErrorPlayers("Failed to fetch players. Please try again later.");
       } finally {
         setLoadingPlayers(false);
       }
@@ -187,249 +187,225 @@ export function Home() {
   const formatDuration = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
   };
 
   const seriesType = (type: number): string => {
     switch (type) {
       case 0:
-        return 'BO1';
+        return "BO1";
       case 1:
-        return 'BO3';
+        return "BO3";
       case 2:
-        return 'BO5';
+        return "BO5";
       default:
-        return 'Unknown';
+        return "Unknown";
     }
   };
 
   const formatDate = (timestamp: number): string => {
     const date = new Date(timestamp * 1000);
     return date.toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-background">
-      <main className="container mx-auto grid grid-cols-1 gap-6 p-4 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-10">
-        {/* Live Matches */}
-        <section className="col-span-1 md:col-span-2 lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Live Matches</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {loadingMatches ? (
-                <div className="space-y-4">
-                  {[...Array(5)].map((_, i) => (
-                    <div key={i} className="animate-pulse">
-                      <div className="h-12 rounded-md bg-gray-700"></div>
-                    </div>
-                  ))}
-                </div>
-              ) : errorMatches ? (
-                <div className="text-center text-red-500">{errorMatches}</div>
-              ) : (
+      <main className="container mx-auto grid grid-cols-1 gap-6 p-4">
+        {/* Live Matches and Chat */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <section className="col-span-1">
+            <Card>
+              <CardHeader>
+                <CardTitle>Live Matches</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {loadingMatches ? (
+                  <div className="space-y-4">
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="animate-pulse">
+                        <div className="h-12 rounded-md bg-gray-700"></div>
+                      </div>
+                    ))}
+                  </div>
+                ) : errorMatches ? (
+                  <div className="text-center text-red-500">{errorMatches}</div>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="hover:bg-transparent">
+                        <TableHead>Status</TableHead>
+                        <TableHead>Team 1</TableHead>
+                        <TableHead></TableHead>
+                        <TableHead>Team 2</TableHead>
+                        <TableHead>Duration</TableHead>
+                        <TableHead>MMR</TableHead>
+                        <TableHead>Mode</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {matches.map((match) => (
+                        <TableRow key={match.match_id} className="hover:bg-gray-700">
+                          <TableCell>
+                            <Badge variant={match.radiant_win ? "success" : "danger"}>
+                              {match.radiant_win ? "Radiant Win" : "Dire Win"}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <Image src={match.radiant_logo} alt={match.radiant_name} width={30} height={30} />
+                            <span className="ml-2">{match.radiant_name}</span>
+                          </TableCell>
+                          <TableCell>vs</TableCell>
+                          <TableCell>
+                            <Image src={match.dire_logo} alt={match.dire_name} width={30} height={30} />
+                            <span className="ml-2">{match.dire_name}</span>
+                          </TableCell>
+                          <TableCell>{formatDuration(match.duration)}</TableCell>
+                          <TableCell>{match.avg_mmr || "Unknown"}</TableCell>
+                          <TableCell>{seriesType(match.series_type)}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </CardContent>
+            </Card>
+          </section>
+          <section className="col-span-1 hidden lg:block">
+            <Chat />
+          </section>
+        </div>
+
+        {/* Top Teams, Top Players, Top Tournaments */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Top Teams */}
+          <section>
+            <Card>
+              <CardHeader>
+                <CardTitle>Top Teams</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {loadingTopTeams ? (
+                  <div className="space-y-4">
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="animate-pulse">
+                        <div className="h-12 rounded-md bg-gray-700"></div>
+                      </div>
+                    ))}
+                  </div>
+                ) : errorTopTeams ? (
+                  <div className="text-center text-red-500">{errorTopTeams}</div>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="hover:bg-transparent">
+                        <TableHead>Team</TableHead>
+                        <TableHead>Wins</TableHead>
+                        <TableHead>Losses</TableHead>
+                        <TableHead>Win Rate</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {topTeams.map((team) => (
+                        <TableRow key={team.team_id} className="hover:bg-gray-700">
+                          <TableCell>
+                            <Image src={team.logo} alt={team.name} width={30} height={30} />
+                            <span className="ml-2">{team.name}</span>
+                          </TableCell>
+                          <TableCell>{team.wins}</TableCell>
+                          <TableCell>{team.losses}</TableCell>
+                          <TableCell>{team.win_rate.toFixed(2)}%</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Top Players */}
+          <section>
+            <Card>
+              <CardHeader>
+                <CardTitle>Top Players</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {loadingPlayers ? (
+                  <div className="space-y-4">
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="animate-pulse">
+                        <div className="h-12 rounded-md bg-gray-700"></div>
+                      </div>
+                    ))}
+                  </div>
+                ) : errorPlayers ? (
+                  <div className="text-center text-red-500">{errorPlayers}</div>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="hover:bg-transparent">
+                        <TableHead>Player</TableHead>
+                        <TableHead>Team</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {players.map((player) => (
+                        <TableRow key={player.account_id} className="hover:bg-gray-700">
+                          <TableCell>
+                            <Image src={player.avatar} alt={player.name} width={30} height={30} />
+                            <span className="ml-2">{player.name}</span>
+                          </TableCell>
+                          <TableCell>{player.team_name}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Top Tournaments */}
+          <section>
+            <Card>
+              <CardHeader>
+                <CardTitle>Top Tournaments</CardTitle>
+              </CardHeader>
+              <CardContent>
                 <Table>
                   <TableHeader>
-                    <TableRow className='hover:bg-transparent'>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Time</TableHead>
-                      <TableHead>Teams</TableHead>
-                      <TableHead>Series</TableHead>
-                      <TableHead>Game Mode</TableHead>
+                    <TableRow className="hover:bg-transparent">
+                      <TableHead>Tournament</TableHead>
+                      <TableHead>Start Date</TableHead>
+                      <TableHead>End Date</TableHead>
+                      <TableHead>Prize Pool</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {matches.map((match) => (
-                      <TableRow key={match.match_id}>
+                    {demoTournaments.map((tournament) => (
+                      <TableRow key={tournament.id} className="hover:bg-gray-700">
                         <TableCell>
-                          {match.start_time * 1000 < Date.now() ? (
-                            <Badge variant="outline">Live</Badge>
-                          ) : (
-                            <Badge variant="outline">Upcoming</Badge>
-                          )}
+                          <Link href={`/tournament/${tournament.id}`}>
+                            <span className="text-blue-500 hover:underline">{tournament.name}</span>
+                          </Link>
                         </TableCell>
-                        <TableCell>{formatDate(match.start_time)}</TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Image
-                              src={match.radiant_logo}
-                              alt={match.radiant_name}
-                              width={26}
-                              height={26}
-                              className="rounded-full"
-                            />
-                            <span>{match.radiant_name}</span>
-                            <span className="mx-2">vs</span>
-                            <Image
-                              src={match.dire_logo}
-                              alt={match.dire_name}
-                              width={26}
-                              height={26}
-                              className="rounded-full"
-                            />
-                            <span>{match.dire_name}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>{seriesType(match.series_type)}</TableCell>
-                        <TableCell>{match.game_mode}</TableCell>
+                        <TableCell>{tournament.start_date}</TableCell>
+                        <TableCell>{tournament.end_date}</TableCell>
+                        <TableCell>{tournament.prize_pool}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
-              )}
-            </CardContent>
-          </Card>
-        </section>
-
-        {/* Top Teams */}
-        <section className="col-span-1 md:col-span-1 lg:col-span-1">
-          <Card>
-            <CardHeader>
-              <CardTitle>Top Teams</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {loadingTopTeams ? (
-                <div className="space-y-4">
-                  {[...Array(5)].map((_, i) => (
-                    <div key={i} className="animate-pulse">
-                      <div className="h-12 rounded-md bg-gray-700"></div>
-                    </div>
-                  ))}
-                </div>
-              ) : errorTopTeams ? (
-                <div className="text-center text-red-500">{errorTopTeams}</div>
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow className='hover:bg-transparent'>
-                      <TableHead>Team</TableHead>
-                      <TableHead>Win Rate</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {topTeams.map((team) => (
-                      <TableRow key={team.team_id}>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Image
-                              src={team.logo}
-                              alt={team.name}
-                              width={26}
-                              height={26}
-                              className="rounded-full"
-                            />
-                            <span>{team.name}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>{team.win_rate.toFixed(2)}%</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
-            </CardContent>
-          </Card>
-        </section>
-
-        {/* Top Players */}
-        <section className="col-span-1 md:col-span-1 lg:col-span-1">
-          <Card>
-            <CardHeader>
-              <CardTitle>Top Players</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {loadingPlayers ? (
-                <div className="space-y-4">
-                  {[...Array(5)].map((_, i) => (
-                    <div key={i} className="animate-pulse">
-                      <div className="h-12 rounded-md bg-gray-700"></div>
-                    </div>
-                  ))}
-                </div>
-              ) : errorPlayers ? (
-                <div className="text-center text-red-500">{errorPlayers}</div>
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow className='hover:bg-transparent'>
-                      <TableHead>Player</TableHead>
-                      <TableHead>Team</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {players.map((player) => (
-                      <TableRow key={player.account_id}>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Image
-                              src={player.avatar}
-                              alt={player.name}
-                              width={26}
-                              height={26}
-                              className="rounded-full"
-                            />
-                            <span>{player.name}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>{player.team_name}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
-            </CardContent>
-          </Card>
-        </section>
-
-        {/* Tournaments */}
-        <section className="col-span-1 md:col-span-1 lg:col-span-1">
-          <Card>
-            <CardHeader>
-              <CardTitle>Top Tournaments</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow className='hover:bg-transparent'>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Start Date</TableHead>
-                    <TableHead>End Date</TableHead>
-                    <TableHead>Prize Pool</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {demoTournaments.map((tournament) => (
-                    <TableRow key={tournament.id}>
-                      <TableCell>{tournament.name}</TableCell>
-                      <TableCell>{tournament.start_date}</TableCell>
-                      <TableCell>{tournament.end_date}</TableCell>
-                      <TableCell>{tournament.prize_pool}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </section>
-
-        {/* Chat Component */}
-        <section className="col-span-1 md:col-span-2 lg:col-span-1 h-fit">
-          <Card>
-            <CardHeader>
-              <CardTitle>Chat</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Chat />
-            </CardContent>
-          </Card>
-        </section>
+              </CardContent>
+            </Card>
+          </section>
+        </div>
       </main>
     </div>
   );

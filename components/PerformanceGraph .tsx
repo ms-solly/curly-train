@@ -4,6 +4,12 @@
 import * as React from "react"
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts"
 
+interface PerformanceGraphProps {
+  goldAdv: number[];
+  xpAdv: number[];
+  matchId: string;
+}
+
 // Mock data: Replace this with your dynamic data for Radiant and Dire team performance
 const matchPerformanceData = [
   { time: "00:00", radiantGold: 0, direGold: 0, radiantXP: 0, direXP: 0 },
@@ -15,7 +21,7 @@ const matchPerformanceData = [
   // Add more data points as per match duration
 ]
 
-const PerformanceGraph = () => {
+const PerformanceGraph: React.FC<PerformanceGraphProps> = ({ goldAdv, xpAdv, matchId }) => {
   return (
     <div className="p-4 bg-gray-900/50 rounded-lg shadow-md">
       <h2 className="text-xl font-semibold text-center mb-4">Match Performance</h2>

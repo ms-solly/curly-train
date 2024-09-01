@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 
 // Define a skeleton placeholder component
 const TableSkeleton = () => (
@@ -159,7 +160,7 @@ export default function PastMatches() {
                       <TableCell className="border border-slate-600" >
                         <div className="flex items-center gap-2">
                           {match.radiant_logo && (
-                            <img 
+                            <Image 
                               src={match.radiant_logo}
                               alt={match.radiant_name || "Radiant"}
                               width={26}
@@ -170,7 +171,7 @@ export default function PastMatches() {
                           <span>{match.radiant_name || "Unknown"}</span>
                           <span className="mx-2">vs</span>
                           {match.dire_logo && (
-                            <img
+                            <Image
                               src={match.dire_logo}
                               alt={match.dire_name || "Dire"}
                               width={26}
