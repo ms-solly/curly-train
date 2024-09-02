@@ -2,7 +2,7 @@
 .chatBox {
     display: flex;
     flex-direction: column;
-    height: 420px;
+    height: 440px;
     width: 110%;
     max-width: 300px;
     background: rgba(255, 255, 255, 0.1);
