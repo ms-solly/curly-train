@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import Chat from "@/components/Chat";
 import Image from "next/image";
 import Link from "next/link";
+import { GiCrossedSwords } from "react-icons/gi";
+
 
 interface Match {
   match_id: number;
@@ -108,8 +110,8 @@ export function Home() {
           match_id: data.match_id,
           radiant_name: data.radiant_team?.name || "Radiant",
           dire_name: data.dire_team?.name || "Dire",
-          radiant_logo: data.radiant_team?.logo_url || "/default_logo.png",
-          dire_logo: data.dire_team?.logo_url || "/default_logo.png",
+          radiant_logo: data.radiant_team?.logo_url || "/download.png",
+          dire_logo: data.dire_team?.logo_url || "/download.png",
           series_type: data.series_type,
           radiant_win: data.radiant_win,
           duration: data.duration,
@@ -128,7 +130,7 @@ export function Home() {
         const response = await fetch("https://api.opendota.com/api/proMatches");
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
-        const matchDetailsPromises = data.slice(0, 7).map((match: any) => fetchMatchDetails(match.match_id));
+        const matchDetailsPromises = data.slice(0, 8).map((match: any) => fetchMatchDetails(match.match_id));
         const detailedMatches = await Promise.all(matchDetailsPromises);
         setMatches(detailedMatches.filter(Boolean));
       } catch (error) {
@@ -218,8 +220,8 @@ export function Home() {
     <div className="flex flex-col w-full min-h-screen bg-background">
       <main className="container mx-auto grid grid-cols-1 gap-6 p-4">
         {/* Live Matches and Chat */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <section className="col-span-1">
+        <div className="grid grid-cols-3 lg:grid-cols-3 gap-6">
+          <section className="col-span-3 lg:col-span-2">
             <Card>
               <CardHeader>
                 <CardTitle>Live Matches</CardTitle>
@@ -227,7 +229,7 @@ export function Home() {
               <CardContent>
                 {loadingMatches ? (
                   <div className="space-y-4">
-                    {[...Array(5)].map((_, i) => (
+                    {[...Array(7)].map((_, i) => (
                       <div key={i} className="animate-pulse">
                         <div className="h-12 rounded-md bg-gray-700"></div>
                       </div>
@@ -241,7 +243,8 @@ export function Home() {
                       <TableRow className="hover:bg-transparent">
                         <TableHead>Status</TableHead>
                         <TableHead>Team 1</TableHead>
-                        <TableHead></TableHead>
+                        <TableHead className="border-none"><GiCrossedSwords />
+                        </TableHead>
                         <TableHead>Team 2</TableHead>
                         <TableHead>Duration</TableHead>
                         <TableHead>MMR</TableHead>
@@ -252,17 +255,17 @@ export function Home() {
                       {matches.map((match) => (
                         <TableRow key={match.match_id} className="hover:bg-gray-700">
                           <TableCell>
-                            <Badge variant={match.radiant_win ? "success" : "danger"}>
+                            <Badge variant={match.radiant_win ? "win" : "loss"}>
                               {match.radiant_win ? "Radiant Win" : "Dire Win"}
                             </Badge>
                           </TableCell>
-                          <TableCell>
-                            <Image src={match.radiant_logo} alt={match.radiant_name} width={30} height={30} />
+                          <TableCell className="border-r-0">
+                            <Image src={match.radiant_logo} alt={match.radiant_name} width={30} height={30} className="inline-block" />
                             <span className="ml-2">{match.radiant_name}</span>
                           </TableCell>
-                          <TableCell>vs</TableCell>
-                          <TableCell>
-                            <Image src={match.dire_logo} alt={match.dire_name} width={30} height={30} />
+                          <TableCell className="border-r-0 border-l-0">vs</TableCell>
+                          <TableCell className="border-l-0">
+                            <Image src={match.dire_logo} alt={match.dire_name} width={30} height={30} className="inline-block"  />
                             <span className="ml-2">{match.dire_name}</span>
                           </TableCell>
                           <TableCell>{formatDuration(match.duration)}</TableCell>
@@ -276,8 +279,8 @@ export function Home() {
               </CardContent>
             </Card>
           </section>
-          <section className="col-span-1 hidden lg:block">
-            <Chat />
+          <section className="col-span-1 hidden lg:block bg-background p-4">
+            <Chat/>
           </section>
         </div>
 
@@ -314,7 +317,7 @@ export function Home() {
                       {topTeams.map((team) => (
                         <TableRow key={team.team_id} className="hover:bg-gray-700">
                           <TableCell>
-                            <Image src={team.logo} alt={team.name} width={30} height={30} />
+                            <Image src={team.logo} alt={team.name} width={30} height={30} className="inline-block"  />
                             <span className="ml-2">{team.name}</span>
                           </TableCell>
                           <TableCell>{team.wins}</TableCell>
@@ -358,7 +361,7 @@ export function Home() {
                       {players.map((player) => (
                         <TableRow key={player.account_id} className="hover:bg-gray-700">
                           <TableCell>
-                            <Image src={player.avatar} alt={player.name} width={30} height={30} />
+                            <Image src={player.avatar} alt={player.name} width={30} height={30} className="inline-block"  />
                             <span className="ml-2">{player.name}</span>
                           </TableCell>
                           <TableCell>{player.team_name}</TableCell>

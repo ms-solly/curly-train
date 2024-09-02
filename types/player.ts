@@ -9,6 +9,8 @@ export interface Player {
   leaderboard_rank: number | null;
   mmr_estimate: MmrEstimate;
   profile: PlayerProfile;
+  avatar:string;
+  team_name :string;
 }
 
 export interface MmrEstimate {
