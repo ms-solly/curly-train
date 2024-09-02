@@ -20,7 +20,7 @@ const fetchPlayers = async (team_id: number): Promise<Player[]> => {
         if (!Array.isArray(playersData)) return [];
 
         return playersData.map((player: any): Player => ({
-            id: player.account_id,
+            id: player.id,
             name: player.name || "Unknown Player",
             role: player.role || "Unknown Role",
             tracked_until: player.tracked_until || null,
@@ -32,21 +32,23 @@ const fetchPlayers = async (team_id: number): Promise<Player[]> => {
                 estimate: player.mmr_estimate?.estimate || 0,
             },
             profile: {
-                account_id: player.account_id,
+                id: player.id,
                 personaname: player.personaname || "Unknown",
                 name: player.name || null,
                 plus: player.plus || false,
                 cheese: player.cheese || 0,
                 steamid: player.steamid || "Unknown",
-                avatar: player.avatar || "/default-avatar.png",
-                avatarmedium: player.avatarmedium || "/default-avatar.png",
-                avatarfull: player.avatarfull || "/default-avatar.png",
+                avatar: player.avatar || "/download.png",
+                avatarmedium: player.avatarmedium || "/download.png",
+                avatarfull: player.avatarfull || "/download.png",
                 profileurl: player.profileurl || "",
                 last_login: player.last_login || null,
                 loccountrycode: player.loccountrycode || null,
                 is_contributor: player.is_contributor || false,
                 is_subscriber: player.is_subscriber || false,
-            }
+            },
+            avatar: "",
+            team_name: ""
         }));
     } catch (error) {
         console.error("Error fetching players data:", error);

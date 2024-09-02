@@ -10,4 +10,4 @@ export interface Team {
     logo: string;
     win_rate: number;
     players: Player[];
-  }
+}

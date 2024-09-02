@@ -18,7 +18,7 @@ export interface MmrEstimate {
 }
 
 export interface PlayerProfile {
-  account_id: number;
+  id: number;
   personaname: string;
   name: string | null;
   plus: boolean;
