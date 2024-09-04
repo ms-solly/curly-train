@@ -21,12 +21,13 @@ const TournamentPage: React.FC = () => {
   const [filteredTournaments, setFilteredTournaments] = useState<Tournament[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [showCurrent, setShowCurrent] = useState(false); // This is initialized as false
+  const [showCurrent, setShowCurrent] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(20);
 
   useEffect(() => {
     const fetchTournaments = async () => {
       try {
-        const response = await axios.get('https://api.opendota.com/api/leagues');
+        const response = await axios.get(`https://api.opendota.com/api/leagues`);
         console.log("API Response:", response.data);
 
         const tournamentsData = response.data.map((league: any) => ({
@@ -36,7 +37,7 @@ const TournamentPage: React.FC = () => {
           location: league.location || "N/A",
           start_date: league.start_date || "Not available",
           end_date: league.end_date || "Not available",
-          prize: league.prize || "Not available"
+          prize: league.prize || "Not available",
         }));
 
         setTournaments(tournamentsData);
@@ -52,12 +53,12 @@ const TournamentPage: React.FC = () => {
 
   useEffect(() => {
     const filterTournaments = () => {
-      let filtered = tournaments.filter(tournament =>
+      let filtered = tournaments.filter((tournament) =>
         tournament.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
 
       if (showCurrent) {
-        filtered = filtered.filter(tournament => {
+        filtered = filtered.filter((tournament) => {
           const endDate = tournament.end_date ? new Date(tournament.end_date) : null;
           return endDate && endDate >= new Date();
         });
@@ -69,15 +70,15 @@ const TournamentPage: React.FC = () => {
     filterTournaments();
   }, [searchQuery, showCurrent, tournaments]);
 
+  const handleLoadMore = () => {
+    setVisibleCount((prevCount) => prevCount + 10); // Increase the visible count by 10
+  };
+
   return (
     <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-16">
       <div className="space-y-2 md:space-y-3 mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-white">
-          Tournaments
-        </h2>
-        <p className="text-sm md:text-base text-white">
-          Browse current and past tournaments.
-        </p>
+        <h2 className="text-2xl md:text-3xl font-bold text-white">Tournaments</h2>
+        <p className="text-sm md:text-base text-white">Browse current and past tournaments.</p>
       </div>
 
       <div className="flex flex-col md:flex-row md:justify-between items-center mb-8 gap-4">
@@ -100,9 +101,9 @@ const TournamentPage: React.FC = () => {
       </div>
 
       <div className="overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
+        <Table className="rounded-b-lg border">
+          <TableHeader className="hover:bg-black bg-black">
+            <TableRow className="hover:bg-black bg-black">
               <TableHead>Dates</TableHead>
               <TableHead>Tournament Name</TableHead>
               <TableHead>Location</TableHead>
@@ -112,21 +113,34 @@ const TournamentPage: React.FC = () => {
           </TableHeader>
           <TableBody>
             {loading ? (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center">
-                  Loading tournaments...
-                </TableCell>
-              </TableRow>
+              Array.from({ length: 20 }).map((_, idx) => (
+                <TableRow key={idx}>
+                  <TableCell>
+                    <div className="h-6 bg-gray-200 animate-pulse rounded"></div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="h-6 bg-gray-200 animate-pulse rounded"></div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="h-6 bg-gray-200 animate-pulse rounded"></div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="h-6 bg-gray-200 animate-pulse rounded"></div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="h-6 bg-gray-200 animate-pulse rounded"></div>
+                  </TableCell>
+                </TableRow>
+              ))
+              
             ) : filteredTournaments.length > 0 ? (
-              filteredTournaments.map(tournament => (
+              filteredTournaments.slice(0, visibleCount).map((tournament) => (
                 <TableRow key={tournament.leagueid}>
                   <TableCell>
                     {tournament.start_date || "N/A"} - {tournament.end_date || "N/A"}
                   </TableCell>
                   <TableCell>
-                    <Link href={`/tournaments/${tournament.leagueid}`}>
-                      {tournament.name}
-                    </Link>
+                    <Link href={`/tournaments/${tournament.leagueid}`}>{tournament.name}</Link>
                   </TableCell>
                   <TableCell>{tournament.location}</TableCell>
                   <TableCell>{tournament.prize}</TableCell>
@@ -137,6 +151,19 @@ const TournamentPage: React.FC = () => {
               <TableRow>
                 <TableCell colSpan={5} className="text-center">
                   No tournaments found.
+                </TableCell>
+              </TableRow>
+            )}
+            {visibleCount < filteredTournaments.length && (
+              <TableRow className="bg-gray-900/95  hover:bg-gray-900/95 rounded-b-lg">
+                <TableCell colSpan={5} className="text-center">
+                <button
+                  onClick={handleLoadMore}
+                  className=" rounded-lg border px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 active:bg-green-700 focus:outline-none transition duration-300"
+                >
+                  View More
+                </button>
+
                 </TableCell>
               </TableRow>
             )}
