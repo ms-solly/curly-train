@@ -172,7 +172,7 @@ export function Home() {
           account_id: player.account_id,
           name: player.name,
           team_name: player.team_name,
-          avatar: player.avatarfull || "/default_avatar.png",
+          avatar: player.avatarfull || "/download.png",
         }));
         setPlayers(topPlayers);
       } catch (error) {
@@ -222,156 +222,173 @@ export function Home() {
         {/* Live Matches and Chat */}
         <div className="grid grid-cols-3 lg:grid-cols-3 gap-6">
           <section className="col-span-3 lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Live Matches</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {loadingMatches ? (
-                  <div className="space-y-4">
-                    {[...Array(7)].map((_, i) => (
-                      <div key={i} className="animate-pulse">
-                        <div className="h-12 rounded-md bg-gray-700"></div>
-                      </div>
-                    ))}
-                  </div>
-                ) : errorMatches ? (
-                  <div className="text-center text-red-500">{errorMatches}</div>
-                ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="hover:bg-transparent">
-                        <TableHead>Status</TableHead>
-                        <TableHead>Team 1</TableHead>
-                        <TableHead className="border-none"><GiCrossedSwords />
-                        </TableHead>
-                        <TableHead>Team 2</TableHead>
-                        <TableHead>Duration</TableHead>
-                        <TableHead>MMR</TableHead>
-                        <TableHead>Mode</TableHead>
+          <Card>
+            <CardHeader>
+              <CardTitle>Live Matches</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow className="hover:bg-transparent">
+                    <TableHead>Status</TableHead>
+                    <TableHead>Team 1</TableHead>
+                    <TableHead className="border-none"><GiCrossedSwords /></TableHead>
+                    <TableHead>Team 2</TableHead>
+                    <TableHead>Duration</TableHead>
+                    <TableHead>MMR</TableHead>
+                    <TableHead>Mode</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {loadingMatches ? (
+                    [...Array(7)].map((_, i) => (
+                      <TableRow key={i} className="hover:bg-gray-700">
+                        <TableCell><div className="h-6 w-24 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
+                        <TableCell><div className="h-6 w-32 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
+                        <TableCell className="border-r-0 border-l-0">vs</TableCell>
+                        <TableCell><div className="h-6 w-32 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
+                        <TableCell><div className="h-6 w-20 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
+                        <TableCell><div className="h-6 w-16 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
+                        <TableCell><div className="h-6 w-20 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
                       </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {matches.map((match) => (
-                        <TableRow key={match.match_id} className="hover:bg-gray-700">
-                          <TableCell>
-                            <Badge variant={match.radiant_win ? "win" : "loss"}>
-                              {match.radiant_win ? "Radiant Win" : "Dire Win"}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="border-r-0">
-                            <Image src={match.radiant_logo} alt={match.radiant_name} width={30} height={30} className="inline-block" />
-                            <span className="ml-2">{match.radiant_name}</span>
-                          </TableCell>
-                          <TableCell className="border-r-0 border-l-0">vs</TableCell>
-                          <TableCell className="border-l-0">
-                            <Image src={match.dire_logo} alt={match.dire_name} width={30} height={30} className="inline-block"  />
-                            <span className="ml-2">{match.dire_name}</span>
-                          </TableCell>
-                          <TableCell>{formatDuration(match.duration)}</TableCell>
-                          <TableCell>{match.avg_mmr || "Unknown"}</TableCell>
-                          <TableCell>{seriesType(match.series_type)}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                )}
-              </CardContent>
-            </Card>
+                    ))
+                  ) : errorMatches ? (
+                    <TableRow>
+                      <TableCell colSpan={7} className="text-center text-red-500">
+                        {errorMatches}
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    matches.map((match) => (
+                      <TableRow key={match.match_id} className="hover:bg-gray-700">
+                        <TableCell>
+                          <Badge variant={match.radiant_win ? "win" : "loss"}>
+                            {match.radiant_win ? "Radiant Win" : "Dire Win"}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="border-r-0">
+                          <Image src={match.radiant_logo} alt={match.radiant_name} width={30} height={30} className="inline-block" />
+                          <span className="ml-2">{match.radiant_name}</span>
+                        </TableCell>
+                        <TableCell className="border-r-0 border-l-0">vs</TableCell>
+                        <TableCell className="border-l-0">
+                          <Image src={match.dire_logo} alt={match.dire_name} width={30} height={30} className="inline-block"  />
+                          <span className="ml-2">{match.dire_name}</span>
+                        </TableCell>
+                        <TableCell>{formatDuration(match.duration)}</TableCell>
+                        <TableCell>{match.avg_mmr || "Unknown"}</TableCell>
+                        <TableCell>{seriesType(match.series_type)}</TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
           </section>
           <section className="col-span-1 hidden lg:block bg-background p-4">
             <Chat/>
           </section>
         </div>
 
-        {/* Top Teams, Top Players, Top Tournaments */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Top Teams */}
           <section>
-            <Card>
-              <CardHeader>
-                <CardTitle>Top Teams</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {loadingTopTeams ? (
-                  <div className="space-y-4">
-                    {[...Array(5)].map((_, i) => (
-                      <div key={i} className="animate-pulse">
-                        <div className="h-12 rounded-md bg-gray-700"></div>
-                      </div>
-                    ))}
-                  </div>
-                ) : errorTopTeams ? (
-                  <div className="text-center text-red-500">{errorTopTeams}</div>
-                ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="hover:bg-transparent">
-                        <TableHead>Team</TableHead>
-                        <TableHead>Wins</TableHead>
-                        <TableHead>Losses</TableHead>
-                        <TableHead>Win Rate</TableHead>
+          <Card>
+            <CardHeader>
+              <CardTitle>Top Teams</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow className="hover:bg-transparent">
+                    <TableHead>Team</TableHead>
+                    <TableHead>Wins</TableHead>
+                    <TableHead>Losses</TableHead>
+                    <TableHead>Win Rate</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {loadingTopTeams ? (
+                    [...Array(5)].map((_, i) => (
+                      <TableRow key={i} className="hover:bg-gray-700">
+                        <TableCell><div className="h-6 w-40 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
+                        <TableCell><div className="h-6 w-12 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
+                        <TableCell><div className="h-6 w-12 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
+                        <TableCell><div className="h-6 w-16 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
                       </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {topTeams.map((team) => (
-                        <TableRow key={team.team_id} className="hover:bg-gray-700">
-                          <TableCell>
-                            <Image src={team.logo} alt={team.name} width={30} height={30} className="inline-block"  />
-                            <span className="ml-2">{team.name}</span>
-                          </TableCell>
-                          <TableCell>{team.wins}</TableCell>
-                          <TableCell>{team.losses}</TableCell>
-                          <TableCell>{team.win_rate.toFixed(2)}%</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                )}
-              </CardContent>
-            </Card>
+                    ))
+                  ) : errorTopTeams ? (
+                    <TableRow>
+                      <TableCell colSpan={4} className="text-center text-red-500">
+                        {errorTopTeams}
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    topTeams.map((team) => (
+                      <TableRow key={team.team_id} className="hover:bg-gray-700">
+                        <TableCell>
+                          <Image src={team.logo} alt={team.name} width={30} height={30} className="inline-block" />
+                          <span className="ml-2">{team.name}</span>
+                        </TableCell>
+                        <TableCell>{team.wins}</TableCell>
+                        <TableCell>{team.losses}</TableCell>
+                        <TableCell>{team.win_rate.toFixed(2)}%</TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
           </section>
 
           {/* Top Players */}
           <section>
-            <Card>
-              <CardHeader>
-                <CardTitle>Top Players</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {loadingPlayers ? (
-                  <div className="space-y-4">
-                    {[...Array(5)].map((_, i) => (
-                      <div key={i} className="animate-pulse">
-                        <div className="h-12 rounded-md bg-gray-700"></div>
-                      </div>
-                    ))}
-                  </div>
-                ) : errorPlayers ? (
-                  <div className="text-center text-red-500">{errorPlayers}</div>
-                ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="hover:bg-transparent">
-                        <TableHead>Player</TableHead>
-                        <TableHead>Team</TableHead>
+          <Card>
+            <CardHeader>
+              <CardTitle>Top Players</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow className="hover:bg-transparent">
+                    <TableHead>Player</TableHead>
+                    <TableHead>Team</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {loadingPlayers ? (
+                    [...Array(5)].map((_, i) => (
+                      <TableRow key={i} className="hover:bg-gray-700">
+                        <TableCell><div className="h-6 w-40 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
+                        <TableCell><div className="h-6 w-32 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
                       </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {players.map((player) => (
-                        <TableRow key={player.account_id} className="hover:bg-gray-700">
-                          <TableCell>
-                            <Image src={player.avatar} alt={player.name} width={30} height={30} className="inline-block"  />
-                            <span className="ml-2">{player.name}</span>
-                          </TableCell>
-                          <TableCell>{player.team_name}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                )}
-              </CardContent>
-            </Card>
+                    ))
+                  ) : errorPlayers ? (
+                    <TableRow>
+                      <TableCell colSpan={2} className="text-center text-red-500">
+                        {errorPlayers}
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    players.map((player) => (
+                      <TableRow key={player.account_id} className="hover:bg-gray-700">
+                        <TableCell>
+                          <Image src={player.avatar} alt={player.name} width={30} height={30} className="inline-block" />
+                          <span className="ml-2">{player.name}</span>
+                        </TableCell>
+                        <TableCell>{player.team_name}</TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
           </section>
 
           {/* Top Tournaments */}
