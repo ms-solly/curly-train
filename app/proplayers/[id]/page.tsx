@@ -1,53 +1,31 @@
-"use client"
+"use client";
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Player } from '@/types/player';
+import { Match } from '@/types/match';
+import { MatchData } from '@/types/match'; 
 
-// Define TypeScript interfaces for data
-interface PlayerData {
-  avatarfull: string;
-  personaname: string;
-  name: string;
-  team_name: string | null;
-  loccountrycode: string | null;
-  last_login: string;
-  rank: string;
-  level: number;
-  mmr: number;
-  matches_played: number;
-  tournaments_played: number;
-  win_rate: string;
-}
-
-interface MatchData {
-  match_id: number;
-  hero_id: number;
-  duration: number;
-}
-
-// Page component
 const PlayerProfilePage = async ({ params }: { params: { id: string } }) => {
   const accountId = params.id;
 
   // Fetch player data
-  const fetchPlayerData = async (): Promise<PlayerData | null> => {
+  const fetchPlayerData = async (): Promise<Player | null> => {
     try {
       const res = await fetch(`https://api.opendota.com/api/players/${accountId}`);
       if (!res.ok) throw new Error('Network response was not ok');
       const data = await res.json();
+      
       return {
-        avatarfull: data.profile.avatarfull,
-        personaname: data.profile.personaname,
+        ...data,
+        avatar: data.profile.avatarfull,  // Assign correct field for avatar
         name: data.profile.name || 'Unknown',
         team_name: data.team_name || 'No team',
-        loccountrycode: data.loccountrycode || 'Unknown',
-        last_login: data.last_login ? new Date(data.last_login).toLocaleDateString() : 'Never',
-        rank: data.rank || 'Unranked',
-        level: data.level || 0,
-        mmr: data.mmr || 0,
-        matches_played: data.matches_played || 0,
-        tournaments_played: data.tournaments_played || 0,
-        win_rate: data.win_rate || 'N/A',
+        loccountrycode: data.profile.loccountrycode || 'Unknown',
+        last_login: data.profile.last_login ? new Date(data.profile.last_login).toLocaleDateString() : 'Never',
+        rank_tier: data.rank_tier || null,
+        leaderboard_rank: data.leaderboard_rank || null,
+        mmr_estimate: data.mmr_estimate || { estimate: 0 },
       };
     } catch (error) {
       console.error('Error fetching player data:', error);
@@ -75,30 +53,28 @@ const PlayerProfilePage = async ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto   shadow-md rounded-lg overflow-hidden">
+    <div className="p-6 max-w-4xl mx-auto shadow-md rounded-lg overflow-hidden">
       <div className="flex items-start space-x-6 mb-6">
         <Image
-          src={playerData.avatarfull}
-          alt={playerData.personaname}
+          src={playerData.avatar}
+          alt={playerData.name || playerData.profile.personaname}
           width={120}
           height={120}
           className="rounded-full"
         />
         <div className="flex flex-col justify-between">
           <div>
-            <h1 className="text-3xl font-bold">{playerData.personaname}</h1>
+            <h1 className="text-3xl font-bold">{playerData.profile.personaname}</h1>
             <p className="text-lg text-gray-700">Name: {playerData.name}</p>
             <p className="text-lg text-gray-700">Team: {playerData.team_name}</p>
             <p className="text-lg text-gray-700">Country: {playerData.loccountrycode}</p>
             <p className="text-lg text-gray-700">Last Login: {playerData.last_login}</p>
           </div>
           <div className="mt-4">
-            <p className="text-lg text-gray-700">Rank: {playerData.rank}</p>
-            <p className="text-lg text-gray-700">Level: {playerData.level}</p>
-            <p className="text-lg text-gray-700">MMR: {playerData.mmr}</p>
+            <p className="text-lg text-gray-700">Rank Tier: {playerData.rank_tier || 'Unranked'}</p>
+            <p className="text-lg text-gray-700">MMR Estimate: {playerData.mmr_estimate.estimate}</p>
             <p className="text-lg text-gray-700">Matches Played: {playerData.matches_played}</p>
-            <p className="text-lg text-gray-700">Tournaments Played: {playerData.tournaments_played}</p>
-            <p className="text-lg text-gray-700">Win Rate: {playerData.win_rate}</p>
+            <p className="text-lg text-gray-700">Leaderboard Rank: {playerData.leaderboard_rank || 'N/A'}</p>
           </div>
         </div>
       </div>

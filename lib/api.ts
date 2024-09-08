@@ -26,3 +26,7 @@ export async function fetchHeroes(): Promise<Hero[]> {
   const data = await response.json();
   return data as Hero[];
 }
+
+// export async function fetchProPlayers() :Promise< {
+  
+// }
