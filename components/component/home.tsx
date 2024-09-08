@@ -226,7 +226,8 @@ export function Home() {
           <CardHeader className="w-full">
               <CardTitle>Live Matches</CardTitle>
             <button className="bg-red-400 rounded px-4 text-white w-fit inline-block right-0">
-              <Link href="/matches/live">All</Link>
+              <Link href="/matches/live">All
+              </Link>
             </button>
           </CardHeader>
             <CardContent>

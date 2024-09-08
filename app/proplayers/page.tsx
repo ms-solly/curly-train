@@ -8,6 +8,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+// import { Metadata } from "next";
+
+// export const metadata: Metadata = {
+//   title: 'ProPlayers | Esportws',
+//   description: 'Dive into the world of professional athletes. Explore the top players across various sports, learn about their achievements, career highlights, and what makes them the best in the game. Stay up-to-date with their latest performances and rankings.',
+// }
 
 const getProPlayers = async () => action('proPlayers', config.API_HOST, 'api/proplayers');
 
@@ -101,8 +107,8 @@ const ProPlayersPage: React.FC = () => {
                                 ))
                             ) : proPlayers.length > 0 ? (
                                 currentProPlayers.map((player: any) => (
-                                    <TableRow key={player.steamid} className="border-b border-gray-700 hover:bg-green-200 hover:text-gray-800">
-                                        <TableCell className="px-4 py-2 flex items-center hover:text-white">
+                                    <TableRow key={player.steamid} className="">
+                                        <TableCell className="px-4 py-2 flex items-center">
                                             <Link href={`/proplayers/${player.steamid}`} className="flex items-center text-green-400 font-bold font-rubik hover:text-white">
                                                 <Image src={player.avatarfull} alt={player.personaname} width={48} height={48} className="w-12 h-12 object-cover rounded-full mr-2" />
                                                 {player.personaname}
