@@ -223,17 +223,21 @@ export function Home() {
         <div className="grid grid-cols-3 lg:grid-cols-3 gap-6">
           <section className="col-span-3 lg:col-span-2">
           <Card>
-            <CardHeader>
+          <CardHeader className="w-full">
               <CardTitle>Live Matches</CardTitle>
-            </CardHeader>
+            <button className="bg-red-400 rounded px-4 text-white w-fit inline-block right-0">
+              <Link href="/matches/live">All
+              </Link>
+            </button>
+          </CardHeader>
             <CardContent>
               <Table>
-                <TableHeader>
-                  <TableRow className="hover:bg-transparent">
+                <TableHeader className="bg-black hover:bg-black" >
+                  <TableRow className="hover:bg-transparent bg-black hover:bg-black">
                     <TableHead>Status</TableHead>
-                    <TableHead>Team 1</TableHead>
-                    <TableHead className="border-none"><GiCrossedSwords /></TableHead>
-                    <TableHead>Team 2</TableHead>
+                    <TableHead className="border-r-0 text-center">Team 1</TableHead>
+                    <TableHead className=" border-l-0 border-r-0 "><GiCrossedSwords /></TableHead>
+                    <TableHead className="border-l-0 text-center">Team 2</TableHead>
                     <TableHead>Duration</TableHead>
                     <TableHead>MMR</TableHead>
                     <TableHead>Mode</TableHead>
@@ -245,7 +249,7 @@ export function Home() {
                       <TableRow key={i} className="hover:bg-gray-700">
                         <TableCell><div className="h-6 w-24 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
                         <TableCell><div className="h-6 w-32 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
-                        <TableCell className="border-r-0 border-l-0">vs</TableCell>
+                        <TableCell className="border-r-0 border-l-0 h-6 w-32 bg-gray-600 rounded-md animate-pulse"></TableCell>
                         <TableCell><div className="h-6 w-32 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
                         <TableCell><div className="h-6 w-20 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
                         <TableCell><div className="h-6 w-16 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
@@ -260,7 +264,7 @@ export function Home() {
                     </TableRow>
                   ) : (
                     matches.map((match) => (
-                      <TableRow key={match.match_id} className="hover:bg-gray-700">
+                      <TableRow key={match.match_id} className="">
                         <TableCell>
                           <Badge variant={match.radiant_win ? "win" : "loss"}>
                             {match.radiant_win ? "Radiant Win" : "Dire Win"}
