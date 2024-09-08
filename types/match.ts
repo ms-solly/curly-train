@@ -36,7 +36,7 @@ export interface Match {
   }
   
 
-interface MatchData {
+export interface MatchData {
   match_id: number;
   hero_id: number;
   duration: number;
