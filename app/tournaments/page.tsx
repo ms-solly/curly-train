@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import Switchbtn from "@/components/ui/switch"; // Ensure this is the correct path
+import Switchbtn from "@/components/ui/switch";
 import Link from "next/link";
+import Pagination from "@/components/Pagination"; // Import the pagination component
 
 interface Tournament {
   leagueid: number;
@@ -22,7 +23,8 @@ const TournamentPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [showCurrent, setShowCurrent] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(20);
+  const [currentPage, setCurrentPage] = useState(1); // Track the current page
+  const itemsPerPage = 10; // Define the number of items per page
 
   useEffect(() => {
     const fetchTournaments = async () => {
@@ -70,8 +72,22 @@ const TournamentPage: React.FC = () => {
     filterTournaments();
   }, [searchQuery, showCurrent, tournaments]);
 
-  const handleLoadMore = () => {
-    setVisibleCount((prevCount) => prevCount + 10); // Increase the visible count by 10
+  // Pagination logic
+  const totalItems = filteredTournaments.length;
+  const indexOfLastTournament = currentPage * itemsPerPage;
+  const indexOfFirstTournament = indexOfLastTournament - itemsPerPage;
+  const currentTournaments = filteredTournaments.slice(indexOfFirstTournament, indexOfLastTournament);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const handleNext = () => {
+    if (currentPage < Math.ceil(totalItems / itemsPerPage)) {
+      setCurrentPage(prevPage => prevPage + 1);
+    }
+  };
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(prevPage => prevPage - 1);
+    }
   };
 
   return (
@@ -91,8 +107,8 @@ const TournamentPage: React.FC = () => {
         />
         <div className="flex items-center space-x-2">
           <Switchbtn
-            checked={showCurrent} // This reflects the current state
-            onChange={(e) => setShowCurrent(e.target.checked)} // Updates state on toggle
+            checked={showCurrent}
+            onChange={(e) => setShowCurrent(e.target.checked)}
           />
           <label htmlFor="show-current" className="text-sm text-gray-700">
             Show current tournaments
@@ -113,7 +129,7 @@ const TournamentPage: React.FC = () => {
           </TableHeader>
           <TableBody>
             {loading ? (
-              Array.from({ length: 20 }).map((_, idx) => (
+              Array.from({ length: 10 }).map((_, idx) => (
                 <TableRow key={idx}>
                   <TableCell>
                     <div className="h-6 bg-gray-200 animate-pulse rounded"></div>
@@ -132,10 +148,9 @@ const TournamentPage: React.FC = () => {
                   </TableCell>
                 </TableRow>
               ))
-              
-            ) : filteredTournaments.length > 0 ? (
-              filteredTournaments.slice(0, visibleCount).map((tournament) => (
-                <TableRow key={tournament.leagueid}>
+            ) : currentTournaments.length > 0 ? (
+              currentTournaments.map((tournament) => (
+                <TableRow key={tournament.leagueid} className="hover:bg-green-200 hover:text-gray-800">
                   <TableCell>
                     {tournament.start_date || "N/A"} - {tournament.end_date || "N/A"}
                   </TableCell>
@@ -154,22 +169,21 @@ const TournamentPage: React.FC = () => {
                 </TableCell>
               </TableRow>
             )}
-            {visibleCount < filteredTournaments.length && (
-              <TableRow className="bg-gray-900/95  hover:bg-gray-900/95 rounded-b-lg">
-                <TableCell colSpan={5} className="text-center">
-                <button
-                  onClick={handleLoadMore}
-                  className=" rounded-lg border px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 active:bg-green-700 focus:outline-none transition duration-300"
-                >
-                  View More
-                </button>
-
-                </TableCell>
-              </TableRow>
-            )}
           </TableBody>
         </Table>
       </div>
+
+      {/* Pagination Component */}
+      {!loading && filteredTournaments.length > itemsPerPage && (
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          totalItems={totalItems}
+          paginate={paginate}
+          handleNext={handleNext}
+          handlePrevious={handlePrevious}
+          currentPage={currentPage}
+        />
+      )}
     </div>
   );
 };

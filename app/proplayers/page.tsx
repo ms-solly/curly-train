@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from 'react';
 import config from '@/src/config';
 import action from '@/src/actions/action';
@@ -8,20 +9,18 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
-const getProPlayers = async () => 
-    action('proPlayers', config.API_HOST, 'api/proplayers');
+const getProPlayers = async () => action('proPlayers', config.API_HOST, 'api/proplayers');
 
 const ProPlayersPage: React.FC = () => {
     const [proPlayers, setProPlayers] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [itemsPerPage] = useState<number>(10);
+    const [loading, setLoading] = useState(true); // Add loading state
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const proPlayersData = await getProPlayers();
-                
-                // Check if proPlayersData has a payload
                 if ('payload' in proPlayersData) {
                     setProPlayers(proPlayersData.payload);
                 } else {
@@ -29,6 +28,8 @@ const ProPlayersPage: React.FC = () => {
                 }
             } catch (error) {
                 console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false); // Set loading to false when data is fetched
             }
         };
 
@@ -59,20 +60,47 @@ const ProPlayersPage: React.FC = () => {
         <div className="p-4 bg-cover bg-center min-h-screen">
             <div className="p-8 shadow-lg bg-opacity-50">
                 <h1 className="text-4xl font-bold mb-4 text-center text-white-800 font-rubik scrollbar-track-slate-800">Pro Players</h1>
-                {proPlayers.length > 0 ? (
-                    <div>
-                        <Table className="rounded-lg shadow-md backdrop-blur-md bg-white/5 p-4 border border-gray-200">
-                            <TableHeader className='bg-black hover:bg-black'>
-                                <TableRow className="font-rubik bg-black hover:bg-black backdrop-blur-md text-green-300">
-                                    <TableHead className="px-3 py-2 text-left">Name</TableHead>
-                                    <TableHead className="px-3 py-2 text-left">Team</TableHead>
-                                    <TableHead className="px-3 py-2 text-left">Country</TableHead>
-                                    <TableHead className="px-3 py-2 text-left">Last Login</TableHead>
-                                    <TableHead className="px-3 py-2 text-left">Profile</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {currentProPlayers.map((player: any) => (
+                <div>
+                    <Table className="rounded-lg shadow-md backdrop-blur-md bg-white/5 p-4 border border-gray-200">
+                        <TableHeader className='bg-black hover:bg-black'>
+                            <TableRow className="font-rubik bg-black hover:bg-black backdrop-blur-md text-green-300">
+                                <TableHead className="px-3 py-2 text-left">Name</TableHead>
+                                <TableHead className="px-3 py-2 text-left">Team</TableHead>
+                                <TableHead className="px-3 py-2 text-left">Country</TableHead>
+                                <TableHead className="px-3 py-2 text-left">Last Login</TableHead>
+                                <TableHead className="px-3 py-2 text-left">Profile</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {loading ? (
+                                // Placeholder loading rows
+                                Array.from({ length: itemsPerPage }).map((_, idx) => (
+                                    <TableRow key={idx} className="border-b border-gray-700">
+                                        <TableCell className="px-4 py-2 flex items-center">
+                                            <div className='flex items-center space-x-4'>
+                                                <div className='w-12 h-12 bg-gray-200 animate-pulse rounded-full'></div>
+                                                <div className='flex flex-col'>
+                                                    <div className="h-6 bg-gray-200 animate-pulse rounded-full w-24 mb-2"></div>
+                                                    <div className="h-4 bg-gray-200 animate-pulse rounded w-16"></div>
+                                                </div>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="px-4 py-2">
+                                            <div className="h-6 bg-gray-200 animate-pulse rounded"></div>
+                                        </TableCell>
+                                        <TableCell className="px-4 py-2">
+                                            <div className="h-6 bg-gray-200 animate-pulse rounded"></div>
+                                        </TableCell>
+                                        <TableCell className="px-4 py-2">
+                                            <div className="h-6 bg-gray-200 animate-pulse rounded"></div>
+                                        </TableCell>
+                                        <TableCell className="px-4 py-2">
+                                            <div className="h-6 bg-gray-200 animate-pulse rounded"></div>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            ) : proPlayers.length > 0 ? (
+                                currentProPlayers.map((player: any) => (
                                     <TableRow key={player.steamid} className="border-b border-gray-700 hover:bg-green-200 hover:text-gray-800">
                                         <TableCell className="px-4 py-2 flex items-center hover:text-white">
                                             <Link href={`/proplayers/${player.steamid}`} className="flex items-center text-green-400 font-bold font-rubik hover:text-white">
@@ -89,21 +117,25 @@ const ProPlayersPage: React.FC = () => {
                                             </Button>
                                         </TableCell>
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                        <Pagination
-                            itemsPerPage={itemsPerPage}
-                            totalItems={totalItems}
-                            paginate={paginate}
-                            handleNext={handleNext}
-                            handlePrevious={handlePrevious}
-                            currentPage={currentPage}
-                        />
-                    </div>
-                ) : (
-                    <p>Loading pro players...</p>
-                )}
+                                ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={5} className="text-center">
+                                        No pro players found.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                    <Pagination
+                        itemsPerPage={itemsPerPage}
+                        totalItems={totalItems}
+                        paginate={paginate}
+                        handleNext={handleNext}
+                        handlePrevious={handlePrevious}
+                        currentPage={currentPage}
+                    />
+                </div>
             </div>
         </div>
     );
