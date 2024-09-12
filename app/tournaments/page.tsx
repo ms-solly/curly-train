@@ -91,7 +91,7 @@ const TournamentPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-16">
+    <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-16 bg-background min-h-screen">
       <div className="space-y-2 md:space-y-3 mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-white">Tournaments</h2>
         <p className="text-sm md:text-base text-white">Browse current and past tournaments.</p>
