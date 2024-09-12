@@ -225,7 +225,7 @@ export function Home() {
           <section className="col-span-3 lg:col-span-2">
           <Card>
           <CardHeader className="w-full">
-              <CardTitle>Live Matches</CardTitle>
+              <CardTitle>Current Matches</CardTitle>
             <button className="bg-red-400 rounded px-4 text-white w-fit inline-block right-0">
               <Link href="/matches/live">All
               </Link>
