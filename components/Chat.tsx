@@ -85,7 +85,7 @@ const ChatBox: React.FC = () => {
   };
 
   return (
-    <section>
+    <section className='w-full'>
       <Card>
         <CardHeader>
           <CardTitle>Live Chats Forum</CardTitle>
@@ -108,17 +108,24 @@ const ChatBox: React.FC = () => {
             ) : (
               <div className={styles.chatMessages}>
                 {messages.map((msg) => (
-                  <div key={msg.id} className={styles.message}>
-                    <div className="w-full flex items-center space-x-2 bg-gray-500/20 rounded p-2">
+                  <div
+                    key={msg.id}
+                    className={`${styles.message} ${
+                      msg.user === 'User' ? styles.user : styles.other
+                    }`}
+                  >
+                    <div className="flex items-center space-x-2">
                       <Image
-                        src="https://via.placeholder.com/40"
+                        src={msg.image}
                         alt={msg.user}
                         width={40}
                         height={40}
                         className="w-8 h-8 rounded-full"
                       />
-                      <div className="w-full">
-                        <strong className='text-lg'>{msg.user}: </strong>
+                      <div className={styles.messageContent}>
+                        <strong className='text-lg'>
+                          {msg.user === 'User' ? 'You' : msg.user}:
+                        </strong>
                         <div className='inline-block text-gray-100/80 text-xs'>{msg.message}</div>
                         <div className="text-xs text-right text-gray-500 w-full">
                           <span className='text-xs'>{msg.timestamp}</span>

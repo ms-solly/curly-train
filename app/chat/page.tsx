@@ -5,7 +5,7 @@ import React from 'react';
 
 const chatPg = () => {
     return (
-        <div className='flex w-5/6 justify-center'>
+        <div className='flex w-full justify-center'>
         <Chat/>
         </div>
     );

@@ -1,72 +1,93 @@
-/* components/ChatBox.module.css */
 .chatBox {
-    display: flex;
-    flex-direction: column;
-    height: 440px;
-    width: 110%;
-    max-width: 300px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
-    padding: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-   
-  }
+  display: flex;
+  flex-direction: column;
+  height: 440px;
+  width: 100%;
+  max-width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+}
 
-  .chatMessages {
-    flex: 1;
-    overflow-y: auto;
-    padding-right: 5px;
-    margin-bottom: 10px;
-  }
-  
-  .message {
-    margin-bottom: 10px;
-  }
-  
-  .timestamp {
-    font-size: 0.2rem;
-    color: #363636;
-    margin-right: 5px;
-  }
-  
-  .chatInput {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .chatInput input {
-    padding: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 5px;
-    background: rgba(0, 0, 0, 0.2);
-    color: #fff;
-    outline: none;
-    box-sizing: border-box;
-    margin-bottom: 5px;
-  }
-  
-  .chatInput button {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    background: #E4003A;
-    color: #fff;
-    cursor: pointer;
-    transition: background 0.3s;
-    box-sizing: border-box;
-  }
-  
-  .chatInput button:hover {
-    background: #E4003A;
-  }
-  
-  @media (max-width: 600px) {
-    .chatBox {
+.chatMessages {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 5px;
+  margin-bottom: 10px;
+}
+
+.message {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  text-align: left;
+  width: fit-content;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message.other {
+  justify-content: flex-start;
+}
+
+.messageContent {
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 70%;
+  word-wrap: break-word; /* Ensure long words break and don't overflow */
+}
+
+.message.user .messageContent {
+  background: rgba(46, 202, 166, 0.8); /* Different color for user messages */
+}
+
+.timestamp {
+  font-size: 0.8rem;
+  color: #ccc;
+  margin-right: 5px;
+}
+
+.chatInput {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.chatInput input {
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  outline: none;
+  margin-bottom: 5px;
+}
+
+.chatInput button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  background: #E4003A;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.chatInput button:hover {
+  background: #C30029;
+}
+
+@media (max-width: 600px) {
+  .chatBox {
       height: 300px;
       max-width: 100%;
-    }
   }
-  
+}
