@@ -63,7 +63,7 @@ const ProPlayersPage: React.FC = () => {
     };
 
     return (
-        <div className="p-4 bg-cover bg-center min-h-screen">
+        <div className="p-4 w-full min-h-screen bg-background">
             <div className="p-8 shadow-lg bg-opacity-50">
                 <h1 className="text-4xl font-bold mb-4 text-center text-white-800 font-rubik scrollbar-track-slate-800">Pro Players</h1>
                 <div>
