@@ -91,7 +91,7 @@ const ChatBox: React.FC = () => {
           <CardTitle>Live Chats Forum</CardTitle>
         </CardHeader>
         <CardContent className="flex justify-center">
-          <div className={styles.chatBox}>
+          <div className={[styles.chatBox, 'lg:h-screen md:max-h-screen'].join(' ')}>
             {isLoading ? (
               <div className="space-y-4">
                 {[...Array(4)].map((_, i) => (
