@@ -85,7 +85,7 @@ const ChatBox: React.FC = () => {
   };
 
   return (
-    <section className='w-full'>
+    <section className='w-full min-h-screen'>
       <Card>
         <CardHeader>
           <CardTitle>Live Chats Forum</CardTitle>
