@@ -24,16 +24,17 @@
   margin-bottom: 10px;
   display: flex;
   align-items: flex-start;
-  text-align: left;
   width: fit-content;
 }
 
 .message.user {
   justify-content: flex-end;
+  margin-left: auto; /* Ensure messages align to the right */
 }
 
 .message.other {
   justify-content: flex-start;
+  margin-right: auto; /* Ensure messages align to the left */
 }
 
 .messageContent {
@@ -42,18 +43,19 @@
   padding: 10px;
   border-radius: 10px;
   max-width: 70%;
-  word-wrap: break-word; /* Ensure long words break and don't overflow */
+  word-wrap: break-word;
 }
 
 .message.user .messageContent {
-  background: rgba(46, 202, 166, 0.8); /* Different color for user messages */
+  background: rgba(46, 202, 166, 0.8);
+  text-align: right; 
 }
-
 .timestamp {
-  font-size: 0.8rem;
+  font-size: 0.1rem;
   color: #ccc;
   margin-right: 5px;
 }
+
 
 .chatInput {
   display: flex;
