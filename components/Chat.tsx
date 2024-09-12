@@ -15,39 +15,40 @@ const demoMessages: ChatMessage[] = [
   {
     id: 1,
     user: 'Alice',
-    message: 'Hello everyone!',
-    timestamp: '10:01 AM',
+    message: 'Did you catch the latest TI match? What a game!',
+    timestamp: '9:45 AM',
     image: 'https://via.placeholder.com/40',
   },
   {
     id: 2,
     user: 'Bob',
-    message: 'Hi Alice! How are you?',
-    timestamp: '10:02 AM',
+    message: 'Absolutely insane! The plays from the mid laner were next level.',
+    timestamp: '9:47 AM',
     image: 'https://via.placeholder.com/40',
   },
   {
     id: 3,
     user: 'Charlie',
-    message: 'Good morning! What’s up?',
-    timestamp: '10:03 AM',
+    message: 'I’m still buzzing from that clutch team fight. So excited for the finals!',
+    timestamp: '9:50 AM',
     image: 'https://via.placeholder.com/40',
   },
   {
     id: 4,
     user: 'Diana',
-    message: 'Hey! I’m just working on a project.',
-    timestamp: '10:04 AM',
+    message: 'Which team are you rooting for in the finals? I’m leaning towards Team A.',
+    timestamp: '9:55 AM',
     image: 'https://via.placeholder.com/40',
   },
   {
     id: 5,
     user: 'Eve',
-    message: 'Sounds interesting! What project?',
-    timestamp: '10:05 AM',
+    message: 'I’ve been analyzing the recent matches and I think Team B has a strong draft.',
+    timestamp: '10:00 AM',
     image: 'https://via.placeholder.com/40',
   },
 ];
+
 
 const ChatBox: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
