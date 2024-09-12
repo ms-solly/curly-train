@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import Pagination from '@/components/Pagination';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 const fetchData = async () => {
     try {
@@ -12,6 +14,13 @@ const fetchData = async () => {
         console.error("Error fetching data:", error);
         return null;
     }
+};
+
+// Helper function to convert seconds to minutes and seconds
+const formatGameTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}m ${remainingSeconds}s`;
 };
 
 const LiveDataPage: React.FC = () => {
@@ -49,80 +58,86 @@ const LiveDataPage: React.FC = () => {
     };
 
     return (
-        <div className="p-4">
-            <h1 className="text-3xl font-bold mb-4">Live Matches Data</h1>
+        <div className="flex flex-col w-full min-h-screen bg-background">
+            <main className="container mx-auto p-4"></main>
+            <Card>
+            <CardHeader className="inline-block w-full">
+            <CardTitle className='inline-block'>Live Matches</CardTitle>
+            <button className='fixed right-8 uppercase w-fit bg-gray-800 p-1 rounded hover:bg-gray-700/95'>Past</button>
+            </CardHeader>
+            <CardContent>
             {loading ? (
                 <>
                     <div className="overflow-x-auto">
-                        <table className="min-w-full border border-gray-200 rounded-lg shadow-md">
-                            <thead>
-                                <tr className="bg-gray-800 border-b border-gray-200">
-                                    <th className="px-4 py-2 text-left">Match ID</th>
-                                    <th className="px-4 py-2 text-left">Game Time</th>
-                                    <th className="px-4 py-2 text-left">Spectators</th>
-                                    <th className="px-4 py-2 text-left">Radiant Score</th>
-                                    <th className="px-4 py-2 text-left">Dire Score</th>
-                                    <th className="px-4 py-2 text-left">Average MMR</th>
-                                    <th className="px-4 py-2 text-left">Radiant Lead</th>
-                                    <th className="px-4 py-2 text-left">Game Mode</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <Table>
+                            <TableHeader className="">
+                                <TableRow className="bg-black hover:bg-black">
+                                    <TableHead className="px-4 py-2 text-left">Match ID</TableHead>
+                                    <TableHead className="px-4 py-2 text-left">Game Time</TableHead>
+                                    <TableHead className="px-4 py-2 text-left">Spectators</TableHead>
+                                    <TableHead className="px-4 py-2 text-left">Radiant Score</TableHead>
+                                    <TableHead className="px-4 py-2 text-left">Dire Score</TableHead>
+                                    <TableHead className="px-4 py-2 text-left">Average MMR</TableHead>
+                                    <TableHead className="px-4 py-2 text-left">Radiant Lead</TableHead>
+                                    <TableHead className="px-4 py-2 text-left">Game Mode</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
                                 {Array.from({ length: itemsPerPage }).map((_, index) => (
-                                    <tr key={index} className="border-b border-gray-200 animate-pulse">
-                                        <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-24"></div></td>
-                                        <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-20"></div></td>
-                                        <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-12"></div></td>
-                                        <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-10"></div></td>
-                                        <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-10"></div></td>
-                                        <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-14"></div></td>
-                                        <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-14"></div></td>
-                                        <td className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-16"></div></td>
-                                    </tr>
+                                    <TableRow key={index} className="border-b border-gray-200 animate-pulse">
+                                        <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-24"></div></TableCell>
+                                        <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-20"></div></TableCell>
+                                        <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-12"></div></TableCell>
+                                        <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-10"></div></TableCell>
+                                        <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-10"></div></TableCell>
+                                        <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-14"></div></TableCell>
+                                        <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-14"></div></TableCell>
+                                        <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-16"></div></TableCell>
+                                    </TableRow>
                                 ))}
-                            </tbody>
-                        </table>
+                            </TableBody>
+                        </Table>
                     </div>
                 </>
             ) : currentItems.length > 0 ? (
                 <>
                     <div className="overflow-x-auto">
-                        <table className="min-w-full border border-gray-200 rounded-lg shadow-md">
-                            <thead>
-                                <tr className="bg-gray-800 border-b border-gray-200">
-                                    <th className="px-4 py-2 text-left">Match ID</th>
-                                    <th className="px-4 py-2 text-left">Game Time</th>
-                                    <th className="px-4 py-2 text-left">Spectators</th>
-                                    <th className="px-4 py-2 text-left">Radiant Score</th>
-                                    <th className="px-4 py-2 text-left">Dire Score</th>
-                                    <th className="px-4 py-2 text-left">Average MMR</th>
-                                    <th className="px-4 py-2 text-left">Radiant Lead</th>
-                                    <th className="px-4 py-2 text-left">Game Mode</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <Table className="">
+                            <TableHeader className="">
+                                <TableRow className="bg-black hover:bg-black">
+                                    <TableHead className="px-4 py-2 text-left">Match ID</TableHead>
+                                    <TableHead className="px-4 py-2 text-left">Game Time</TableHead>
+                                    <TableHead className="px-4 py-2 text-left">Spectators</TableHead>
+                                    <TableHead className="px-4 py-2 text-left">Radiant Score</TableHead>
+                                    <TableHead className="px-4 py-2 text-left">Dire Score</TableHead>
+                                    <TableHead className="px-4 py-2 text-left">Average MMR</TableHead>
+                                    <TableHead className="px-4 py-2 text-left">Radiant Lead</TableHead>
+                                    <TableHead className="px-4 py-2 text-left">Game Mode</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
                                 {currentItems.map((match: any) => (
-                                    <tr
+                                    <TableRow
                                         key={match.match_id}
-                                        className="border-b border-gray-200 hover:bg-green-300 hover:text-gray-800 cursor-pointer"
+                                        className=" cursor-pointer"
                                         onClick={() => handleRowClick(match.match_id)}
                                     >
-                                        <td className="px-4 py-2">
+                                        <TableCell className="px-4 py-2">
                                             <Link href={`/matches/${match.match_id}`}>
-                                                <p className="text-blue-500 hover:underline">{match.match_id}</p>
+                                                <p className="underline hover:no-underline text-white">{match.match_id}</p>
                                             </Link>
-                                        </td>
-                                        <td className="px-4 py-2">{match.game_time} seconds</td>
-                                        <td className="px-4 py-2">{match.spectators}</td>
-                                        <td className="px-4 py-2">{match.radiant_score}</td>
-                                        <td className="px-4 py-2">{match.dire_score}</td>
-                                        <td className="px-4 py-2">{match.average_mmr}</td>
-                                        <td className="px-4 py-2">{match.radiant_lead}</td>
-                                        <td className="px-4 py-2">{match.game_mode}</td>
-                                    </tr>
+                                        </TableCell>
+                                        <TableCell className="px-4 py-2">{formatGameTime(match.game_time)}</TableCell>
+                                        <TableCell className="px-4 py-2">{match.spectators}</TableCell>
+                                        <TableCell className="px-4 py-2">{match.radiant_score}</TableCell>
+                                        <TableCell className="px-4 py-2">{match.dire_score}</TableCell>
+                                        <TableCell className="px-4 py-2">{match.average_mmr}</TableCell>
+                                        <TableCell className="px-4 py-2">{match.radiant_lead}</TableCell>
+                                        <TableCell className="px-4 py-2">{match.game_mode}</TableCell>
+                                    </TableRow>
                                 ))}
-                            </tbody>
-                        </table>
+                            </TableBody>
+                        </Table>
                     </div>
                     <Pagination
                         itemsPerPage={itemsPerPage}
@@ -136,6 +151,8 @@ const LiveDataPage: React.FC = () => {
             ) : (
                 <p>No live matches data available.</p>
             )}
+            </CardContent>
+            </Card>
         </div>
     );
 };

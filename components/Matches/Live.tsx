@@ -2,6 +2,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import { BsWifi2 } from 'react-icons/bs';
+import { Table } from '../ui/table';
 
 interface Match {
   id: number;
@@ -60,7 +61,7 @@ const MatchesPage = () => {
           {loading
             ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
             : matches.map((match) => (
-              <div key={match.id} className="bg-gray-800 rounded-lg shadow-md p-4 border border-gray-700">
+              <Table key={match.id} className="bg-gray-800 rounded-lg shadow-md p-4 border border-gray-700">
                 <div className="flex justify-between items-center">
                   <div className="text-red-700 font-bold flex items-center">
                     <BsWifi2 className="mr-1 mb-2 animate-ping" />
@@ -78,7 +79,7 @@ const MatchesPage = () => {
                   <div>Avg MMR: {match.avgMmr !== 'Unknown' ? match.avgMmr : 'Unknown'}</div>
                   <div>Mode: {match.gameMode}</div>
                 </div>
-              </div>
+              </Table>
             ))}
         </div>
       </div>

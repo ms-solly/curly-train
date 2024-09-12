@@ -7,6 +7,7 @@ import Chat from "@/components/Chat";
 import Image from "next/image";
 import Link from "next/link";
 import { GiCrossedSwords } from "react-icons/gi";
+import { FaCrown } from "react-icons/fa";
 
 
 interface Match {
@@ -266,9 +267,15 @@ export function Home() {
                     matches.map((match) => (
                       <TableRow key={match.match_id} className="">
                         <TableCell>
-                          <Badge variant={match.radiant_win ? "win" : "loss"}>
-                            {match.radiant_win ? "Radiant Win" : "Dire Win"}
-                          </Badge>
+                        {match.radiant_win ? (
+            <Badge variant="win" className="text-center">
+              <FaCrown  className="ml-1 inline-block mr-1 text-gray-500 " /> Radiant 
+            </Badge>
+          ) : (
+            <Badge variant="loss" className="text-center mr-2">
+              <FaCrown  className="ml-4 inline-block mr-1 text-gray-500 text-right" /> Dire 
+            </Badge>
+          )}
                         </TableCell>
                         <TableCell className="border-r-0">
                           <Image src={match.radiant_logo} alt={match.radiant_name} width={30} height={30} className="inline-block" />
