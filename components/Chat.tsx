@@ -49,7 +49,6 @@ const demoMessages: ChatMessage[] = [
   },
 ];
 
-
 const ChatBox: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
@@ -124,9 +123,11 @@ const ChatBox: React.FC = () => {
                         className="w-8 h-8 rounded-full"
                       />
                       <div className={styles.messageContent}>
-                        <strong className='text-lg'>
-                          {msg.user === 'User' ? 'You' : msg.user}:
-                        </strong>
+                        {msg.user !== 'User' && (
+                          <strong className='text-lg'>
+                            {msg.user}:
+                          </strong>
+                        )}
                         <div className='inline-block text-gray-100/80 text-xs'>{msg.message}</div>
                         <div className="text-xs text-right text-gray-500 w-full">
                           <span className='text-xs'>{msg.timestamp}</span>
