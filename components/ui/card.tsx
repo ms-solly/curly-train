@@ -1,6 +1,8 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { AiOutlineArrowRight } from "react-icons/ai"
+import Link from "next/link"
 
 const Card = React.forwardRef<
   HTMLDivElement,
@@ -23,7 +25,7 @@ const CardHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    className={cn("flex flex-col space-y-1.5 p-6 inline-block w-full relative", className)}
     {...props}
   />
 ))
@@ -36,7 +38,7 @@ const CardTitle = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      "text-2xl font-semibold leading-none tracking-tight uppercase",
+      "text-2xl font-semibold leading-none tracking-tight uppercase inline-block",
       className
     )}
     {...props}
@@ -77,19 +79,26 @@ const CardFooter = React.forwardRef<
 CardFooter.displayName = "CardFooter"
 
 
-const CardButton = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "",
-      className
-    )}
-    {...props}
-  />
-))
-CardButton.displayName = "CardButton"
+interface CornerButtonProps extends React.HTMLAttributes<HTMLAnchorElement> {
+  href: string;
+}
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent,CardButton }
+const CornerButton = React.forwardRef<HTMLAnchorElement, CornerButtonProps>(
+  ({ className, children, ...props }, ref) => (
+    <Link
+      ref={ref}
+      className={cn(
+        "sticky top-2 right-0 ml-auto uppercase w-fit bg-gray-800 p-1 rounded hover:bg-gray-700/95 flex items-center justify-center space-x-2 absolute mx-2",
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <AiOutlineArrowRight />
+    </Link>
+  )
+);
+
+CornerButton.displayName = 'CornerButton';
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent,CornerButton }

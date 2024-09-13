@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Pagination from '@/components/Pagination';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { AiOutlineArrowRight } from 'react-icons/ai';
+import { CornerButton } from '@/components/ui/card';
 
 const fetchData = async () => {
     try {
@@ -61,97 +63,99 @@ const LiveDataPage: React.FC = () => {
         <div className="flex flex-col w-full min-h-screen bg-background">
             <main className="container mx-auto p-4"></main>
             <Card>
-            <CardHeader className="inline-block w-full">
-            <CardTitle className='inline-block'>Live Matches</CardTitle>
-            <button className='fixed right-8 uppercase w-fit bg-gray-800 p-1 rounded hover:bg-gray-700/95'>Past</button>
-            </CardHeader>
-            <CardContent>
-            {loading ? (
-                <>
-                    <div className="overflow-x-auto">
-                        <Table>
-                            <TableHeader className="">
-                                <TableRow className="bg-black hover:bg-black">
-                                    <TableHead className="px-4 py-2 text-left">Match ID</TableHead>
-                                    <TableHead className="px-4 py-2 text-left">Game Time</TableHead>
-                                    <TableHead className="px-4 py-2 text-left">Spectators</TableHead>
-                                    <TableHead className="px-4 py-2 text-left">Radiant Score</TableHead>
-                                    <TableHead className="px-4 py-2 text-left">Dire Score</TableHead>
-                                    <TableHead className="px-4 py-2 text-left">Average MMR</TableHead>
-                                    <TableHead className="px-4 py-2 text-left">Radiant Lead</TableHead>
-                                    <TableHead className="px-4 py-2 text-left">Game Mode</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {Array.from({ length: itemsPerPage }).map((_, index) => (
-                                    <TableRow key={index} className="border-b border-gray-200 animate-pulse">
-                                        <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-24"></div></TableCell>
-                                        <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-20"></div></TableCell>
-                                        <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-12"></div></TableCell>
-                                        <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-10"></div></TableCell>
-                                        <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-10"></div></TableCell>
-                                        <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-14"></div></TableCell>
-                                        <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-14"></div></TableCell>
-                                        <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-16"></div></TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </div>
-                </>
-            ) : currentItems.length > 0 ? (
-                <>
-                    <div className="overflow-x-auto">
-                        <Table className="">
-                            <TableHeader className="">
-                                <TableRow className="bg-black hover:bg-black">
-                                    <TableHead className="px-4 py-2 text-left">Match ID</TableHead>
-                                    <TableHead className="px-4 py-2 text-left">Game Time</TableHead>
-                                    <TableHead className="px-4 py-2 text-left">Spectators</TableHead>
-                                    <TableHead className="px-4 py-2 text-left">Radiant Score</TableHead>
-                                    <TableHead className="px-4 py-2 text-left">Dire Score</TableHead>
-                                    <TableHead className="px-4 py-2 text-left">Average MMR</TableHead>
-                                    <TableHead className="px-4 py-2 text-left">Radiant Lead</TableHead>
-                                    <TableHead className="px-4 py-2 text-left">Game Mode</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {currentItems.map((match: any) => (
-                                    <TableRow
-                                        key={match.match_id}
-                                        className=" cursor-pointer"
-                                        onClick={() => handleRowClick(match.match_id)}
-                                    >
-                                        <TableCell className="px-4 py-2">
-                                            <Link href={`/matches/${match.match_id}`}>
-                                                <p className="underline hover:no-underline text-white">{match.match_id}</p>
-                                            </Link>
-                                        </TableCell>
-                                        <TableCell className="px-4 py-2">{formatGameTime(match.game_time)}</TableCell>
-                                        <TableCell className="px-4 py-2">{match.spectators}</TableCell>
-                                        <TableCell className="px-4 py-2">{match.radiant_score}</TableCell>
-                                        <TableCell className="px-4 py-2">{match.dire_score}</TableCell>
-                                        <TableCell className="px-4 py-2">{match.average_mmr}</TableCell>
-                                        <TableCell className="px-4 py-2">{match.radiant_lead}</TableCell>
-                                        <TableCell className="px-4 py-2">{match.game_mode}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </div>
-                    <Pagination
-                        itemsPerPage={itemsPerPage}
-                        totalItems={totalItems}
-                        paginate={paginate}
-                        handleNext={handleNext}
-                        handlePrevious={handlePrevious}
-                        currentPage={currentPage}
-                    />
-                </>
-            ) : (
-                <p>No live matches data available.</p>
-            )}
-            </CardContent>
+                <CardHeader className="">
+                    <CardTitle className="">Live Matches</CardTitle>
+                    
+                    <CornerButton href="/matches/past">Past matches</CornerButton>
+
+                </CardHeader>
+                <CardContent>
+                    {loading ? (
+                        <>
+                            <div className="overflow-x-auto">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow className="bg-black hover:bg-black">
+                                            <TableHead className="px-4 py-2 text-left">Match ID</TableHead>
+                                            <TableHead className="px-4 py-2 text-left">Game Time</TableHead>
+                                            <TableHead className="px-4 py-2 text-left">Spectators</TableHead>
+                                            <TableHead className="px-4 py-2 text-left">Radiant Score</TableHead>
+                                            <TableHead className="px-4 py-2 text-left">Dire Score</TableHead>
+                                            <TableHead className="px-4 py-2 text-left">Average MMR</TableHead>
+                                            <TableHead className="px-4 py-2 text-left">Radiant Lead</TableHead>
+                                            <TableHead className="px-4 py-2 text-left">Game Mode</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {Array.from({ length: itemsPerPage }).map((_, index) => (
+                                            <TableRow key={index} className="border-b border-gray-200 animate-pulse">
+                                                <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-24"></div></TableCell>
+                                                <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-20"></div></TableCell>
+                                                <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-12"></div></TableCell>
+                                                <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-10"></div></TableCell>
+                                                <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-10"></div></TableCell>
+                                                <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-14"></div></TableCell>
+                                                <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-14"></div></TableCell>
+                                                <TableCell className="px-4 py-2"><div className="h-4 bg-gray-300 rounded w-16"></div></TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </div>
+                        </>
+                    ) : currentItems.length > 0 ? (
+                        <>
+                            <div className="overflow-x-auto">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow className="bg-black hover:bg-black">
+                                            <TableHead className="px-4 py-2 text-left">Match ID</TableHead>
+                                            <TableHead className="px-4 py-2 text-left">Game Time</TableHead>
+                                            <TableHead className="px-4 py-2 text-left">Spectators</TableHead>
+                                            <TableHead className="px-4 py-2 text-left">Radiant Score</TableHead>
+                                            <TableHead className="px-4 py-2 text-left">Dire Score</TableHead>
+                                            <TableHead className="px-4 py-2 text-left">Average MMR</TableHead>
+                                            <TableHead className="px-4 py-2 text-left">Radiant Lead</TableHead>
+                                            <TableHead className="px-4 py-2 text-left">Game Mode</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {currentItems.map((match: any) => (
+                                            <TableRow
+                                                key={match.match_id}
+                                                className="cursor-pointer"
+                                                onClick={() => handleRowClick(match.match_id)}
+                                            >
+                                                <TableCell className="px-4 py-2">
+                                                    <Link href={`/matches/${match.match_id}`}>
+                                                        <p className="underline hover:no-underline text-white">{match.match_id}</p>
+                                                    </Link>
+                                                </TableCell>
+                                                <TableCell className="px-4 py-2">{formatGameTime(match.game_time)}</TableCell>
+                                                <TableCell className="px-4 py-2">{match.spectators}</TableCell>
+                                                <TableCell className="px-4 py-2">{match.radiant_score}</TableCell>
+                                                <TableCell className="px-4 py-2">{match.dire_score}</TableCell>
+                                                <TableCell className="px-4 py-2">{match.average_mmr}</TableCell>
+                                                <TableCell className="px-4 py-2">{match.radiant_lead}</TableCell>
+                                                <TableCell className="px-4 py-2">{match.game_mode}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </div>
+                            <Pagination
+                                itemsPerPage={itemsPerPage}
+                                totalItems={totalItems}
+                                paginate={paginate}
+                                handleNext={handleNext}
+                                handlePrevious={handlePrevious}
+                                currentPage={currentPage}
+                            />
+                        </>
+                    ) : (
+                        <p>No live matches data available.</p>
+                    )}
+                </CardContent>
             </Card>
         </div>
     );

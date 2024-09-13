@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CornerButton } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import Chat from "@/components/Chat";
@@ -224,12 +224,9 @@ export function Home() {
         <div className="grid grid-cols-3 lg:grid-cols-3 gap-6">
           <section className="col-span-3 lg:col-span-2">
           <Card>
-          <CardHeader className="w-full">
-              <CardTitle>Current Matches</CardTitle>
-            <button className="bg-red-400 rounded px-4 text-white w-fit inline-block right-0">
-              <Link href="/matches/live">All
-              </Link>
-            </button>
+          <CardHeader className="">
+                    <CardTitle className="">Current Matches</CardTitle>
+                    <CornerButton href='matches/live'>all</CornerButton>
           </CardHeader>
             <CardContent>
               <Table>
@@ -309,6 +306,8 @@ export function Home() {
           <Card>
             <CardHeader>
               <CardTitle>Top Teams</CardTitle>
+              <CornerButton href='teams'>all</CornerButton>
+              
             </CardHeader>
             <CardContent>
               <Table>
