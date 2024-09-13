@@ -10,6 +10,7 @@ import Pagination from "@/components/Pagination";
 
 // Define a skeleton placeholder component
 const TableSkeleton = () => (
+  
   <Table>
     <TableHeader>
       <TableRow className="bg-black hover:bg-black">
@@ -24,7 +25,7 @@ const TableSkeleton = () => (
       </TableRow>
     </TableHeader>
     <TableBody>
-      {[...Array(20)].map((_, index) => (
+      {[...Array(10)].map((_, index) => (
         <TableRow key={index}>
           <TableCell><div className="h-6 w-24 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
           <TableCell><div className="h-6 w-32 bg-gray-600 rounded-md animate-pulse"></div></TableCell>
@@ -61,7 +62,7 @@ export default function PastMatches() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(20); // Number of matches to display per page
+  const [itemsPerPage] = useState(10); // Number of matches to display per page
 
   useEffect(() => {
     const fetchMatches = async () => {
@@ -135,7 +136,7 @@ export default function PastMatches() {
   };
 
   return (
-    <div className="container mx-auto my-6 p-4">
+    <div className="flex flex-col w-full min-h-screen bg-background">
       <Card>
         <CardHeader>
           <CardTitle>Past Matches</CardTitle>
