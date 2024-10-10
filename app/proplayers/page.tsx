@@ -8,12 +8,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-// import { Metadata } from "next";
 
-// export const metadata: Metadata = {
-//   title: 'ProPlayers | Esportws',
-//   description: 'Dive into the world of professional athletes. Explore the top players across various sports, learn about their achievements, career highlights, and what makes them the best in the game. Stay up-to-date with their latest performances and rankings.',
-// }
+
 
 const getProPlayers = async () => action('proPlayers', config.API_HOST, 'api/proplayers');
 
@@ -21,7 +17,7 @@ const ProPlayersPage: React.FC = () => {
     const [proPlayers, setProPlayers] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [itemsPerPage] = useState<number>(10);
-    const [loading, setLoading] = useState(true); // Add loading state
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,14 +31,14 @@ const ProPlayersPage: React.FC = () => {
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
-                setLoading(false); // Set loading to false when data is fetched
+                setLoading(false);
             }
         };
 
         fetchData();
     }, []);
 
-    // Pagination logic
+
     const indexOfLastPlayer = currentPage * itemsPerPage;
     const indexOfFirstPlayer = indexOfLastPlayer - itemsPerPage;
     const currentProPlayers = proPlayers.slice(indexOfFirstPlayer, indexOfLastPlayer);

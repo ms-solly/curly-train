@@ -1,9 +1,20 @@
-"use client"
-import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+"use client";
+import React, { useState, useEffect } from "react";
+import config from "@/src/config";
+import action from "@/src/actions/action";
+import Pagination from "@/components/Pagination";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
-// Define TypeScript interfaces for data
 interface PlayerData {
   avatarfull: string;
   personaname: string;
@@ -25,6 +36,18 @@ interface MatchData {
   duration: number;
 }
 
+const getProPlayersData = async (accountId: string) => {
+  const url = `https://api.opendota.com/api/proplayers/${accountId}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Network response was not ok");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching pro player data:", error);
+    return null;
+  }
+};
+
 // Page component
 const PlayerProfilePage = async ({ params }: { params: { id: string } }) => {
   const accountId = params.id;
@@ -33,24 +56,24 @@ const PlayerProfilePage = async ({ params }: { params: { id: string } }) => {
   const fetchPlayerData = async (): Promise<PlayerData | null> => {
     try {
       const res = await fetch(`https://api.opendota.com/api/players/${accountId}`);
-      if (!res.ok) throw new Error('Network response was not ok');
+      if (!res.ok) throw new Error("Network response was not ok");
       const data = await res.json();
       return {
         avatarfull: data.profile.avatarfull,
         personaname: data.profile.personaname,
-        name: data.profile.name || 'Unknown',
-        team_name: data.team_name || 'No team',
-        loccountrycode: data.loccountrycode || 'Unknown',
-        last_login: data.last_login ? new Date(data.last_login).toLocaleDateString() : 'Never',
-        rank: data.rank || 'Unranked',
+        name: data.profile.name || "Unknown",
+        team_name: data.team_name || "No team",
+        loccountrycode: data.loccountrycode || "Unknown",
+        last_login: data.last_login ? new Date(data.last_login).toLocaleDateString() : "Never",
+        rank: data.rank || "Unranked",
         level: data.level || 0,
         mmr: data.mmr || 0,
         matches_played: data.matches_played || 0,
         tournaments_played: data.tournaments_played || 0,
-        win_rate: data.win_rate || 'N/A',
+        win_rate: data.win_rate || "N/A",
       };
     } catch (error) {
-      console.error('Error fetching player data:', error);
+      console.error("Error fetching player data:", error);
       return null;
     }
   };
@@ -59,23 +82,25 @@ const PlayerProfilePage = async ({ params }: { params: { id: string } }) => {
   const fetchRecentMatches = async (): Promise<MatchData[]> => {
     try {
       const res = await fetch(`https://api.opendota.com/api/players/${accountId}/recentMatches`);
-      if (!res.ok) throw new Error('Network response was not ok');
+      if (!res.ok) throw new Error("Network response was not ok");
       return await res.json();
     } catch (error) {
-      console.error('Error fetching recent matches:', error);
+      console.error("Error fetching recent matches:", error);
       return [];
     }
   };
 
+  // Fetch data for the player and pro players
   const playerData = await fetchPlayerData();
   const recentMatches = await fetchRecentMatches();
+  const proPlayersData = await getProPlayersData(accountId);
 
   if (!playerData) {
     return <div>Error loading player data</div>;
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto   shadow-md rounded-lg overflow-hidden">
+    <div className="p-6 max-w-4xl mx-auto shadow-md rounded-lg overflow-hidden">
       <div className="flex items-start space-x-6 mb-6">
         <Image
           src={playerData.avatarfull}
