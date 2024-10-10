@@ -10,14 +10,13 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 
-
 const getProPlayers = async () => action('proPlayers', config.API_HOST, 'api/proplayers');
 
 const ProPlayersPage: React.FC = () => {
     const [proPlayers, setProPlayers] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [itemsPerPage] = useState<number>(10);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true); 
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,7 +30,7 @@ const ProPlayersPage: React.FC = () => {
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
-                setLoading(false);
+                setLoading(false); 
             }
         };
 
@@ -75,7 +74,7 @@ const ProPlayersPage: React.FC = () => {
                         </TableHeader>
                         <TableBody>
                             {loading ? (
-                                // Placeholder loading rows
+
                                 Array.from({ length: itemsPerPage }).map((_, idx) => (
                                     <TableRow key={idx} className="border-b border-gray-700">
                                         <TableCell className="px-4 py-2 flex items-center">
