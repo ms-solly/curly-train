@@ -1,156 +1,132 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import config from "@/src/config";
-import action from "@/src/actions/action";
-import Pagination from "@/components/Pagination";
-import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 
-interface PlayerData {
-  avatarfull: string;
-  personaname: string;
-  name: string;
-  team_name: string | null;
-  loccountrycode: string | null;
-  last_login: string;
-  rank: string;
-  level: number;
-  mmr: number;
-  matches_played: number;
-  tournaments_played: number;
-  win_rate: string;
-}
+import React, { useState, useEffect } from 'react';
+import config from '@/src/config';
+import action from '@/src/actions/action';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
-interface MatchData {
-  match_id: number;
-  hero_id: number;
-  duration: number;
-}
+const getPlayerData = async (accountId: string) =>
+  action('players', config.API_HOST, `api/players/${accountId}`);
 
-const getProPlayersData = async (accountId: string) => {
-  const url = `https://api.opendota.com/api/proplayers/${accountId}`;
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("Network response was not ok");
-    return await response.json();
-  } catch (error) {
-    console.error("Error fetching pro player data:", error);
-    return null;
-  }
-};
+const getRecentMatches = async (accountId: string) =>
+  action('recentMatches', config.API_HOST, `api/players/${accountId}/recentMatches`);
 
-// Page component
-const PlayerProfilePage = async ({ params }: { params: { id: string } }) => {
+const PlayerProfilePage: React.FC<{ params: { id: string } }> = ({ params }) => {
   const accountId = params.id;
 
-  // Fetch player data
-  const fetchPlayerData = async (): Promise<PlayerData | null> => {
-    try {
-      const res = await fetch(`https://api.opendota.com/api/players/${accountId}`);
-      if (!res.ok) throw new Error("Network response was not ok");
-      const data = await res.json();
-      return {
-        avatarfull: data.profile.avatarfull,
-        personaname: data.profile.personaname,
-        name: data.profile.name || "Unknown",
-        team_name: data.team_name || "No team",
-        loccountrycode: data.loccountrycode || "Unknown",
-        last_login: data.last_login ? new Date(data.last_login).toLocaleDateString() : "Never",
-        rank: data.rank || "Unranked",
-        level: data.level || 0,
-        mmr: data.mmr || 0,
-        matches_played: data.matches_played || 0,
-        tournaments_played: data.tournaments_played || 0,
-        win_rate: data.win_rate || "N/A",
-      };
-    } catch (error) {
-      console.error("Error fetching player data:", error);
-      return null;
-    }
-  };
+  const [playerData, setPlayerData] = useState<any>(null);
+  const [recentMatches, setRecentMatches] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Fetch recent matches
-  const fetchRecentMatches = async (): Promise<MatchData[]> => {
-    try {
-      const res = await fetch(`https://api.opendota.com/api/players/${accountId}/recentMatches`);
-      if (!res.ok) throw new Error("Network response was not ok");
-      return await res.json();
-    } catch (error) {
-      console.error("Error fetching recent matches:", error);
-      return [];
-    }
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const playerResponse = await getPlayerData(accountId);
+        const matchesResponse = await getRecentMatches(accountId);
 
-  // Fetch data for the player and pro players
-  const playerData = await fetchPlayerData();
-  const recentMatches = await fetchRecentMatches();
-  const proPlayersData = await getProPlayersData(accountId);
+        if ('payload' in playerResponse) {
+          setPlayerData(playerResponse.payload);
+        } else {
+          console.error("Error fetching player data:", playerResponse.error);
+        }
 
-  if (!playerData) {
-    return <div>Error loading player data</div>;
-  }
+        if ('payload' in matchesResponse) {
+          setRecentMatches(matchesResponse.payload);
+        } else {
+          console.error("Error fetching matches data:", matchesResponse.error);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [accountId]);
 
   return (
     <div className="p-6 max-w-4xl mx-auto shadow-md rounded-lg overflow-hidden">
-      <div className="flex items-start space-x-6 mb-6">
-        <Image
-          src={playerData.avatarfull}
-          alt={playerData.personaname}
-          width={120}
-          height={120}
-          className="rounded-full"
-        />
-        <div className="flex flex-col justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">{playerData.personaname}</h1>
-            <p className="text-lg text-gray-700">Name: {playerData.name}</p>
-            <p className="text-lg text-gray-700">Team: {playerData.team_name}</p>
-            <p className="text-lg text-gray-700">Country: {playerData.loccountrycode}</p>
-            <p className="text-lg text-gray-700">Last Login: {playerData.last_login}</p>
+      {loading ? (
+        <div className="animate-pulse">
+          <div className="flex items-start space-x-6 mb-6">
+            <div className="w-24 h-24 bg-gray-200 rounded-full"></div>
+            <div className="flex flex-col justify-between">
+              <div className="h-6 bg-gray-200 rounded w-48 mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded w-32"></div>
+            </div>
           </div>
           <div className="mt-4">
-            <p className="text-lg text-gray-700">Rank: {playerData.rank}</p>
-            <p className="text-lg text-gray-700">Level: {playerData.level}</p>
-            <p className="text-lg text-gray-700">MMR: {playerData.mmr}</p>
-            <p className="text-lg text-gray-700">Matches Played: {playerData.matches_played}</p>
-            <p className="text-lg text-gray-700">Tournaments Played: {playerData.tournaments_played}</p>
-            <p className="text-lg text-gray-700">Win Rate: {playerData.win_rate}</p>
+            <div className="h-6 bg-gray-200 rounded w-48 mb-2"></div>
+            <div className="h-6 bg-gray-200 rounded w-32"></div>
           </div>
         </div>
-      </div>
-
-      <div className="mt-6">
-        <h2 className="text-2xl font-semibold mb-4">Recent Matches</h2>
-        <div className="max-h-80 overflow-y-auto">
-          <ul className="divide-y divide-gray-200">
-            {recentMatches.slice(0, 10).map((match) => (
-              <li key={match.match_id} className="py-2 flex justify-between items-center">
-                <Link href={`/matches/${match.match_id}`} className="text-blue-600 hover:underline">
-                  Match ID: {match.match_id}
-                </Link>
-                <p className="text-gray-600">Hero ID: {match.hero_id}</p>
-                <p className="text-gray-600">Duration: {match.duration} seconds</p>
-              </li>
-            ))}
-          </ul>
-          {recentMatches.length > 10 && (
-            <div className="mt-4">
-              <Link href={`/players/${accountId}/matches`} className="text-blue-600 hover:underline">
-                View More Matches
-              </Link>
+      ) : playerData ? (
+        <div>
+          <div className="flex items-start space-x-6 mb-6">
+            <Image
+              src={playerData.avatarfull}
+              alt={playerData.personaname}
+              width={120}
+              height={120}
+              className="rounded-full"
+            />
+            <div className="flex flex-col justify-between">
+              <h1 className="text-3xl font-bold">{playerData.personaname}</h1>
+              <p className="text-lg text-gray-700">Name: {playerData.name || 'Unknown'}</p>
+              <p className="text-lg text-gray-700">Team: {playerData.team_name || 'No team'}</p>
+              <p className="text-lg text-gray-700">Country: {playerData.loccountrycode || 'Unknown'}</p>
+              <p className="text-lg text-gray-700">Last Login: {new Date(playerData.last_login).toLocaleDateString() || 'Never'}</p>
             </div>
-          )}
+          </div>
+
+          <div className="mt-6">
+            <h2 className="text-2xl font-semibold mb-4">Recent Matches</h2>
+            <Table className="rounded-lg shadow-md bg-white/5 border border-gray-200">
+              <TableHeader className='bg-black'>
+                <TableRow className="text-green-300">
+                  <TableHead className="px-3 py-2 text-left">Match ID</TableHead>
+                  <TableHead className="px-3 py-2 text-left">Hero ID</TableHead>
+                  <TableHead className="px-3 py-2 text-left">Duration (sec)</TableHead>
+                  <TableHead className="px-3 py-2 text-left">Profile</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {recentMatches.length > 0 ? (
+                  recentMatches.map((match: any) => (
+                    <TableRow key={match.match_id} className="border-b border-gray-700">
+                      <TableCell className="px-4 py-2">
+                        <Link href={`/matches/${match.match_id}`} className="text-blue-600 hover:underline">
+                          {match.match_id}
+                        </Link>
+                      </TableCell>
+                      <TableCell className="px-4 py-2">{match.hero_id}</TableCell>
+                      <TableCell className="px-4 py-2">{match.duration}</TableCell>
+                      <TableCell className="px-4 py-2">
+                        <Button className="bg-green-500 hover:bg-green-700 rounded-md px-3 h-8 hover:text-white">
+                          <Link href={`/matches/${match.match_id}`}>View Match</Link>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={4} className="text-center">
+                      No recent matches found.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div>Error loading player data.</div>
+      )}
     </div>
   );
 };
