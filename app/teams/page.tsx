@@ -12,7 +12,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"; // Adjust the import path as needed
+} from "@/components/ui/table"; 
+import Pagination from "@/components/Pagination";
 
 const fetchPlayers = async (team_id: number): Promise<Player[]> => {
   try {
@@ -169,7 +170,45 @@ const ErrorMessage = () => (
 const TeamsTable: React.FC = () => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>(false); // State to track error
+  const [error, setError] = useState<boolean>(false); 
+  const [currentPage, setCurrentPage] = useState(1); // Current page state
+  const itemsPerPage = 5; // Number of teams per page
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(false);
+      try {
+        const teamsData = await fetchTeamsData();
+        if (teamsData.length === 0) {
+          throw new Error("No teams found");
+        }
+        setTeams(teamsData);
+      } catch (error) {
+        console.error(error);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+  const indexOfLastTeam = currentPage * itemsPerPage;
+  const indexOfFirstTeam = indexOfLastTeam - itemsPerPage;
+  const currentTeams = teams.slice(indexOfFirstTeam, indexOfLastTeam);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const handleNext = () => {
+    if (currentPage < Math.ceil(teams.length / itemsPerPage)) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -219,6 +258,7 @@ const TeamsTable: React.FC = () => {
   }
 
   return (
+    <div>
     <Table className="min-w-full border rounded-lg overflow-hidden shadow-md">
       <TableHeader>
         <TableRow>
@@ -284,6 +324,18 @@ const TeamsTable: React.FC = () => {
         ))}
       </TableBody>
     </Table>
+
+    {!loading && teams.length > itemsPerPage && (
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          totalItems={teams.length}
+          paginate={paginate}
+          handleNext={handleNext}
+          handlePrevious={handlePrevious}
+          currentPage={currentPage}
+        />
+      )}
+    </div>
   );
 };
 
