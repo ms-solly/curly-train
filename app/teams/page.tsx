@@ -6,6 +6,7 @@ import Pagination from "@/components/Pagination";
 import Image from "next/image";
 import { Player, PlayerProfile, MmrEstimate } from "@/types/player";
 import { Team } from "@/types/team";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 // Fetch team players based on team ID
 const fetchPlayers = async (team_id: number): Promise<Player[]> => {
@@ -166,18 +167,18 @@ interface TeamsTableProps {
 
 const TeamsTable: React.FC<TeamsTableProps> = ({ teams }) => {
     return (
-        <table className="min-w-full border rounded-lg overflow-hidden shadow-md">
-            <thead className="bg-sky-700 text-white">
-                <tr>
-                    <th className="px-6 py-3 text-left">Team</th>
-                    <th className="px-6 py-3 text-left">Win Rate</th>
-                    <th className="px-6 py-3 text-left">Players</th>
-                </tr>
-            </thead>
-            <tbody className="text-white">
+        <Table className="min-w-full border rounded-lg overflow-hidden shadow-md">
+            <TableHeader className=" text-white">
+                <TableRow className="hover:bg-black">
+                    <TableHead className="px-6 py-3 text-left">Team</TableHead>
+                    <TableHead className="px-6 py-3 text-left">Win Rate</TableHead>
+                    <TableHead className="px-6 py-3 text-left">Players</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody className="text-white">
                 {teams.map((team) => (
-                    <tr key={team.team_id} className="border-b border-gray-200">
-                        <td className="px-6 py-4 flex items-center space-x-4">
+                    <TableRow key={team.team_id} className="border-b border-gray-200">
+                        <TableCell className="px-6 py-4 flex items-center space-x-4">
                             <Image
                                 src={team.logo}
                                 alt={`${team.name} logo`}
@@ -187,9 +188,9 @@ const TeamsTable: React.FC<TeamsTableProps> = ({ teams }) => {
                                 quality={100}
                             />
                             <span className="font-semibold">{team.name}</span>
-                        </td>
-                        <td className="px-6 py-4">{team.win_rate || "N/A"}%</td>
-                        <td className="px-6 py-4">
+                        </TableCell>
+                        <TableCell className="px-6 py-4">{team.win_rate || "N/A"}%</TableCell>
+                        <TableCell className="px-6 py-4">
                             {team.players.length > 0 ? (
                                 <div className="grid grid-cols-2 gap-4">
                                     {team.players.map((player) => (
@@ -207,11 +208,11 @@ const TeamsTable: React.FC<TeamsTableProps> = ({ teams }) => {
                             ) : (
                                 <p className="text-sm">No players available</p>
                             )}
-                        </td>
-                    </tr>
+                        </TableCell>
+                    </TableRow>
                 ))}
-            </tbody>
-        </table>
+            </TableBody>
+        </Table>
     );
 };
 
