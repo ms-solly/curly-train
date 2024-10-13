@@ -9,7 +9,13 @@ export interface Hero {
     legs: number;
   }
   
-
+  export interface TeamHero {
+    hero_id: number;
+    name: string;
+    games_played: number;
+    wins: number;
+  }
+  
   export interface HeroStats {
     id: number;
     name: string;
