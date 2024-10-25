@@ -6,8 +6,18 @@ import PerformanceGraph from '@/components/PerformanceGraph ';
 // Fetch match data
 const fetcher = (url: string) => axios.get(url).then(res => res.data);
 
+// Fetch hero data
+const fetchHeroes = async () => {
+    const heroes = await fetcher('https://api.opendota.com/api/heroes');
+    return heroes.reduce((acc: any, hero: any) => {
+        acc[hero.id] = hero.localized_name; // Map hero id to hero name
+        return acc;
+    }, {});
+};
+
 const MatchProfile = async ({ params: { id } }: { params: { id: string } }) => {
     const data = await fetcher(`https://api.opendota.com/api/matches/${id}`);
+    const heroesMap = await fetchHeroes(); // Fetch heroes data
 
     if (!data) {
         return <div>Loading...</div>;
@@ -18,7 +28,7 @@ const MatchProfile = async ({ params: { id } }: { params: { id: string } }) => {
     // Ensure radiant_team and dire_team are arrays
     const radiantTeam = data.radiant_team || [];
     const direTeam = data.dire_team || [];
-    
+
     return (
         <div className="p-6 min-h-screen">
             <div className="max-w-6xl mx-auto rounded-lg shadow-lg p-6">
@@ -67,7 +77,7 @@ const MatchProfile = async ({ params: { id } }: { params: { id: string } }) => {
                             <ul className="list-disc pl-5">
                                 {radiantTeam.map((player: any) => (
                                     <li key={player.account_id}>
-                                        {player.personaname || 'Anonymous'} - {player.hero_id}
+                                        {player.personaname || 'Anonymous'} - {heroesMap[player.hero_id] || 'Unknown Hero'}
                                     </li>
                                 ))}
                             </ul>
@@ -77,7 +87,7 @@ const MatchProfile = async ({ params: { id } }: { params: { id: string } }) => {
                             <ul className="list-disc pl-5">
                                 {direTeam.map((player: any) => (
                                     <li key={player.account_id}>
-                                        {player.personaname || 'Anonymous'} - {player.hero_id}
+                                        {player.personaname || 'Anonymous'} - {heroesMap[player.hero_id] || 'Unknown Hero'}
                                     </li>
                                 ))}
                             </ul>
@@ -102,7 +112,7 @@ const MatchProfile = async ({ params: { id } }: { params: { id: string } }) => {
                             {data.players.map((player: any) => (
                                 <tr key={player.account_id} className="border-b border-gray-200">
                                     <td className="px-4 py-2">{player.personaname || 'Anonymous'}</td>
-                                    <td className="px-4 py-2">{player.hero_id}</td>
+                                    <td className="px-4 py-2">{heroesMap[player.hero_id] || 'Unknown Hero'}</td>
                                     <td className="px-4 py-2">{player.kills}</td>
                                     <td className="px-4 py-2">{player.deaths}</td>
                                     <td className="px-4 py-2">{player.assists}</td>
@@ -112,7 +122,7 @@ const MatchProfile = async ({ params: { id } }: { params: { id: string } }) => {
                     </table>
                 </div>
                 <div className='my-10'>
-                <PerformanceGraph goldAdv={data.radiant_gold_adv} xpAdv={data.radiant_xp_adv} matchId={data.match_id} />
+                    <PerformanceGraph goldAdv={data.radiant_gold_adv} xpAdv={data.radiant_xp_adv} matchId={data.match_id} />
                 </div>
                 {/* See on Steam Button */}
                 <div className="mt-6">
