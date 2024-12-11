@@ -172,7 +172,7 @@ const TeamsTable: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false); 
   const [currentPage, setCurrentPage] = useState(1); // Current page state
-  const itemsPerPage = 5; // Number of teams per page
+  const itemsPerPage = 20; // Number of teams per page
 
   useEffect(() => {
     const fetchData = async () => {
@@ -194,6 +194,7 @@ const TeamsTable: React.FC = () => {
 
     fetchData();
   }, []);
+
   const indexOfLastTeam = currentPage * itemsPerPage;
   const indexOfFirstTeam = indexOfLastTeam - itemsPerPage;
   const currentTeams = teams.slice(indexOfFirstTeam, indexOfLastTeam);
@@ -209,27 +210,6 @@ const TeamsTable: React.FC = () => {
       setCurrentPage((prevPage) => prevPage - 1);
     }
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(false);
-      try {
-        const teamsData = await fetchTeamsData();
-        if (teamsData.length === 0) {
-          throw new Error("No teams found");
-        }
-        setTeams(teamsData);
-      } catch (error) {
-        console.error(error);
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   if (loading) {
     return (
@@ -259,82 +239,69 @@ const TeamsTable: React.FC = () => {
 
   return (
     <div>
-    <Table className="min-w-full border rounded-lg overflow-hidden shadow-md">
-      <TableHeader>
-        <TableRow>
-          <TableHead className="px-6 py-3 text-left">Team</TableHead>
-          <TableHead className="px-6 py-3 text-left">Win Rate</TableHead>
-          <TableHead className="px-6 py-3 text-left">Players</TableHead>
-          <TableHead className="px-6 py-3 text-left">Matches</TableHead>
-          <TableHead className="px-6 py-3 text-left">Heroes</TableHead>
-          <TableHead className="px-6 py-3 text-left">Last Match</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody className="text-gray-800">
-        {teams.map((team) => (
-          <TableRow key={team.team_id} className="border-b border-gray-200">
-            <TableCell className="px-6 py-4 flex items-center space-x-4">
-              <Image
-                src={team.logo}
-                alt={`${team.name} logo`}
-                width={40}
-                height={40}
-                className="w-16 h-16 object-cover rounded-full border border-gray-300"
-                quality={100}
-              />
-              <span className="font-semibold">{team.name}</span>
-            </TableCell>
-            <TableCell className="px-6 py-4">{team.win_rate.toFixed(2)}%</TableCell>
-            <TableCell className="px-6 py-4">
-              {team.players.length > 0 ? (
-                <div className="grid grid-cols-2 gap-4">
-                  {team.players.map((player) => (
-                    <div key={player.id} className="text-sm flex items-center space-x-2">
-                      <Image
-                        src={player.profile.avatar || "/download.png"}
-                        alt={`${player.name} avatar`}
-                        width={30}
-                        height={30}
-                        className="w-10 h-10 object-cover rounded-full"
-                      />
-                      <span>{player.name}</span>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm">No players available</p>
-              )}
-            </TableCell>
-            <TableCell className="px-6 py-4">
-              {team.matches.length > 0 ? team.matches.length : "No matches"}
-            </TableCell>
-            <TableCell className="px-6 py-4">
-              {team.heroes.length > 0 ? team.heroes.length : "No heroes"}
-            </TableCell>
-            <TableCell className="px-6 py-4">
-              {team.last_match_time ? (
-                <p className="text-sm">
-                  {new Date(team.last_match_time * 1000).toLocaleString()}
-                </p>
-              ) : (
-                <p className="text-sm">No match data</p>
-              )}
-            </TableCell>
+      <Table className="min-w-full border rounded-lg overflow-hidden shadow-md">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="px-6 py-3 text-left">Team</TableHead>
+            <TableHead className="px-6 py-3 text-left">Win Rate</TableHead>
+            <TableHead className="px-6 py-3 text-left">Players</TableHead>
+            <TableHead className="px-6 py-3 text-left">Matches</TableHead>
+            <TableHead className="px-6 py-3 text-left">Heroes</TableHead>
+            <TableHead className="px-6 py-3 text-left">Last Match</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-
-    {!loading && teams.length > itemsPerPage && (
-        <Pagination
-          itemsPerPage={itemsPerPage}
-          totalItems={teams.length}
-          paginate={paginate}
-          handleNext={handleNext}
-          handlePrevious={handlePrevious}
-          currentPage={currentPage}
-        />
-      )}
+        </TableHeader>
+        <TableBody className="text-gray-800">
+          {currentTeams.map((team) => (
+            <TableRow key={team.team_id} className="border-b border-gray-200">
+              <TableCell className="px-6 py-4 flex items-center space-x-4">
+                <Image
+                  src={team.logo}
+                  alt={`${team.name} logo`}
+                  width={40}
+                  height={40}
+                  className="w-16 h-16 object-cover rounded-full border border-gray-300"
+                  quality={100}
+                />
+                <span className="font-semibold">{team.name}</span>
+              </TableCell>
+              <TableCell className="px-6 py-4">{team.win_rate.toFixed(2)}%</TableCell>
+              <TableCell className="px-6 py-4">
+                {team.players.length > 0 ? (
+                  <div className="grid grid-cols-2 gap-4">
+                    {team.players.map((player) => (
+                      <div key={player.id} className="text-sm flex items-center space-x-2">
+                        <Image
+                          src={player.profile.avatar || "/download.png"}
+                          alt={`${player.name} avatar`}
+                          width={30}
+                          height={30}
+                          className="w-10 h-10 object-cover rounded-full"
+                        />
+                        <span>{player.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm">No players available</p>
+                )}
+              </TableCell>
+              <TableCell className="px-6 py-4">{team.matches.length}</TableCell>
+              <TableCell className="px-6 py-4">{team.heroes.length}</TableCell>
+              <TableCell className="px-6 py-4">
+                {new Date(team.last_match_time * 1000).toLocaleString()}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Pagination
+        currentPage={currentPage}
+        itemsPerPage={itemsPerPage}
+        totalItems={teams.length}
+        paginate={paginate}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
+      />
     </div>
   );
 };
