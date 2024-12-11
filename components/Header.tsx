@@ -1,181 +1,81 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
+import * as React from "react";
+import Link from "next/link";
+import { FiMenu } from "react-icons/fi";
+import { AiOutlineClose } from "react-icons/ai";
+import { cn } from "@/lib/utils";
 
-import { cn } from "@/lib/utils"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
-
-const matches: { title: string; href: string; description: string }[] = [
-  {
-    title: "Upcoming Matches",
-    href: "/matches/upcoming",
-    description: "Explore upcoming matches of Dota 2",
-  },
-  {
-    title: "Live Matches",
-    href: "/matches/live",
-    description: "Explore live matches of Dota 2",
-  },
-  {
-    title: "Past Matches",
-    href: "/matches/past",
-    description: "Explore past matches of Dota 2",
-  },
-]
-
-const tournament: { title: string; href: string; description: string }[] = [
-  {
-    title: "Upcoming Tournaments",
-    href: "/tournament/upcoming",
-    description: "Explore upcoming tournaments of Dota 2",
-  },
-  {
-    title: "Live Tournaments",
-    href: "/tournament/live",
-    description: "Explore live tournaments of Dota 2",
-  },
-  {
-    title: "Past Tournaments",
-    href: "/tournament/past",
-    description: "Explore past tournaments of Dota 2",
-  },
-]
+const links = [
+  { title: "Matches", href: "/matches/live" },
+  { title: "Tournaments", href: "/tournaments" },
+  { title: "Players", href: "/proplayers" },
+  { title: "Teams", href: "/teams" },
+  { title: "Heroes", href: "/heroes" },
+  { title: "Chat", href: "/chat" },
+  { title: "News", href: "https://dailyblog-esport1.vercel.app", external: true },
+];
 
 export default function NavigationMenuDemo() {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   return (
-    <div className="m-2 flex w-full justify-center z-50">
-      <NavigationMenu className="w-full max-w-7xl">
-        <NavigationMenuList className="flex flex-wrap justify-center gap-2">
-          {/* <NavigationMenuItem>
-            <NavigationMenuTrigger className="px-4 py-2 text-base sm:px-2 sm:py-1 sm:text-sm">Matches</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid gap-2 p-3 sm:grid-cols-2 lg:grid-cols-3">
-                {matches.map((match) => (
-                  <ListItem
-                    key={match.title}
-                    title={match.title}
-                    href={match.href}
+    <div className="relative z-10 flex w-full justify-between items-center px-4 py-2 bg-gray-800 text-white shadow-md">
+      <div className="text-lg font-bold">Dota 2 Hub</div>
+      <button
+        className="text-2xl p-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 md:hidden"
+        onClick={toggleMenu}
+        aria-label="Toggle Navigation"
+      >
+        {isOpen ? <AiOutlineClose /> : <FiMenu />}
+      </button>
+
+      {/* Desktop Navigation */}
+      <div className="hidden md:flex space-x-6">
+        {links.map(({ title, href, external }) => (
+          <Link key={title} href={href} legacyBehavior passHref>
+            <a
+              className={cn("text-sm px-3 py-2 hover:bg-gray-700 rounded")}
+              target={external ? "_blank" : undefined}
+              rel={external ? "noopener noreferrer" : undefined}
+            >
+              {title}
+            </a>
+          </Link>
+        ))}
+      </div>
+
+      {/* Mobile Navigation */}
+      {isOpen && (
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-95 z-20 overflow-y-auto p-4">
+          <button
+            className="absolute top-4 right-4 text-3xl text-white focus:outline-none"
+            onClick={toggleMenu}
+            aria-label="Close Navigation"
+          >
+            <AiOutlineClose />
+          </button>
+          <ul className="space-y-6 text-center mt-12">
+            {links.map(({ title, href, external }) => (
+              <li key={title}>
+                <Link href={href} legacyBehavior passHref>
+                  <a
+                    className="block text-lg font-semibold px-6 py-3 text-white bg-gray-800 hover:bg-gray-700 rounded focus:ring-2 focus:ring-gray-500"
+                    target={external ? "_blank" : undefined}
+                    rel={external ? "noopener noreferrer" : undefined}
                   >
-                    {match.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <NavigationMenuTrigger className="px-4 py-2 text-base sm:px-2 sm:py-1 sm:text-sm">Tournaments</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid gap-2 p-3 sm:grid-cols-2 lg:grid-cols-3">
-                {tournament.map((tournament) => (
-                  <ListItem
-                    key={tournament.title}
-                    title={tournament.title}
-                    href={tournament.href}
-                  >
-                    {tournament.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem> */}
-
-          <NavigationMenuItem>
-            <Link href="/matches/live" legacyBehavior passHref>
-              <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "px-4 py-2 text-base sm:px-2 sm:py-1 sm:text-sm")}>
-                Matches
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <Link href="/tournaments" legacyBehavior passHref>
-              <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "px-4 py-2 text-base sm:px-2 sm:py-1 sm:text-sm")}>
-                Tournaments
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <Link href="/proplayers" legacyBehavior passHref>
-              <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "px-4 py-2 text-base sm:px-2 sm:py-1 sm:text-sm")}>
-                Players
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <Link href="/teams" legacyBehavior passHref>
-              <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "px-4 py-2 text-base sm:px-2 sm:py-1 sm:text-sm")}>
-                Teams
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <Link href="/heroes" legacyBehavior passHref>
-              <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "px-4 py-2 text-base sm:px-2 sm:py-1 sm:text-sm")}>
-                Heroes
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-
-
-          <NavigationMenuItem>
-            <Link href="/chat" legacyBehavior passHref>
-              <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "px-4 py-2 text-base sm:px-2 sm:py-1 sm:text-sm")}>
-                Chat
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <Link href="https://dailyblog-esport1.vercel.app" target="_blank" legacyBehavior passHref>
-              <NavigationMenuLink
-                className={cn(navigationMenuTriggerStyle(), "px-4 py-2 text-base sm:px-2 sm:py-1 sm:text-sm")}
-                target="_blank"
-              >
-                News
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
+                    {title}
+                  </a>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
-  )
+  );
 }
-
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-xs font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  )
-})
-ListItem.displayName = "ListItem"

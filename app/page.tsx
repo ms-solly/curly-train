@@ -5,7 +5,7 @@ import bgImage from "public/bg.png"
 
 export default function IndexPage() {
   return (
-    <section className="relative h-screen w-screen overflow-hidden bg-gray-900 text-white">
+    <section className="relative h-screen w-screen overflow-hidden bg-gray-900 text-white z-0">
     
       <div className="absolute inset-0 z-0 overflow-hidden">
         <Image
