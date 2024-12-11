@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Button } from "../ui/button";
 
-export default function ADDVT() {
+export default function Advertizemen() {
   const [isVisible, setIsVisible] = React.useState(true);
 
   const closeAdSection = () => {
