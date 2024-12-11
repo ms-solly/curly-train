@@ -97,7 +97,7 @@ const TournamentPage: React.FC = () => {
         <p className="text-sm md:text-base text-white">Browse current and past tournaments.</p>
       </div>
 
-      <div className="flex flex-col md:flex-row md:justify-between items-center mb-8 gap-4">
+      {/* <div className="flex flex-col md:flex-row md:justify-between items-center mb-8 gap-4">
         <input
           type="text"
           placeholder="Search by tournament name"
@@ -114,7 +114,7 @@ const TournamentPage: React.FC = () => {
             Show current tournaments
           </label>
         </div>
-      </div>
+      </div> */}
 
       <div className="overflow-x-auto">
         <Table className="rounded-b-lg border">
