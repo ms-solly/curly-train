@@ -360,6 +360,7 @@ export function Home() {
           <Card>
             <CardHeader>
               <CardTitle>Top Players</CardTitle>
+                    <CornerButton href='/proplayers'>all</CornerButton>
             </CardHeader>
             <CardContent>
               <Table>
@@ -406,6 +407,8 @@ export function Home() {
             <Card>
               <CardHeader>
                 <CardTitle>Top Tournaments</CardTitle>
+                <CornerButton href='/tournaments'>all</CornerButton>
+
               </CardHeader>
               <CardContent>
                 <Table>
