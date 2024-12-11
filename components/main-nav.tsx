@@ -12,10 +12,10 @@ interface MainNavProps {
 
 export function MainNav({ items }: MainNavProps) {
   return (
-    <div className="flex gap-6 md:gap-10">
+    <div className="flex gap-6 md:gap-10 min-w-fit">
       <Link href="/" className="flex items-center space-x-2">
         {/*<Icons.logo className="h-6 w-6" />*/}
-        <span className="inline-block font-bold">{siteConfig.name}</span><span className="animate-pulse text-red-500">&gt;&gt;</span>
+        <span className="inline-block font-bold text-[#E4003A]">{siteConfig.name}<span className="animate-pulse text-red-800"> &gt;&gt;</span></span>
       </Link>
       {items?.length ? (
         <nav className="flex gap-6">

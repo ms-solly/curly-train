@@ -131,3 +131,16 @@ body{
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.ad-section {
+  animation: slideIn 0.3s ease-out;
+}

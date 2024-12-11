@@ -6,11 +6,11 @@ import { cn } from "@/lib/utils"
 
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
-import { SiteHeader } from "@/components/site-header"
+import SiteHeader from "@/components/site-header"
 import Image from "next/image"
-import Header from "@/components/Header"
 import Head from "next/head"
 import bgImg from '../public/bg.png'
+import ADDVT from "@/components/advt/add"
 
 export const metadata: Metadata = {
   title: {
@@ -44,8 +44,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <Image src={bgImg} alt="Background Image" fill style={{ objectFit: 'cover' }} className="z-0 opacity-50" />
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="relative flex min-h-screen flex-col">
+            <ADDVT/>
               <SiteHeader />
-              <Header />
               <div className="z-1 flex-1">{children}</div>
             </div>
             <TailwindIndicator />

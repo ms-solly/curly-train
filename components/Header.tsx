@@ -27,7 +27,7 @@ export default function NavigationMenuDemo() {
     <div className="relative z-10 flex w-full justify-between items-center px-4 py-2 bg-gray-800 text-white shadow-md">
       <div className="text-lg font-bold">Dota 2 Hub</div>
       <button
-        className="text-2xl p-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 md:hidden"
+        className="text-2xl p-2 focus:outline-none border-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 md:hidden"
         onClick={toggleMenu}
         aria-label="Toggle Navigation"
       >
